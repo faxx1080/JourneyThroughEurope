@@ -1,0 +1,9 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}(C) Frank Migliorino 2014
+${licensePrefix}CSE 219 Final Project
+${licensePrefix}Portions Copyright Paul Fodor
+<#if licenseLast??>
+${licenseLast}
+</#if>
