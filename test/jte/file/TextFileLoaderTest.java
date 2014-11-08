@@ -24,8 +24,8 @@ public class TextFileLoaderTest {
     @Test
     public void testLoadTextFile() throws Exception {
         System.out.println("loadTextFile");
-        String textFile = "file";
-        String expResult = "Hello";
+        String textFile = "./data/testread";
+        String expResult = "Hello\n";
         String result = TextFileLoader.loadTextFile(textFile);
         assertEquals(expResult, result);
     }
