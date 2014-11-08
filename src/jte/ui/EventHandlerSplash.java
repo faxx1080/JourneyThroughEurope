@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import jte.fxml.FXMLFiles;
 import jte.util.RLoad;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  *
@@ -21,12 +22,31 @@ import jte.util.RLoad;
  */
 public class EventHandlerSplash {
     
-    public void splashGameSetupPL() {
+    public void splashGameSetupPL(Stage stage) {
+        FXMLFiles fxmlInst = FXMLFiles.getInstance();
+        
+        FXMLLoader fxmlL = new FXMLLoader(fxmlInst.getClass().getResource("PlayerSetup.fxml"));
+        
+        fxmlL.setResources(ResourceBundle.getBundle("stringsLocalized"));
+        fxmlL.setController(new PlayerSetupDialog());
+        
+        try {
+           fxmlL.load(); 
+        } catch (IOException e) {
+            //DialogCreator.showFXDialogFatal(RLoad.getString(JTEPropertyType.STR_ERROR_TEXT_IO), true);
+        }
+       
+        Scene scene = new Scene(fxmlL.getRoot());
+        Stage stageN = new Stage();
+        stageN.setTitle(RLoad.getString(JTEResourceType.STR_PLAYERSETUP));
+        stageN.setScene(scene);
+        stageN.show();
+        stage.close();
         
     }
     
     public void splashGameLoad() {
-        
+        throw new NotImplementedException();
     }
     
     public void allQuit() {
