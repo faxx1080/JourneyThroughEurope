@@ -54,7 +54,7 @@ public class AboutDialog implements Initializable {
         
     }
     
-        /**
+    /**
 	 * This method loads the HTML page that corresponds to the fileProperty
 	 * argument and puts it into the WebView argument for display.
 	 * 
