@@ -6,6 +6,7 @@
 package jte.ui;
 
 import application.JTEPropertyType;
+import application.JTEResourceType;
 import java.util.ResourceBundle;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,7 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import jte.util.ResourceLoader;
+import jte.util.RLoad;
 import properties_manager.PropertiesManager;
 
 /**
@@ -24,7 +25,7 @@ import properties_manager.PropertiesManager;
  */
 public class DialogCreator {
     
-    private static final int[] result = {-1};
+    private static final DialogResult[] res = {DialogResult.RES_NO};
     
     /**
      * This shows a dialog and awaits its close, returning the result of the
@@ -35,12 +36,9 @@ public class DialogCreator {
      * Returns -1 if closed without answering.
      * @param textTitle Title of the prompt
      * @param textPrompt Detailed prompt
-     * @param textResponse List of responses.
      * @return 
      */
-    public static int showFXDialog(String textTitle, String textPrompt,
-            String[] textResponse) {
-        result[0] = -1;
+    public static void showFXDialogMessage(String textTitle, String textPrompt) {
         Stage dialogStage = new Stage();
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.setTitle(textTitle);
@@ -49,16 +47,45 @@ public class DialogCreator {
         BorderPane exitPane = new BorderPane();
         HBox optionPane = new HBox();
         
-        Button[] btnResps = new Button[textResponse.length];
+        Button[] btnResps = new Button[2];
+        btnResps[0] = new Button(RLoad.getString(JTEResourceType.STR_OK));
+        btnResps[0].setOnAction(e -> {dialogStage.close();});
         
-        for (int[] i = {0}; i[0] < btnResps.length; i[0]++) {
-            Button t = new Button(textResponse[i[0]]);
-            t.setOnAction(e -> {
-                result[0] = i[0];
-                dialogStage.close();
-            });
-            btnResps[i[0]] = t;
-        }
+        optionPane.setSpacing(10.0);
+        optionPane.getChildren().addAll(btnResps);
+        Label prompt = new Label(textPrompt);
+        exitPane.setCenter(prompt);
+        exitPane.setBottom(optionPane);
+        exitPane.resize(200, 100);
+        Scene scene = new Scene(exitPane, 200, 100);
+        dialogStage.setScene(scene);
+        dialogStage.showAndWait();
+    }
+    
+    public static DialogResult showFXDialogConfirm(String textTitle, String textPrompt,
+            String yesText, String noText) {
+        
+        res[0] = DialogResult.RES_NO;
+        Stage dialogStage = new Stage();
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.setTitle(textTitle);
+        Window primaryStage = null;
+        dialogStage.initOwner(primaryStage);
+        BorderPane exitPane = new BorderPane();
+        HBox optionPane = new HBox();
+        
+        Button[] btnResps = new Button[2];
+        btnResps[0] = new Button(yesText);
+        btnResps[0].setOnAction(e -> {
+            res[0] = DialogResult.RES_YES;
+            dialogStage.close();
+        });
+        
+        btnResps[1] = new Button(noText);
+        btnResps[1].setOnAction(e -> {
+            res[0] = DialogResult.RES_NO;
+            dialogStage.close();
+        });
         
         optionPane.setSpacing(10.0);
         optionPane.getChildren().addAll(btnResps);
@@ -70,14 +97,9 @@ public class DialogCreator {
         dialogStage.setScene(scene);
         dialogStage.showAndWait();
         
-        return result[0];
+        return res[0];
+        
     }
-    
-    public void showFXDialogFatal(String message, boolean quit) {
-        String[] d = {ResourceLoader.getString(JTEPropertyType.STR_OK)};
-        showFXDialog(ResourceLoader.getString(JTEPropertyType.STR_ERROR),
-               message, d);
-        System.exit(1);
-    }
+
     
 }

@@ -8,6 +8,7 @@
         <property name="DATA_PATH" value="./data/"></property>
         <property name="IMG_PATH" value="./img/"></property>
         <property name="RESOURCE_LOCATION" value="stringsLocalized"></property>
+		<property name="HELP_FILE" value="OfficialInstructions.htm" />
     </property_list>
     <property_options_list>
     </property_options_list>

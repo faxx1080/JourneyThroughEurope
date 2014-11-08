@@ -6,6 +6,7 @@
 package jte.util;
 
 import application.JTEPropertyType;
+import application.JTEResourceType;
 import java.util.ResourceBundle;
 import properties_manager.PropertiesManager;
 
@@ -27,7 +28,7 @@ public class RLoad {
      * @param stringName
      * @return The string.
      */
-    public static String getString(JTEPropertyType stringName) {
+    public static String getString(JTEResourceType stringName) {
         return rb.getString(stringName.toString());
     }
     

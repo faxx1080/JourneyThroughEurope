@@ -9,11 +9,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Pane>
          <children>
-            <ImageView fitWidth="450.0" layoutX="75.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/START_SCREEN_BACKGROUND.gif" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="181.0" fitWidth="301.0" layoutX="150.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../img/gameSplash.jpg" />
                </image>
@@ -35,10 +40,6 @@
             </VBox>
          </bottom>
       </BorderPane>
-      <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" smooth="false">
-         <image>
-            <Image url="@../../../img/Moonlit_Beach_Animated.gif" />
-         </image>
-      </ImageView>
+      
    </children>
 </StackPane>

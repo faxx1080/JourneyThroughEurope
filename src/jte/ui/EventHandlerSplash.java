@@ -6,8 +6,14 @@
 package jte.ui;
 
 import application.JTEPropertyType;
+import application.JTEResourceType;
+import java.io.IOException;
 import java.util.ResourceBundle;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
+import jte.fxml.FXMLFiles;
+import jte.util.RLoad;
 
 /**
  *
@@ -29,16 +35,19 @@ public class EventHandlerSplash {
     
     public void allQuit(Stage stage) {
         ResourceBundle rb = ResourceBundle.getBundle("stringsLocalized");
-        String textTitle = rb.getString(application.JTEPropertyType.DEF_KILL_TITLE.toString());
-        String textPrompt = rb.getString(application.JTEPropertyType.DEF_ENSURE_EXIT.toString());
+        String textTitle = rb.getString(JTEResourceType.DEF_KILL_TITLE.toString());
+        String textPrompt = rb.getString(JTEResourceType.DEF_ENSURE_EXIT.toString());
         String[] exitopt = new String[2];
-        exitopt[0] = rb.getString(JTEPropertyType.DEF_NO.toString());
-        exitopt[1] = rb.getString(JTEPropertyType.DEF_YES.toString());
-        int result = DialogCreator.showFXDialog(textTitle, textPrompt, exitopt);
+        exitopt[0] = rb.getString(JTEResourceType.DEF_NO.toString());
+        exitopt[1] = rb.getString(JTEResourceType.DEF_YES.toString());
+        DialogResult result = DialogCreator.showFXDialogConfirm(textTitle, textPrompt, 
+                RLoad.getString(JTEResourceType.DEF_YES), 
+                RLoad.getString(JTEResourceType.DEF_NO));
         
-        if (result == 2) {
+        if (result.equals(result.RES_YES)){
             stage.close();
         }
+        
     }
     
     public void allQuit(JourneyUI ui) {
@@ -46,7 +55,24 @@ public class EventHandlerSplash {
     }
     
     public void allAbout() {
+        FXMLFiles fxmlInst = FXMLFiles.getInstance();
         
+        FXMLLoader fxmlL = new FXMLLoader(fxmlInst.getClass().getResource("AboutDialog.fxml"));
+        
+        fxmlL.setResources(ResourceBundle.getBundle("stringsLocalized"));
+        fxmlL.setController(new AboutDialog());
+        
+        try {
+           fxmlL.load(); 
+        } catch (IOException e) {
+            //DialogCreator.showFXDialogFatal(RLoad.getString(JTEPropertyType.STR_ERROR_TEXT_IO), true);
+        }
+       
+        Scene scene = new Scene(fxmlL.getRoot());
+        Stage stage = new Stage();
+        stage.setTitle(RLoad.getString(JTEResourceType.STR_JTE));
+        stage.setScene(scene);
+        stage.show();
     }
     
     

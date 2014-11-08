@@ -51,7 +51,7 @@ public final class Main extends Application {
         try {
            fxmlL.load(); 
         } catch (IOException e) {
-            DialogCreator.showFXDialogFatal(RLoad.getString(JTEPropertyType.STR_ERROR_TEXT_IO), true);
+            //DialogCreator.showFXDialogFatal(RLoad.getString(JTEPropertyType.STR_ERROR_TEXT_IO), true);
         }
        
         Scene scene = new Scene(fxmlL.getRoot());

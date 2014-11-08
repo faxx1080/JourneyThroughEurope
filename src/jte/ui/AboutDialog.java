@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import jte.util.RLoad;
 import properties_manager.PropertiesManager;
 
 /**
@@ -36,7 +37,7 @@ public class AboutDialog implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Load text for webview
-        
+        loadPage(webView, JTEPropertyType.HELP_FILE);
     }
     
     private AboutDialog thisInst;
@@ -63,17 +64,17 @@ public class AboutDialog implements Initializable {
 	 *            The file property, whose name can then be retrieved from the
 	 *            property manager.
 	 */
-
 	public void loadPage(WebView wbv, JTEPropertyType fileProperty) {
 		// GET THE FILE NAME
 		PropertiesManager props = PropertiesManager.getPropertiesManager();
-		String fileName = props.getProperty(fileProperty);
+		String fileName = props.getProperty(JTEPropertyType.DATA_PATH) + 
+                props.getProperty(fileProperty);
 		try {
 			// LOAD THE HTML INTO THE EDITOR PANE
 			String fileHTML = jte.file.TextFileLoader.loadTextFile(fileName);
             wbv.getEngine().loadContent(fileHTML, "text/html");
 		} catch (IOException ioe) {
-			DialogCreator.
+			//DialogCreator.showFXDialogFatal(RLoad.getString(JTEPropertyType.STR_ERROR_TEXT_IO), true);
 		}
 	}
     
