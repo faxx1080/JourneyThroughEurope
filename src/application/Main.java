@@ -5,6 +5,7 @@
  */
 package application;
 
+import java.io.IOException;
 import java.util.ResourceBundle;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +14,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import jte.fxml.FXMLFiles;
+import jte.ui.DialogCreator;
 import jte.ui.SplashDialog;
+import jte.util.RLoad;
 import properties_manager.PropertiesManager;
 
 /**
@@ -38,13 +41,23 @@ public final class Main extends Application {
                 DATA_PATH);
         props.loadProperties(UI_PROPERTIES_FILE_NAME,
                 PROPERTIES_SCHEMA_FILE_NAME);
-
-       
         
+        FXMLFiles fxmlInst = FXMLFiles.getInstance();
+        
+        FXMLLoader fxmlL = new FXMLLoader(fxmlInst.getClass().getResource("SplashDialog.fxml"));
+        
+        fxmlL.setResources(ResourceBundle.getBundle("stringsLocalized"));
+        fxmlL.setController(new SplashDialog());
+        try {
+           fxmlL.load(); 
+        } catch (IOException e) {
+            DialogCreator.showFXDialogFatal(RLoad.getString(JTEPropertyType.STR_ERROR_TEXT_IO), true);
+        }
+       
+        Scene scene = new Scene(fxmlL.getRoot());
+
         stage.setScene(scene);
         stage.show();
-        
-        
     }
 
     /**
