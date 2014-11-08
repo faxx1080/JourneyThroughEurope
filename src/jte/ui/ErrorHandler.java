@@ -7,8 +7,8 @@ package jte.ui;
 
 /**
  *
- * @author Frank Migliorino <frank.migliorino@stonybrook.edu>
+ * @author Frank
  */
-class JourneyUI {
+public class ErrorHandler {
     
 }

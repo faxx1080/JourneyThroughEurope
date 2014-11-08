@@ -5,6 +5,7 @@
  */
 package application;
 
+import java.util.ResourceBundle;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,6 +14,7 @@ import javafx.stage.Stage;
 
 import jte.fxml.FXMLFiles;
 import jte.ui.SplashDialog;
+import properties_manager.PropertiesManager;
 
 /**
  *
@@ -20,17 +22,24 @@ import jte.ui.SplashDialog;
  */
 public final class Main extends Application {
     
+    static String UI_PROPERTIES_FILE_NAME = "properties.xml";
+	static String PROPERTIES_SCHEMA_FILE_NAME = "properties_schema.xsd";
+	static String DATA_PATH = "./data/";
+    
     @Override
     public void start(Stage stage) throws Exception {
         
-        FXMLFiles fxmlInst = FXMLFiles.getInstance();
-        
-        FXMLLoader x = new FXMLLoader(fxmlInst.getClass().getResource("SplashDialog.fxml"));
-        
-        x.setController(new SplashDialog());
-        x.load();
-        
-        Scene scene = new Scene(x.getRoot());
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        props.addProperty(JTEPropertyType.UI_PROPERTIES_FILE_NAME,
+                UI_PROPERTIES_FILE_NAME);
+        props.addProperty(JTEPropertyType.PROPERTIES_SCHEMA_FILE_NAME,
+                PROPERTIES_SCHEMA_FILE_NAME);
+        props.addProperty(JTEPropertyType.DATA_PATH,
+                DATA_PATH);
+        props.loadProperties(UI_PROPERTIES_FILE_NAME,
+                PROPERTIES_SCHEMA_FILE_NAME);
+
+       
         
         stage.setScene(scene);
         stage.show();
@@ -42,6 +51,7 @@ public final class Main extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        
         launch(args);
     }
     

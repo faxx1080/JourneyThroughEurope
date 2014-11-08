@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    The properties in this file are loaded when the HangMan game application
+    first loads.
+-->
+<properties>
+    <property_list>    
+        <property name="DATA_PATH" value="./data/"></property>
+        <property name="IMG_PATH" value="./img/"></property>
+        <property name="RESOURCE_LOCATION" value="stringsLocalized"></property>
+    </property_list>
+    <property_options_list>
+    </property_options_list>
+</properties>
