@@ -1,5 +1,6 @@
 package jte.ui;
 
+import application.JTEPropertyType;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -11,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import jte.fxml.FXMLFiles;
+import jte.util.RLoad;
 
 /**
  * This class is the SplashDialog. 
@@ -24,33 +26,11 @@ public class SplashDialog implements Initializable {
     private EventHandlerSplash eventHdrSplash;
     
     
-    private FXMLLoader fxmlL;
-    public final void initializeDialog() {
-       fxmlL.setController(this);
-       try {
-          fxmlL.load(); 
-       } catch (IOException e) {
-           DialogCreator.showFXDialog(null, null, textResponse)
-       }
-       
-        
-        Scene scene = new Scene(x.getRoot());
-    }
-    
     /**
-     * THE FIRST LINE AFTER THIS CLASS MUST BE
-     * object.setController(object);.
      * 
      */
     public SplashDialog () {
         eventHdrSplash = new EventHandlerSplash();
-        
-        //Load data from fxml
-        FXMLFiles fxmlInst = FXMLFiles.getInstance();
-        
-        FXMLLoader fxmlL = new FXMLLoader(fxmlInst.getClass().getResource("SplashDialog.fxml"));
-        
-        fxmlL.setResources(ResourceBundle.getBundle("stringsLocalized"));
     }
 
     @FXML
@@ -78,6 +58,11 @@ public class SplashDialog implements Initializable {
         Stage stage = (Stage) root.getScene().getWindow();
         eventHdrSplash.allQuit(stage);
         
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+    
     }
     
 }
