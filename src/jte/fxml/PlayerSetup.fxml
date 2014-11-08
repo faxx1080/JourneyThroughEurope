@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="670.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <HBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
             <Label alignment="TOP_LEFT" text="%playerSet.numPlayersLbl" />
-            <ComboBox prefHeight="25.0" prefWidth="63.0" />
-            <Button mnemonicParsing="false" text="%playerSet.go" />
+            <ComboBox fx:id="cbxNumPl" prefHeight="25.0" prefWidth="63.0" />
+            <Button fx:id="btnGo" mnemonicParsing="false" text="%playerSet.go" />
+            <Label text="%playerSet.numCardsPlayer" />
+            <Slider blockIncrement="2.0" disable="true" majorTickUnit="2.0" max="9.0" min="3.0" minorTickCount="1" prefHeight="14.0" prefWidth="99.0" showTickMarks="true" value="3.0" />
+            <Label fx:id="lblCardsPlayer" />
          </children>
       </HBox>
    </top>
@@ -28,7 +32,77 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Pane prefHeight="200.0" prefWidth="200.0" />
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="87.0" fitWidth="61.0" layoutX="24.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../img/flag/flag_black.png" />
+                     </image></ImageView>
+                  <Label layoutX="101.0" layoutY="52.0" text="Name:" />
+                  <TextField fx:id="txtPL1" layoutX="101.0" layoutY="73.0" prefHeight="25.0" prefWidth="76.0" />
+                  <CheckBox fx:id="chkCPU1" layoutX="100.0" layoutY="110.0" mnemonicParsing="false" text="Is CPU?" />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+               <children>
+                  <ImageView fitHeight="87.0" fitWidth="61.0" layoutX="24.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../img/flag/flag_blue.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="101.0" layoutY="52.0" text="Name:" />
+                  <TextField fx:id="txtPL2" layoutX="101.0" layoutY="73.0" prefHeight="25.0" prefWidth="76.0" />
+                  <CheckBox fx:id="chkCPU2" layoutX="100.0" layoutY="110.0" mnemonicParsing="false" text="Is CPU?" />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+               <children>
+                  <ImageView fitHeight="87.0" fitWidth="61.0" layoutX="24.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../img/flag/flag_red.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="101.0" layoutY="52.0" text="Name:" />
+                  <TextField fx:id="txtPL4" layoutX="101.0" layoutY="73.0" prefHeight="25.0" prefWidth="76.0" />
+                  <CheckBox fx:id="chkCPU4" layoutX="100.0" layoutY="110.0" mnemonicParsing="false" text="Is CPU?" />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
+               <children>
+                  <ImageView fitHeight="87.0" fitWidth="61.0" layoutX="24.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../img/flag/flag_green.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="101.0" layoutY="52.0" text="Name:" />
+                  <TextField fx:id="txtPL3" layoutX="101.0" layoutY="73.0" prefHeight="25.0" prefWidth="76.0" />
+                  <CheckBox fx:id="chkCPU3" layoutX="100.0" layoutY="110.0" mnemonicParsing="false" text="Is CPU?" />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <ImageView fitHeight="87.0" fitWidth="61.0" layoutX="24.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../img/flag/flag_white.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="101.0" layoutY="52.0" text="Name:" />
+                  <TextField fx:id="txtPL5" layoutX="101.0" layoutY="73.0" prefHeight="25.0" prefWidth="76.0" />
+                  <CheckBox fx:id="chkCPU5" layoutX="100.0" layoutY="110.0" mnemonicParsing="false" text="Is CPU?" />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <children>
+                  <ImageView fitHeight="87.0" fitWidth="61.0" layoutX="24.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../img/flag/flag_yellow.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="101.0" layoutY="52.0" text="Name:" />
+                  <TextField fx:id="txtPL6" layoutX="101.0" layoutY="73.0" prefHeight="25.0" prefWidth="76.0" />
+                  <CheckBox fx:id="chkCPU6" layoutX="100.0" layoutY="110.0" mnemonicParsing="false" text="Is CPU?" />
+               </children>
+            </AnchorPane>
          </children>
       </GridPane>
    </center>
