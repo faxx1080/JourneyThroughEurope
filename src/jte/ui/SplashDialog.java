@@ -35,26 +35,25 @@ public class SplashDialog implements Initializable {
 
     @FXML
     private void onActionStart(ActionEvent event) {
-        System.out.println("Start");
-        eventHdrSplash.splashGameSetupPL();
+        // System.out.println("Start");
+        eventHdrSplash.splashGameSetupPL((Stage) root.getScene().getWindow());
     }
 
     @FXML
     private void onActionLoad(ActionEvent event) {
-        System.out.println("Load");
+        // System.out.println("Load");
         eventHdrSplash.splashGameLoad();
     }
 
     @FXML
     private void onActionAbout(ActionEvent event) {
-        System.out.println("About");
+        // System.out.println("About");
         eventHdrSplash.allAbout();
     }
 
     @FXML
     private void onActionQuit(ActionEvent event) {
-        
-        System.out.println("Quit");
+        // System.out.println("Quit");
         Stage stage = (Stage) root.getScene().getWindow();
         eventHdrSplash.allQuit(stage);
         
