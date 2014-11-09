@@ -16,14 +16,56 @@ public class EventHandlerPLSetup {
         plset = pls;
     }
 
-    void numPlayersChanged() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void numPlayersChanged() {
+        int numPl = plset.getNumPlayers();
+        switch (numPl) {
+            case 1:
+                plset.paneP2.setVisible(false);
+                plset.paneP3.setVisible(false);
+                plset.paneP4.setVisible(false);
+                plset.paneP5.setVisible(false);
+                plset.paneP6.setVisible(false);
+                return;
+            case 2:
+                plset.paneP2.setVisible(true);
+                plset.paneP3.setVisible(false);
+                plset.paneP4.setVisible(false);
+                plset.paneP5.setVisible(false);
+                plset.paneP6.setVisible(false);
+                return;
+            case 3:
+                plset.paneP2.setVisible(true);
+                plset.paneP3.setVisible(true);
+                plset.paneP4.setVisible(false);
+                plset.paneP5.setVisible(false);
+                plset.paneP6.setVisible(false);
+                return;
+            case 4:
+                plset.paneP2.setVisible(true);
+                plset.paneP3.setVisible(true);
+                plset.paneP4.setVisible(true);
+                plset.paneP5.setVisible(false);
+                plset.paneP6.setVisible(false);
+                return;
+            case 5:
+                plset.paneP2.setVisible(true);
+                plset.paneP3.setVisible(true);
+                plset.paneP4.setVisible(true);
+                plset.paneP5.setVisible(true);
+                plset.paneP6.setVisible(false);
+                return;
+            case 6:
+                plset.paneP2.setVisible(true);
+                plset.paneP3.setVisible(true);
+                plset.paneP4.setVisible(true);
+                plset.paneP5.setVisible(true);
+                plset.paneP6.setVisible(true);
+        }
     }
 
-    void startGame() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void startGame() {
+        
+        
     }
-    
-    
     
 }

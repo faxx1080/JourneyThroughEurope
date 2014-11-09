@@ -38,69 +38,69 @@
                      <image>
                         <Image url="@../../img/flag/flag_black.png" />
                      </image></ImageView>
-                  <Label layoutX="101.0" layoutY="52.0" text="Name:" />
-                  <TextField fx:id="txtPL1" layoutX="101.0" layoutY="73.0" prefHeight="25.0" prefWidth="76.0" />
-                  <CheckBox fx:id="chkCPU1" layoutX="100.0" layoutY="110.0" mnemonicParsing="false" text="Is CPU?" />
+                  <Label layoutX="101.0" layoutY="52.0" text="%playerSet.plName" />
+                  <TextField fx:id="txtPL1" layoutX="101.0" layoutY="73.0" prefHeight="25.0" prefWidth="76.0" promptText="%playerSet.P1"  />
+                  <CheckBox fx:id="chkCPU1" layoutX="100.0" layoutY="110.0" mnemonicParsing="false" text="%playerSet.plIsCPU" />
                </children>
             </AnchorPane>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+            <AnchorPane fx:id="paneP2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
                <children>
                   <ImageView fitHeight="87.0" fitWidth="61.0" layoutX="24.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../img/flag/flag_blue.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="101.0" layoutY="52.0" text="Name:" />
-                  <TextField fx:id="txtPL2" layoutX="101.0" layoutY="73.0" prefHeight="25.0" prefWidth="76.0" />
-                  <CheckBox fx:id="chkCPU2" layoutX="100.0" layoutY="110.0" mnemonicParsing="false" text="Is CPU?" />
+                  <Label layoutX="101.0" layoutY="52.0" text="%playerSet.plName" />
+                  <TextField fx:id="txtPL2" layoutX="101.0" layoutY="73.0" prefHeight="25.0" prefWidth="76.0" promptText="%playerSet.P2" />
+                  <CheckBox fx:id="chkCPU2" layoutX="100.0" layoutY="110.0" mnemonicParsing="false" text="%playerSet.plIsCPU" />
                </children>
             </AnchorPane>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+            <AnchorPane fx:id="paneP4" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                <children>
                   <ImageView fitHeight="87.0" fitWidth="61.0" layoutX="24.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../img/flag/flag_red.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="101.0" layoutY="52.0" text="Name:" />
-                  <TextField fx:id="txtPL4" layoutX="101.0" layoutY="73.0" prefHeight="25.0" prefWidth="76.0" />
-                  <CheckBox fx:id="chkCPU4" layoutX="100.0" layoutY="110.0" mnemonicParsing="false" text="Is CPU?" />
+                  <Label layoutX="101.0" layoutY="52.0" text="%playerSet.plName" />
+                  <TextField fx:id="txtPL4" layoutX="101.0" layoutY="73.0" prefHeight="25.0" prefWidth="76.0" promptText="%playerSet.P3"/>
+                  <CheckBox fx:id="chkCPU4" layoutX="100.0" layoutY="110.0" mnemonicParsing="false" text="%playerSet.plIsCPU" />
                </children>
             </AnchorPane>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
+            <AnchorPane fx:id="paneP3" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
                <children>
                   <ImageView fitHeight="87.0" fitWidth="61.0" layoutX="24.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../img/flag/flag_green.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="101.0" layoutY="52.0" text="Name:" />
-                  <TextField fx:id="txtPL3" layoutX="101.0" layoutY="73.0" prefHeight="25.0" prefWidth="76.0" />
-                  <CheckBox fx:id="chkCPU3" layoutX="100.0" layoutY="110.0" mnemonicParsing="false" text="Is CPU?" />
+                  <Label layoutX="101.0" layoutY="52.0" text="%playerSet.plName" />
+                  <TextField fx:id="txtPL3" layoutX="101.0" layoutY="73.0" prefHeight="25.0" prefWidth="76.0" promptText="%playerSet.P4" />
+                  <CheckBox fx:id="chkCPU3" layoutX="100.0" layoutY="110.0" mnemonicParsing="false" text="%playerSet.plIsCPU" />
                </children>
             </AnchorPane>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <AnchorPane fx:id="paneP5" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
                   <ImageView fitHeight="87.0" fitWidth="61.0" layoutX="24.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../img/flag/flag_white.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="101.0" layoutY="52.0" text="Name:" />
-                  <TextField fx:id="txtPL5" layoutX="101.0" layoutY="73.0" prefHeight="25.0" prefWidth="76.0" />
-                  <CheckBox fx:id="chkCPU5" layoutX="100.0" layoutY="110.0" mnemonicParsing="false" text="Is CPU?" />
+                  <Label layoutX="101.0" layoutY="52.0" text="%playerSet.plName" />
+                  <TextField fx:id="txtPL5" layoutX="101.0" layoutY="73.0" prefHeight="25.0" prefWidth="76.0" promptText="%playerSet.P5" />
+                  <CheckBox fx:id="chkCPU5" layoutX="100.0" layoutY="110.0" mnemonicParsing="false" text="%playerSet.plIsCPU" />
                </children>
             </AnchorPane>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <AnchorPane fx:id="paneP6" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <children>
                   <ImageView fitHeight="87.0" fitWidth="61.0" layoutX="24.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../img/flag/flag_yellow.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="101.0" layoutY="52.0" text="Name:" />
-                  <TextField fx:id="txtPL6" layoutX="101.0" layoutY="73.0" prefHeight="25.0" prefWidth="76.0" />
-                  <CheckBox fx:id="chkCPU6" layoutX="100.0" layoutY="110.0" mnemonicParsing="false" text="Is CPU?" />
+                  <Label layoutX="101.0" layoutY="52.0" text="%playerSet.plName" />
+                  <TextField fx:id="txtPL6" layoutX="101.0" layoutY="73.0" prefHeight="25.0" prefWidth="76.0" promptText="%playerSet.P6"/>
+                  <CheckBox fx:id="chkCPU6" layoutX="100.0" layoutY="110.0" mnemonicParsing="false" text="%playerSet.plIsCPU" />
                </children>
             </AnchorPane>
          </children>

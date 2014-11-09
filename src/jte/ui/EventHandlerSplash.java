@@ -28,7 +28,8 @@ public class EventHandlerSplash {
         FXMLLoader fxmlL = new FXMLLoader(fxmlInst.getClass().getResource("PlayerSetup.fxml"));
         
         fxmlL.setResources(ResourceBundle.getBundle("stringsLocalized"));
-        fxmlL.setController(new PlayerSetupDialog());
+        PlayerSetupDialog d = new PlayerSetupDialog();
+        fxmlL.setController(d);
         
         try {
            fxmlL.load(); 
@@ -36,6 +37,8 @@ public class EventHandlerSplash {
             //DialogCreator.showFXDialogFatal(RLoad.getString(JTEPropertyType.STR_ERROR_TEXT_IO), true);
         }
        
+        // d.initialize(null, null); // Completely safe
+        
         Scene scene = new Scene(fxmlL.getRoot());
         Stage stageN = new Stage();
         stageN.setTitle(RLoad.getString(JTEResourceType.STR_PLAYERSETUP));
@@ -54,20 +57,24 @@ public class EventHandlerSplash {
     }
     
     public void allQuit(Stage stage) {
-        ResourceBundle rb = ResourceBundle.getBundle("stringsLocalized");
-        String textTitle = rb.getString(JTEResourceType.DEF_KILL_TITLE.toString());
-        String textPrompt = rb.getString(JTEResourceType.DEF_ENSURE_EXIT.toString());
-        String[] exitopt = new String[2];
-        exitopt[0] = rb.getString(JTEResourceType.DEF_NO.toString());
-        exitopt[1] = rb.getString(JTEResourceType.DEF_YES.toString());
-        DialogResult result = DialogCreator.showFXDialogConfirm(textTitle, textPrompt, 
-                RLoad.getString(JTEResourceType.DEF_YES), 
-                RLoad.getString(JTEResourceType.DEF_NO));
+//        ResourceBundle rb = ResourceBundle.getBundle("stringsLocalized");
+//        String textTitle = rb.getString(JTEResourceType.DEF_KILL_TITLE.toString());
+//        String textPrompt = rb.getString(JTEResourceType.DEF_ENSURE_EXIT.toString());
+//        String[] exitopt = new String[2];
+//        exitopt[0] = rb.getString(JTEResourceType.DEF_NO.toString());
+//        exitopt[1] = rb.getString(JTEResourceType.DEF_YES.toString());
+//        DialogResult result = DialogCreator.showFXDialogConfirm(textTitle, textPrompt, 
+//                RLoad.getString(JTEResourceType.DEF_YES), 
+//                RLoad.getString(JTEResourceType.DEF_NO));
+//        
+//        if (result.equals(result.RES_YES)){
+//            stage.close();
+//        }
         
-        if (result.equals(result.RES_YES)){
-            stage.close();
-        }
+        //"For a casual game like this we don't need to "
+        //"verify any user action, so simply close everything"
         
+        stage.close();
     }
     
     public void allQuit(JourneyUI ui) {
