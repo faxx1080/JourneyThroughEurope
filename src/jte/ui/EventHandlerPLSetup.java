@@ -5,6 +5,8 @@
  */
 package jte.ui;
 
+import jte.game.GameStateManager;
+
 /**
  *
  * @author Frank Migliorino <frank.migliorino@stonybrook.edu>
@@ -64,6 +66,17 @@ public class EventHandlerPLSetup {
     }
 
     public void startGame() {
+        int numPl = plset.getNumPlayers();
+        String[] plNames = new String[numPl];
+        boolean[] plCPU = new boolean[numPl];
+        
+        for (int i = 0; i < numPl; i++) {
+            plNames[i] = plset.getPlayerName(i);
+            plCPU[i] = plset.getCPU(i);
+        }
+        
+        GameStateManager gsm = new GameStateManager(jte.Constants.UI_RADIUS, jte.Constants.UI_RADIUS, plNames, plCPU);
+        
         
         
     }

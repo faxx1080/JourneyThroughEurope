@@ -5,8 +5,8 @@
  */
 package jte.ui;
 
-import application.JTEPropertyType;
-import application.JTEResourceType;
+import jte.JTEPropertyType;
+import jte.JTEResourceType;
 import java.io.IOException;
 import java.util.ResourceBundle;
 import javafx.fxml.FXMLLoader;

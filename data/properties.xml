@@ -5,10 +5,27 @@
 -->
 <properties>
     <property_list>    
-        <property name="DATA_PATH" value="./data/"></property>
-        <property name="IMG_PATH" value="./img/"></property>
+        <property name="DATA_PATH" value="data/"></property>
+        <property name="IMG_PATH" value="img/"></property>
         <property name="RESOURCE_LOCATION" value="stringsLocalized"></property>
 		<property name="HELP_FILE" value="OfficialInstructions.htm" />
+        <property name="XML_CITIESROOT"   value="Cities" />
+        <property name="XML_CITYNODE"   value="City" />
+        <property name="XML_CITYNAME"   value="cityName" />
+        <property name="XML_CITYCOLOR"   value="color" />
+        <property name="XML_CITYX"   value="coordX" />
+        <property name="XML_CITYY"   value="coordY" />
+        <property name="XML_CITYID"   value="id" />
+        <property name="XML_CITYDESC"   value="desc" />
+        <property name="XML_CITYFLIGHTLOC"   value="" />
+        <property name="XML_CITYFLIGHTLOCX"   value="" />
+        <property name="XML_CITYFLIGHTLOCY"   value="" />
+        <property name="XML_RTROOT"   value="" />
+        <property name="XML_RTCITY"   value="" />
+        <property name="XML_RTID"   value="" />
+        <property name="XML_RTLAND"   value="" />
+        <property name="XML_RTSEA"   value="" />
+        
     </property_list>
     <property_options_list>
     </property_options_list>

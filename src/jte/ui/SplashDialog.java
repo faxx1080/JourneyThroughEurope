@@ -1,6 +1,6 @@
 package jte.ui;
 
-import application.JTEPropertyType;
+import jte.JTEPropertyType;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
