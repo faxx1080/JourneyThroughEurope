@@ -7,6 +7,7 @@ package jte.file;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import static jte.Constants.DATA_PATH;
 import static jte.Constants.PROPERTIES_SCHEMA_FILE_NAME;
 import static jte.Constants.UI_PROPERTIES_FILE_NAME;
@@ -45,10 +46,10 @@ public class CityLoaderTest {
         System.out.println(props.getProperty(JTEPropertyType.DATA_PATH));
         
         System.out.println("readCities");
-        String filePath = "0";
+        String filePath = "data/cities.xml";
         CityLoader instance = new CityLoader("data/cities.xsd");
-        List<City> expResult = new ArrayList<City>();
-        List<City> result = instance.readCities("data/cities.xml");
+        instance.readCities(filePath);
+        System.out.println("done");
         
         // assertEquals(expResult, result);
     }
