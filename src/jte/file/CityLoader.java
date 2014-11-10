@@ -19,6 +19,8 @@ import org.w3c.dom.Node;
 import java.awt.HeadlessException;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javafx.geometry.Point2D;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -54,15 +56,16 @@ public class CityLoader {
     public CityLoader(String schemaPath) {
         xmlUtil = new XMLUtilities();
         citySchema = new File(schemaPath);
-        citiesList = new ArrayList<>();
+        citiesList = new HashMap<>();
     }
     
-    private List<City> citiesList;
+    // private List<City> citiesList;
+    private final Map<Integer, City> citiesList;
     
     // WE RETURN LIST HERE since HW5
     // Only asks for the city locations, not links.
     
-    public List<City> readCities(String filePath) throws IOException {
+    public Map<Integer, City> readCities(String filePath) throws IOException {
         File loadFile = new File(filePath);
                 
         try {
@@ -85,6 +88,7 @@ public class CityLoader {
         Node cityNode = doc.getElementsByTagName(props.getProperty(XML_CITIESROOT)).item(0);
         
         ArrayList<Node> cities = xmlUtil.getChildNodesWithName(cityNode, props.getProperty(XML_CITYNODE));
+        
         
         for (int i = 0; i < cities.size(); i++) {
             Node city = cities.get(i);
@@ -111,7 +115,8 @@ public class CityLoader {
             
             //TODO: Fix values for flightMap, isHarbor, isAirport
             City nCity = new City(0, Point2D.ZERO, coord, id, desc, name, true, true);
-            citiesList.add(nCity);
+            //citiesList.add(nCity);
+            citiesList.put(id, nCity);
         }
         
     }
