@@ -5,6 +5,7 @@
  */
 package application;
 
+import jte.JTEPropertyType;
 import java.io.IOException;
 import java.util.ResourceBundle;
 import javafx.application.Application;
@@ -19,15 +20,12 @@ import jte.ui.SplashDialog;
 import jte.util.RLoad;
 import properties_manager.PropertiesManager;
 
+import static jte.Constants.*;
 /**
  *
  * @author Frank
  */
 public final class Main extends Application {
-    
-    static String UI_PROPERTIES_FILE_NAME = "properties.xml";
-	static String PROPERTIES_SCHEMA_FILE_NAME = "properties_schema.xsd";
-	static String DATA_PATH = "./data/";
     
     @Override
     public void start(Stage stage) throws Exception {
