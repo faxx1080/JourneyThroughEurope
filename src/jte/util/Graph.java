@@ -1,3 +1,5 @@
+package jte.util;
+
 public interface Graph<V> {
 
     /**

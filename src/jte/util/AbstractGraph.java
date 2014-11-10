@@ -1,3 +1,5 @@
+package jte.util;
+
 import java.util.*;
 
 // From Professor Fodor's Graph Slides

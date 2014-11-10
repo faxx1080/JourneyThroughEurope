@@ -1,3 +1,5 @@
+package jte.util;
+
 import java.util.*;
 
 public class UnweightedGraph<V> extends AbstractGraph<V> {

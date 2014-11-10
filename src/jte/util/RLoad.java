@@ -5,8 +5,8 @@
  */
 package jte.util;
 
-import application.JTEPropertyType;
-import application.JTEResourceType;
+import jte.JTEPropertyType;
+import jte.JTEResourceType;
 import java.util.ResourceBundle;
 import properties_manager.PropertiesManager;
 
