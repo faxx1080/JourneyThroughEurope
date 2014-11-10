@@ -11,7 +11,7 @@ package jte;
  */
 public enum JTEResourceType {
     //Error
-    STR_ERROR, STR_ERROR_TEXT_IO,STR_JTE,STR_PLAYERSETUP,
+    STR_ERROR, STR_ERROR_TEXT_IO,STR_JTE,STR_PLAYERSETUP,STR_JOURNEYUI,
     
     // Localized names
     STR_OK,

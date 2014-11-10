@@ -14,7 +14,7 @@ public class Constants {
     public static final String UI_PROPERTIES_FILE_NAME = "properties.xml";
 	public static final String PROPERTIES_SCHEMA_FILE_NAME = "properties_schema.xsd";
 	public static final String DATA_PATH = "./data/";
-    public static final int UI_RADIUS = 5;
+    public static final double UI_RADIUS = 2.5;
     public static final int NUM_CARDS = 3;
 
 }
