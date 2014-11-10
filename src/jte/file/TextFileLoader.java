@@ -26,11 +26,11 @@ public class TextFileLoader {
     * 
     * @throws IOException This exception is thrown when textFile is an invalid
     * file or there is some problem in accessing the file.
+    * 
+    * @author Paul Fodor
     */
    public static String loadTextFile(String textFile) throws IOException
    {
-       // ADD THE PATH TO THE FILE
-       
        
        // WE'LL ADD ALL THE CONTENTS OF THE TEXT FILE TO THIS STRING
        String textToReturn = "";
