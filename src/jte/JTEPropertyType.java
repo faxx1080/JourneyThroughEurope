@@ -25,5 +25,9 @@ public enum JTEPropertyType {
     
     UI_RADIUS, NUM_CARDS,
     
+    //FXML
+    FXML_AB, FXML_EXT, FXML_SPL, FXML_PLSET, FXML_JUI, FXML_HIST,
+    //End FXML
+    
     noothing;
 }

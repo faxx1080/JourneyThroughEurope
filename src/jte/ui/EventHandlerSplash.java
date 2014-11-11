@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import jte.fxml.FXMLFiles;
 import jte.util.RLoad;
+import properties_manager.PropertiesManager;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -25,9 +26,18 @@ public class EventHandlerSplash {
     public void splashGameSetupPL(Stage stage) {
         FXMLFiles fxmlInst = FXMLFiles.getInstance();
         
-        FXMLLoader fxmlL = new FXMLLoader(fxmlInst.getClass().getResource("PlayerSetup.fxml"));
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
         
-        fxmlL.setResources(ResourceBundle.getBundle("stringsLocalized"));
+        String toLoad = 
+                props.getProperty(JTEPropertyType.FXML_PLSET) + 
+                props.getProperty(JTEPropertyType.FXML_EXT);        
+        
+        FXMLLoader fxmlL = new FXMLLoader(fxmlInst.getClass().getResource(toLoad));
+        
+        String resPath = 
+                PropertiesManager.getPropertiesManager().getProperty(JTEPropertyType.RESOURCE_LOCATION);
+        
+        fxmlL.setResources(ResourceBundle.getBundle(resPath));
         PlayerSetupDialog d = new PlayerSetupDialog();
         fxmlL.setController(d);
         
@@ -83,9 +93,16 @@ public class EventHandlerSplash {
     public void allAbout() {
         FXMLFiles fxmlInst = FXMLFiles.getInstance();
         
-        FXMLLoader fxmlL = new FXMLLoader(fxmlInst.getClass().getResource("AboutDialog.fxml"));
+        String toLoad = 
+                PropertiesManager.getPropertiesManager().getProperty(JTEPropertyType.FXML_AB) + 
+                PropertiesManager.getPropertiesManager().getProperty(JTEPropertyType.FXML_EXT);        
         
-        fxmlL.setResources(ResourceBundle.getBundle("stringsLocalized"));
+        FXMLLoader fxmlL = new FXMLLoader(fxmlInst.getClass().getResource(toLoad));
+                
+        String resPath = 
+                PropertiesManager.getPropertiesManager().getProperty(JTEPropertyType.RESOURCE_LOCATION);
+
+        fxmlL.setResources(ResourceBundle.getBundle(resPath));
         fxmlL.setController(new AboutDialog());
         
         try {

@@ -40,11 +40,17 @@ public final class Main extends Application {
         props.loadProperties(UI_PROPERTIES_FILE_NAME,
                 PROPERTIES_SCHEMA_FILE_NAME);
         
+        String toLoad = 
+                props.getProperty(JTEPropertyType.FXML_SPL) + 
+                props.getProperty(JTEPropertyType.FXML_EXT);
+        String resPath = 
+                PropertiesManager.getPropertiesManager().getProperty(JTEPropertyType.RESOURCE_LOCATION);
+        
         FXMLFiles fxmlInst = FXMLFiles.getInstance();
         
-        FXMLLoader fxmlL = new FXMLLoader(fxmlInst.getClass().getResource("SplashDialog.fxml"));
+        FXMLLoader fxmlL = new FXMLLoader(fxmlInst.getClass().getResource(toLoad));
         
-        fxmlL.setResources(ResourceBundle.getBundle("stringsLocalized"));
+        fxmlL.setResources(ResourceBundle.getBundle(resPath));
         fxmlL.setController(new SplashDialog());
         try {
            fxmlL.load(); 

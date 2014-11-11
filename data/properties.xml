@@ -29,6 +29,12 @@
         <property name="XML_CITIESFILELOC" value="cities.xml"/>
         <property name="UI_RADIUS" value="10" />
         <property name="NUM_CARDS" value="3" />
+        <property name="FXML_AB" value="AboutDialog" />
+        <property name="FXML_SPL" value="SplashDialog" />
+        <property name="FXML_HIST" value="HistoryDialog" />
+        <property name="FXML_JUI" value="JourneyUI" />
+        <property name="FXML_PLSET" value="PlayerSetup" />
+        <property name="FXML_EXT" value=".fxml" />
     </property_list>
     <property_options_list>
     </property_options_list>

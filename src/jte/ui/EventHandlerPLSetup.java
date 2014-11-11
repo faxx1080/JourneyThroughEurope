@@ -95,9 +95,16 @@ public class EventHandlerPLSetup {
         //Boilerplate for FXML
         FXMLFiles fxmlInst = FXMLFiles.getInstance();
         
-        FXMLLoader fxmlL = new FXMLLoader(fxmlInst.getClass().getResource("JourneyUI.fxml"));
+        String toLoad = 
+                props.getProperty(JTEPropertyType.FXML_JUI) + 
+                props.getProperty(JTEPropertyType.FXML_EXT);        
         
-        fxmlL.setResources(ResourceBundle.getBundle("stringsLocalized"));
+        FXMLLoader fxmlL = new FXMLLoader(fxmlInst.getClass().getResource(toLoad));
+        
+        String resPath = 
+                PropertiesManager.getPropertiesManager().getProperty(JTEPropertyType.RESOURCE_LOCATION);
+        
+        fxmlL.setResources(ResourceBundle.getBundle(resPath));
         JourneyUI e = new JourneyUI();
         e.setGSM(gsm);
         fxmlL.setController(e);
