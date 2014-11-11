@@ -47,8 +47,11 @@ public class DialogCreator {
         BorderPane exitPane = new BorderPane();
         HBox optionPane = new HBox();
         
-        Button[] btnResps = new Button[2];
-        btnResps[0] = new Button(RLoad.getString(JTEResourceType.STR_OK));
+        String resPath
+                = PropertiesManager.getPropertiesManager().getProperty(JTEPropertyType.RESOURCE_LOCATION);
+        
+        Button[] btnResps = new Button[1];
+        btnResps[0] = new Button(ResourceBundle.getBundle(resPath).getString(JTEResourceType.STR_OK.toString()));
         btnResps[0].setOnAction(e -> {dialogStage.close();});
         
         optionPane.setSpacing(10.0);

@@ -16,7 +16,7 @@ import properties_manager.PropertiesManager;
  */
 public class RLoad {
     
-    private static final ResourceBundle rb =
+    private static ResourceBundle rb =
             ResourceBundle.getBundle(PropertiesManager.getPropertiesManager().
                     getProperty(JTEPropertyType.RESOURCE_LOCATION));
     
@@ -29,6 +29,8 @@ public class RLoad {
      * @return The string.
      */
     public static String getString(JTEResourceType stringName) {
+        rb = ResourceBundle.getBundle(PropertiesManager.getPropertiesManager().
+                    getProperty(JTEPropertyType.RESOURCE_LOCATION));
         return rb.getString(stringName.toString());
     }
     

@@ -11,4 +11,18 @@ package jte.game;
  */
 public class JTELog {
     
+    private String allText = "";
+    
+    public String getText() {
+        return allText;
+    }
+    
+    public void appendText(String tx) {
+        allText += "\n" + tx;
+    }
+    
+    public void clear() {
+        allText = "";
+    }
+    
 }

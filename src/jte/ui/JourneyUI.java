@@ -16,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import jte.game.GameStateManager;
 
 /**
@@ -132,6 +133,7 @@ public class JourneyUI implements Initializable {
     @FXML
     private void winClick(MouseEvent event) {
         eventhdr.winClick();
+        ((Stage) root.getScene().getWindow()).close();
     }
     
 }

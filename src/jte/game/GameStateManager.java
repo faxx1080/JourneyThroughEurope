@@ -107,6 +107,7 @@ public class GameStateManager {
      * @return The city if found, or null.
      */
     public City getCityFromCoord(Point2D coord, double[] dist) {
+        
         City closestCity;
         double shortestDist = Double.MAX_VALUE;
         double currentDist;
@@ -123,4 +124,9 @@ public class GameStateManager {
         return cityToID.get(lastGoodID);
         
     }
+    
+    public JTELog getLog() {
+        return logger;
+    }
+    
 }
