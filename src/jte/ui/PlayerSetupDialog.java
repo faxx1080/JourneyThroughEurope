@@ -9,12 +9,14 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 /**
  * 
@@ -24,6 +26,9 @@ import javafx.scene.layout.AnchorPane;
 public class PlayerSetupDialog implements Initializable {
     
     private final static int NUM_PLAYERS = 6;
+    
+    @FXML
+    private Parent root;
     
     @FXML
     private ComboBox<Integer> cbxNumPl;
@@ -82,7 +87,7 @@ public class PlayerSetupDialog implements Initializable {
         });
         
         btnGo.setOnAction(e -> {
-            eventhdr.startGame();
+            eventhdr.startGame((Stage) root.getScene().getWindow());
         });
         
         for (int i = 1; i <= NUM_PLAYERS; i++) {
@@ -99,7 +104,7 @@ public class PlayerSetupDialog implements Initializable {
     }
     
     /**
-     * Gets if Player is a CPU.
+     * Gets if Player is a CPU. One-based.
      */
     public boolean getCPU(int playerNum) {
         switch (playerNum) {
@@ -121,25 +126,30 @@ public class PlayerSetupDialog implements Initializable {
     }
     
     /**
-     * Gets the player's name.
+     * Gets the player's name. One-based.
      */
     public String getPlayerName(int playerNum) {
         switch (playerNum) {
             case 1:
-                return txtPL1.getText();
+                return getTextOverride(txtPL1);
             case 2:
-                return txtPL2.getText();
+                return getTextOverride(txtPL2);
             case 3:
-                return txtPL3.getText();
+                return getTextOverride(txtPL3);
             case 4:
-                return txtPL4.getText();
+                return getTextOverride(txtPL4);
             case 5:
-                return txtPL5.getText();
+                return getTextOverride(txtPL5);
             case 6:
-                return txtPL6.getText();
+                return getTextOverride(txtPL6);
             default:
                 throw new IllegalArgumentException("Player number doesn't exist.");
+                
         }
+    }
+    
+    private String getTextOverride(TextField txt) {
+        return (txt.getText().equals("")) ? txt.getPromptText() : txt.getText();
     }
     
     

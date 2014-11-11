@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import jte.fxml.FXMLFiles;
 import jte.util.RLoad;
@@ -22,6 +23,8 @@ public class SplashDialog implements Initializable {
     
     @FXML
     private Parent root;
+    @FXML
+    private Button btnLoad;
     
     private EventHandlerSplash eventHdrSplash;
     
@@ -61,7 +64,7 @@ public class SplashDialog implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-    
+        btnLoad.setDisable(true);
     }
     
 }

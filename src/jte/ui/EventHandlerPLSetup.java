@@ -5,7 +5,17 @@
  */
 package jte.ui;
 
+import java.io.IOException;
+import java.util.ResourceBundle;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import jte.JTEPropertyType;
+import jte.JTEResourceType;
+import jte.fxml.FXMLFiles;
 import jte.game.GameStateManager;
+import jte.util.RLoad;
+import properties_manager.PropertiesManager;
 
 /**
  *
@@ -65,19 +75,47 @@ public class EventHandlerPLSetup {
         }
     }
 
-    public void startGame() {
+    public void startGame(Stage stage) {
         int numPl = plset.getNumPlayers();
         String[] plNames = new String[numPl];
         boolean[] plCPU = new boolean[numPl];
         
         for (int i = 0; i < numPl; i++) {
-            plNames[i] = plset.getPlayerName(i);
-            plCPU[i] = plset.getCPU(i);
+            plNames[i] = plset.getPlayerName(i+1);
+            plCPU[i] = plset.getCPU(i+1);
         }
         
-        GameStateManager gsm = new GameStateManager(jte.Constants.UI_RADIUS, jte.Constants.UI_RADIUS, plNames, plCPU);
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        
+        double radius = Double.parseDouble(props.getProperty(JTEPropertyType.UI_RADIUS));
+        int numCards = Integer.parseInt(props.getProperty(JTEPropertyType.NUM_CARDS));
+        
+        GameStateManager gsm = new GameStateManager(numCards, radius, plNames, plCPU);
+        
+        //Boilerplate for FXML
+        FXMLFiles fxmlInst = FXMLFiles.getInstance();
+        
+        FXMLLoader fxmlL = new FXMLLoader(fxmlInst.getClass().getResource("JourneyUI.fxml"));
+        
+        fxmlL.setResources(ResourceBundle.getBundle("stringsLocalized"));
+        JourneyUI e = new JourneyUI();
+        e.setGSM(gsm);
+        fxmlL.setController(e);
+        
+        try {
+           fxmlL.load(); 
+        } catch (IOException ex) {
+            //DialogCreator.showFXDialogFatal(RLoad.getString(JTEPropertyType.STR_ERROR_TEXT_IO), true);
+        }
         
         
+        
+        Scene scene = new Scene(fxmlL.getRoot());
+        Stage stageN = new Stage();
+        stageN.setTitle(RLoad.getString(JTEResourceType.STR_JTE));
+        stageN.setScene(scene);
+        stageN.show();
+        stage.close();
         
     }
     

@@ -6,37 +6,86 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="573.0" prefWidth="898.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="573.0" prefWidth="898.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <SplitPane dividerPositions="0.2" prefHeight="160.0" prefWidth="200.0">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-               <children>
-                  <Label layoutX="14.0" layoutY="14.0" text="Player">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <Separator layoutY="41.0" prefHeight="19.0" prefWidth="230.0" />
-               </children>
-            </AnchorPane>
+            <Accordion>
+              <panes>
+                <TitledPane fx:id="pl1Title" animated="true">
+                  <content>
+                  <VBox fx:id="pl1Cards" />
+                  </content>
+                </TitledPane>
+                <TitledPane fx:id="pl2Title" animated="true">
+                  <content>
+                  <VBox fx:id="pl2Cards" />
+                  </content>
+                </TitledPane>
+                <TitledPane fx:id="pl3Title" animated="true">
+                  <content>
+                  <VBox fx:id="pl3Cards" />
+                  </content>
+                </TitledPane>
+                <TitledPane fx:id="pl4Title" animated="true">
+                  <content>
+                  <VBox fx:id="pl4Cards" />
+                  </content>
+                </TitledPane>
+                <TitledPane fx:id="pl5Title" animated="true">
+                  <content>
+                  <VBox fx:id="pl5Cards" />
+                  </content>
+                </TitledPane>
+                <TitledPane fx:id="pl6Title" animated="true">
+                  <content>
+                  <VBox fx:id="pl6Cards" />
+                  </content>
+                </TitledPane>
+              </panes>
+            </Accordion>
             <SplitPane dividerPositions="0.7" prefHeight="160.0" prefWidth="200.0">
               <items>
-                  <ScrollPane prefHeight="200.0" prefWidth="200.0">
-                     <content>
-                        <StackPane>
+                  <StackPane>
+                     <children>
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                           <content>
+                              <StackPane>
+                                 <children>
+                                    <ImageView onMouseClicked="#gameBoardClick" onMouseMoved="#gameBoardMMove" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../img/gameBoard2.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <AnchorPane mouseTransparent="true"  />
+                                 </children>
+                              </StackPane>
+                           </content>
+                        </ScrollPane>
+                        <AnchorPane mouseTransparent="true" prefHeight="200.0" prefWidth="200.0">
                            <children>
-                              <AnchorPane />
-                              <ImageView pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../img/gameboard.jpg" />
-                                 </image>
-                              </ImageView>
+                              <Label fx:id="mouseCoords" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" layoutX="339.0" layoutY="14.0" style="-fx-background-color: black;" textAlignment="RIGHT" textFill="WHITE" AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="14.0">
+                                 <font>
+                                    <Font name="System Bold" size="17.0" />
+                                 </font>
+                              </Label>
                            </children>
-                        </StackPane>
-                     </content>
-                  </ScrollPane>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+                        </AnchorPane>
+                     </children>
+                  </StackPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                     <children>
+                        <Button layoutX="58.0" layoutY="532.0" mnemonicParsing="false" onMouseClicked="#aboutClick" text="%jui.about" />
+                        <Button layoutX="58.0" layoutY="499.0" mnemonicParsing="false" onMouseClicked="#historyClick" text="%jui.history" />
+                        <Button layoutX="58.0" layoutY="465.0" mnemonicParsing="false" onMouseClicked="#flyClick" text="%jui.fly" />
+                        <Button layoutX="58.0" layoutY="433.0" mnemonicParsing="false" onMouseClicked="#winClick" text="%jui.win" />
+                        <TextArea fx:id="txtOutput" editable="false" layoutX="14.0" layoutY="83.0" prefHeight="344.0" prefWidth="185.0" wrapText="true" />
+                        <ImageView fx:id="imgDice" fitHeight="62.0" fitWidth="136.0" layoutX="75.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../img/dice/die_1.jpg" />
+                           </image></ImageView>
+                        
+                     </children></AnchorPane>
               </items>
             </SplitPane>
         </items>

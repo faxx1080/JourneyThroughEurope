@@ -45,7 +45,6 @@ public class EventHandlerSplash {
         stageN.setScene(scene);
         stageN.show();
         stage.close();
-        
     }
     
     public void splashGameLoad() {

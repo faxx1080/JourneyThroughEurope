@@ -25,7 +25,10 @@
         <property name="XML_RTID"   value="" />
         <property name="XML_RTLAND"   value="" />
         <property name="XML_RTSEA"   value="" />
-        
+        <property name="XML_CITIESSCH" value="cities.xsd" />
+        <property name="XML_CITIESFILELOC" value="cities.xml"/>
+        <property name="UI_RADIUS" value="10" />
+        <property name="NUM_CARDS" value="3" />
     </property_list>
     <property_options_list>
     </property_options_list>

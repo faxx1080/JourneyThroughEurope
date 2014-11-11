@@ -23,7 +23,7 @@ public enum JTEPropertyType {
     XML_RTROOT, XML_RTCITY, XML_RTID, XML_RTLAND, XML_RTSEA,
     //End XML
     
-    
+    UI_RADIUS, NUM_CARDS,
     
     noothing;
 }

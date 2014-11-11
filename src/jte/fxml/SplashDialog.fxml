@@ -33,7 +33,7 @@
             <VBox alignment="CENTER" prefHeight="150.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
                <children>
                   <Button mnemonicParsing="false" onAction="#onActionStart" text="%SP_START" />
-                  <Button mnemonicParsing="false" onAction="#onActionLoad" text="%SP_LOAD" />
+                  <Button fx:id="btnLoad" mnemonicParsing="false" onAction="#onActionLoad" text="%SP_LOAD" />
                   <Button mnemonicParsing="false" onAction="#onActionAbout" text="%SP_ABOUT" />
                   <Button mnemonicParsing="false" onAction="#onActionQuit" text="%SP_KILL" />
                </children>

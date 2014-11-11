@@ -10,5 +10,10 @@ package jte.ui;
  * @author Frank
  */
 public class ErrorHandler {
+    private JourneyUI ui;
+    
+    public ErrorHandler(JourneyUI ui) {
+        this.ui = ui;
+    }
     
 }
