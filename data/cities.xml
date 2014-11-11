@@ -39,7 +39,7 @@
 	<City cityName="CLERMONT-FERRAND" color="green" quarter="3" coordX="659" coordY="1720" id="36"/>
 	<City cityName="CLUJ-NAPOCA" color="green" quarter="4" coordX="1581" coordY="1610" id="37"/>
 	<City cityName="COIMBRA" color="yellow" quarter="3" coordX="69" coordY="1995" id="38" desc="This is one of Germany's oldest City. It was back in the year 50 AD that Emperor Claudius granted the name Colonia Ara Agrippinensis to the settlement there. Modern-day Cologne is a busy trading and industry center, with countless banks and a giant exhibition Clrena. The Cologne 'Dam' is the largest gothic cathedral in Germany. It was started in 1248, but only finished in its present form in 1880. With its fine collection of treasures, it remains one of Europe's most important cathedrals. "/>
-	<City cityName="CONSTANTA" color="green" quarter="4" coordX="1835" coordY="1732" id="39" desc="Copenhagen has developed from a very small fishing village into a very large city with • its own unique atmosphere. For tourists, the older part of the city is of most interest, with its pedestrian areas, small squares, fascinating shops, well-kept old buildings and, of course, its canals. The best known park in Copenhagen is famous throughout the world: Tivoli land. It is a pleasure garden sited on almost 80,000 square meters of land between the main station and the Town Hall. All kinds of entertainment are to be found there: big wheels, big dippers, ghost trains, puppet shows and in the evening, concerts, pantomimes, ballet and the theatre. "/>
+	<City cityName="CONSTANTA" color="green" quarter="4" coordX="1835" coordY="1732" id="39" />
 	<City cityName="CORDOBA" color="yellow" quarter="3" coordX="224" coordY="2173" id="40"/>
 	<City cityName="CORK" color="red" quarter="1" coordX="232" coordY="1246" id="41"/>
 	<City cityName="DIJON" color="green" quarter="3" coordX="755" coordY="1628" id="42"/>
@@ -74,7 +74,7 @@
 	<City cityName="KIEL" color="red" quarter="1" coordX="986" coordY="1174" id="71"/>
 	<City cityName="KIJEV" color="green" quarter="4" coordX="1751" coordY="1369" id="72"/>
 	<City cityName="KIRUNA" color="red" quarter="2" coordX="1252" coordY="298" id="73"/>
-	<City cityName="KOBENHAVN" color="red" quarter="2" coordX="1079" coordY="1088" id="74"/>
+	<City cityName="KOBENHAVN" color="red" quarter="2" coordX="1079" coordY="1088" id="74" desc="Copenhagen has developed from a very small fishing village into a very large city with • its own unique atmosphere. For tourists, the older part of the city is of most interest, with its pedestrian areas, small squares, fascinating shops, well-kept old buildings and, of course, its canals. The best known park in Copenhagen is famous throughout the world: Tivoli land. It is a pleasure garden sited on almost 80,000 square meters of land between the main station and the Town Hall. All kinds of entertainment are to be found there: big wheels, big dippers, ghost trains, puppet shows and in the evening, concerts, pantomimes, ballet and the theatre. "/>
 	<City cityName="KOLN" color="green" quarter="3" coordX="842" coordY="1385" id="75"/>
 	<City cityName="KRAKOV" color="green" quarter="4" coordX="1394" coordY="1435" id="76"/>
 	<City cityName="LA CORUNA" color="yellow" quarter="3" coordX="106" coordY="1804" id="77"/>

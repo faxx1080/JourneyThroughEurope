@@ -16,6 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import jte.fxml.FXMLFiles;
 import jte.util.RLoad;
 import properties_manager.PropertiesManager;
 
@@ -45,6 +46,9 @@ public class DialogCreator {
         Window primaryStage = null;
         dialogStage.initOwner(primaryStage);
         BorderPane exitPane = new BorderPane();
+        
+        
+        
         HBox optionPane = new HBox();
         
         String resPath
@@ -61,6 +65,9 @@ public class DialogCreator {
         exitPane.setBottom(optionPane);
         exitPane.resize(200, 100);
         Scene scene = new Scene(exitPane, 200, 100);
+        // TODO FIX NAME
+        String css = FXMLFiles.getInstance().getClass().getResource("Styles.css").toExternalForm();
+        scene.getStylesheets().add(css);
         dialogStage.setScene(scene);
         dialogStage.showAndWait();
     }

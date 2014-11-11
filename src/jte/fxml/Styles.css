@@ -1,0 +1,33 @@
+/*
+(C) Frank Migliorino 2014
+CSE 219 Final Project
+Portions Copyright Paul Fodor
+*/
+/* 
+    Created on : Nov 10, 2014, 11:02:36 PM
+    Author     : Frank Migliorino <frank.migliorino@stonybrook.edu>
+*/
+
+.mouseCoords {
+    -fx-font: 12px "Baskerville Old Face";
+}
+
+.button {
+    -fx-effect: null;
+    -fx-background-color: white;
+}
+
+.button:hover {
+    -fx-background-color: #bdbdbd;
+}
+
+.button:pressed {
+    -fx-background-color: #808080;
+    -fx-font-color: white;
+   
+}
+
+* {
+    -fx-font-family:  "Baskerville Old Face";
+    -fx-font-size: 14px;
+}
