@@ -8,8 +8,9 @@ Portions Copyright Paul Fodor
     Author     : Frank Migliorino <frank.migliorino@stonybrook.edu>
 */
 
-.mouseCoords {
-    -fx-font: 12px "Baskerville Old Face";
+* {
+    -fx-font-family:  "Baskerville Old Face";
+    -fx-font-size: 14px;
 }
 
 .button {
@@ -26,8 +27,7 @@ Portions Copyright Paul Fodor
     -fx-font-color: white;
    
 }
-
-* {
-    -fx-font-family:  "Baskerville Old Face";
-    -fx-font-size: 14px;
+.mouseCoords {
+    -fx-font: bold ;
+    -fx-font-size: 20px;
 }
