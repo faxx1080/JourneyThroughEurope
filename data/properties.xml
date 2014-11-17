@@ -20,13 +20,15 @@
         <property name="XML_CITYFLIGHTLOC"   value="" />
         <property name="XML_CITYFLIGHTLOCX"   value="" />
         <property name="XML_CITYFLIGHTLOCY"   value="" />
-        <property name="XML_RTROOT"   value="" />
-        <property name="XML_RTCITY"   value="" />
-        <property name="XML_RTID"   value="" />
-        <property name="XML_RTLAND"   value="" />
-        <property name="XML_RTSEA"   value="" />
+        <property name="XML_RTROOT"   value="routes" />
+        <property name="XML_RTCITY"   value="city" />
+        <property name="XML_RTID"   value="id" />
+        <property name="XML_RTLAND"   value="land" />
+        <property name="XML_RTSEA"   value="sea" />
         <property name="XML_CITIESSCH" value="cities.xsd" />
         <property name="XML_CITIESFILELOC" value="cities.xml"/>
+        <property name="XML_RTSCH" value="graphID.xsd" />
+        <property name="XML_RTFILELOC" value="graphID.xml"/>
         <property name="UI_RADIUS" value="10" />
         <property name="NUM_CARDS" value="3" />
         <property name="FXML_AB" value="AboutDialog" />

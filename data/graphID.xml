@@ -605,7 +605,7 @@
 		<land>
 			<id>21</id>
 			<id>164</id>
-			<id>SANSEBASTIAN</id>
+			<id>141</id>
 		</land>
 		<sea/>
 	</city>
@@ -690,7 +690,7 @@
 		<sea/>
 	</city>
 	<city>
-		<id>SANSEBASTIAN</id>
+		<id>141</id>
 		<land>
 			<id>17</id>
 			<id>142</id>
@@ -738,7 +738,7 @@
 			<id>2</id>
 		</land>
 		<sea>
-			<id>PALMAMALLORCA</id>
+			<id>121</id>
 			<id>97</id>
 		</sea>
 	</city>
@@ -776,7 +776,7 @@
 	<city>
 		<id>142</id>
 		<land>
-			<id>SANSEBASTIAN</id>
+			<id>141</id>
 			<id>169</id>
 			<id>77</id>
 		</land>
@@ -821,7 +821,7 @@
 	<city>
 		<id>178</id>
 		<land>
-			<id>SANSEBASTIAN</id>
+			<id>141</id>
 			<id>9</id>
 			<id>95</id>
 		</land>
@@ -905,7 +905,7 @@
 		<sea/>
 	</city>
 	<city>
-		<id>PALMAMALLORCA</id>
+		<id>121</id>
 		<land/>
 		<sea>
 			<id>9</id>
@@ -1120,7 +1120,7 @@
 		<sea>
 			<id>99</id>
 			<id>1</id>
-			<id>PALMAMALLORCA</id>
+			<id>121</id>
 		</sea>
 	</city>
 	<city>

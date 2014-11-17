@@ -18,7 +18,6 @@ public class City {
     private int id;
     private String desc;
     private String name;
-    private boolean isHarbor;
     private boolean isAirport;
 
     /**
@@ -68,14 +67,6 @@ public class City {
     }
 
     /**
-     * Gets if this city is a harbor or not.
-     * @return 
-     */
-    public boolean isHarbor() {
-        return isHarbor;
-    }
-
-    /**
      * Gets if this city is an airport or not.
      * @return 
      */
@@ -92,7 +83,6 @@ public class City {
             int id,
             String desc,
             String name,
-            boolean isHarbor,
             boolean isAirport) {
         this.flightLoc = flightLoc;
         this.flightMapLoc = flightMapLoc;
@@ -100,10 +90,12 @@ public class City {
         this.id = id;
         this.desc = desc;
         this.name = name;
-        this.isHarbor = isHarbor;
         this.isAirport = isAirport;
     }
 
-    
+    @Override
+    public String toString() {
+        return this.id + " " + this.name;
+    }
     
 }

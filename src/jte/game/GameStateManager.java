@@ -14,7 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.geometry.Point2D;
 import jte.file.CityLoader;
-import jte.util.UnweightedGraph;
 import properties_manager.PropertiesManager;
 import static jte.JTEPropertyType.*;
 import jte.ui.ErrorHandler;
@@ -41,7 +40,7 @@ public class GameStateManager {
     private List<Card> cardPileYellow;
     private List<Card> cardPileGreen;
 
-    private UnweightedGraph<City> cityGraph;
+    //private UnweightedGraph<City> cityGraph;
     private Map<Integer, City> cityToID;
     private JTELog logger;
     // private Mover mover;

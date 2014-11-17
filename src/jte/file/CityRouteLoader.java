@@ -31,6 +31,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import jte.game.CityGraph;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -45,7 +46,7 @@ import xml_utilities.XMLUtilities;
  * @author Frank Migliorino
  * 
  */
-public class CityLoader {
+public class CityRouteLoader {
     
     // THIS WILL HELP US PARSE THE XML FILES
     private XMLUtilities xmlUtil;
@@ -53,70 +54,82 @@ public class CityLoader {
     // THIS IS THE SCHEMA WE'LL USE
     private File citySchema;
     
-    public CityLoader(String schemaPath) {
+    private Map<Integer, City> cities;
+    
+    private Map<Integer, List<City>> neigh;
+    private Map<Integer, List<City>> neighSea;
+    
+    private CityGraph cityNeighbors;
+    
+    public CityRouteLoader(String schemaPath, Map<Integer, City> cities) {
         xmlUtil = new XMLUtilities();
         citySchema = new File(schemaPath);
-        citiesList = new HashMap<>();
+        citiesList = cities;
+        
+        neigh = new HashMap<>(citiesList.size());
+        neighSea = new HashMap<>(citiesList.size());
+        
+        cityNeighbors = new CityGraph(neigh, neighSea);
+        
+    }
+    
+    private City lookupCity(int id) {
+        return citiesList.get(id);
     }
     
     // private List<City> citiesList;
     private final Map<Integer, City> citiesList;
     
-    // WE RETURN LIST HERE since HW5
-    // Only asks for the city locations, not links.
     
-    public Map<Integer, City> readCities(String filePath) throws IOException {
+    public CityGraph readCityNeighbors(String filePath) throws IOException {
         File loadFile = new File(filePath);
                 
         try {
             Document doc = xmlUtil.loadXMLDocument(loadFile.getAbsolutePath(),
                 citySchema.getAbsolutePath());
             
-            loadCities(doc);
             
+            loadCities(doc);
             
         } catch (Exception e) {
             throw new IOException("XML Did not load properly.");
         }
         
-        return citiesList;
+        return cityNeighbors;
         
     }
     
     private void loadCities(Document doc) throws Exception {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
-        Node cityNode = doc.getElementsByTagName(props.getProperty(XML_CITIESROOT)).item(0);
+        Node rtNode = doc.getElementsByTagName(props.getProperty(XML_RTROOT)).item(0);
         
-        ArrayList<Node> cities = xmlUtil.getChildNodesWithName(cityNode, props.getProperty(XML_CITYNODE));
+        ArrayList<Node> citiesNode = xmlUtil.getChildNodesWithName(rtNode, props.getProperty(XML_RTCITY));
         
-        
-        for (int i = 0; i < cities.size(); i++) {
-            Node city = cities.get(i);
-            NamedNodeMap cityAttrib = city.getAttributes();
-            // Pull attribs
-            // if returned a null, then that node DNE.
-            String Sid, color, ScoordX, ScoordY, name, desc;
-            Sid = cityAttrib.getNamedItem(props.getProperty(XML_CITYID)).getNodeValue();
-            color = cityAttrib.getNamedItem(props.getProperty(XML_CITYCOLOR)).getNodeValue();
-            ScoordX = cityAttrib.getNamedItem(props.getProperty(XML_CITYX)).getNodeValue();
-            ScoordY = cityAttrib.getNamedItem(props.getProperty(XML_CITYY)).getNodeValue();
-            name = cityAttrib.getNamedItem(props.getProperty(XML_CITYNAME)).getNodeValue();
-            Node descNode = cityAttrib.getNamedItem(props.getProperty(XML_CITYDESC));
+        for (Node city : citiesNode) {
             
-            if (descNode == null) {desc = "";}
-            else {desc = descNode.getNodeValue();}
+            Node cityID =  xmlUtil.getChildNodeWithName(city, props.getProperty(XML_RTID));
             
-            int id, coordX, coordY;
-            id = Integer.parseInt(Sid);
-            coordX = Integer.parseInt(ScoordX);
-            coordY = Integer.parseInt(ScoordY);
+            int currentID = Integer.parseInt(cityID.getTextContent());
             
-            Point2D coord = new Point2D(coordX, coordY);
+            Node cityLandNode = xmlUtil.getChildNodeWithName(city, props.getProperty(XML_RTLAND));
+            Node citySeaNode = xmlUtil.getChildNodeWithName(city, props.getProperty(XML_RTSEA));
             
-            //TODO: Fix values for flightMap, isHarbor, isAirport
-            City nCity = new City(0, Point2D.ZERO, coord, id, desc, name, true);
-            //citiesList.add(nCity);
-            citiesList.put(id, nCity);
+            ArrayList<Node> landRts = xmlUtil.getChildNodesWithName(cityLandNode, props.getProperty(XML_RTID));
+            ArrayList<Node> seaRts = xmlUtil.getChildNodesWithName(citySeaNode, props.getProperty(XML_RTID));
+            
+            ArrayList<City> landCit = new ArrayList<>();
+            ArrayList<City> seaCit = new ArrayList<>();
+            
+            for(Node l: landRts) {
+                landCit.add(lookupCity(Integer.parseInt(l.getTextContent())));
+            }
+            neigh.put(currentID, landCit);
+            
+            
+            for(Node l: seaRts) {
+                seaCit.add(lookupCity(Integer.parseInt(l.getTextContent())));
+            }
+            neighSea.put(currentID, seaCit);
         }
         
     }
