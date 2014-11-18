@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.geometry.Point2D;
+import javafx.scene.paint.Color;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -103,6 +104,22 @@ public class CityLoader {
             name = cityAttrib.getNamedItem(props.getProperty(XML_CITYNAME)).getNodeValue();
             Node descNode = cityAttrib.getNamedItem(props.getProperty(XML_CITYDESC));
             
+            Color col;
+            
+            switch (color) {
+                case "red":
+                    col = Color.RED;
+                    break;
+                case "yellow":
+                    col = Color.YELLOW;
+                    break;
+                case "green":
+                    col = Color.GREEN;
+                    break;
+                default:
+                    throw new IllegalArgumentException("Color not expected. Die.");
+            }
+            
             if (descNode == null) {desc = "";}
             else {desc = descNode.getNodeValue();}
             
@@ -114,7 +131,7 @@ public class CityLoader {
             Point2D coord = new Point2D(coordX, coordY);
             
             //TODO: Fix values for flightMap, isHarbor, isAirport
-            City nCity = new City(0, Point2D.ZERO, coord, id, desc, name, true);
+            City nCity = new City(0, Point2D.ZERO, coord, id, desc, name, true, col);
             //citiesList.add(nCity);
             citiesList.put(id, nCity);
         }

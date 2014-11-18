@@ -5,6 +5,7 @@
  */
 package jte.game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,12 +19,14 @@ public class Player {
     private City currentCity;
     private City lastCity;
     private List<City> citiesVisited;
-    private List<Card> cards;
+    private List<City> cards;
     private Restrictions cardOverries;
 
     public Player(String name, boolean isCPU) {
         this.name = name;
         this.isCPU = isCPU;
+        citiesVisited = new ArrayList<>();
+        cards = new ArrayList<>();
     }
 
     public String getName() {
@@ -33,6 +36,56 @@ public class Player {
     public boolean isIsCPU() {
         return isCPU;
     }
+    
+    public void addCard(City cd) {
+        cards.add(cd);
+    }
+
+    public City getHomeCity() {
+        return homeCity;
+    }
+
+    public void setHomeCity(City homeCity) {
+        this.homeCity = homeCity;
+    }
+
+    public City getCurrentCity() {
+        return currentCity;
+    }
+
+    public void setCurrentCity(City currentCity) {
+        this.currentCity = currentCity;
+        if (cards.contains(currentCity)) {
+            //TODO: add in special inst.
+            cards.remove(currentCity);
+            //Fire event!
+        }
+    }
+
+    public City getLastCity() {
+        return lastCity;
+    }
+
+    public void setLastCity(City lastCity) {
+        this.lastCity = lastCity;
+    }
+
+    public List<City> getCitiesVisited() {
+        return citiesVisited;
+    }
+
+    public void setCitiesVisited(List<City> citiesVisited) {
+        this.citiesVisited = citiesVisited;
+    }
+
+    public Restrictions getCardOverries() {
+        return cardOverries;
+    }
+
+    public void setCardOverries(Restrictions cardOverries) {
+        this.cardOverries = cardOverries;
+    }
+    
     
     
     

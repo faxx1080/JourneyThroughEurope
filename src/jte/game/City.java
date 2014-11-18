@@ -6,6 +6,7 @@
 package jte.game;
 
 import javafx.geometry.Point2D;
+import javafx.scene.paint.Color;
 
 /**
  * This represents the data for a city.
@@ -19,6 +20,9 @@ public class City {
     private String desc;
     private String name;
     private boolean isAirport;
+    private Color cardColor;
+    private boolean hasInst;
+    // private CardInstruction instType;
 
     /**
      * Returns the sector of the flight map this city is in.
@@ -67,6 +71,13 @@ public class City {
     }
 
     /**
+     * Gets the color of this city's card.
+     */
+    public Color getColor() {
+        return cardColor;
+    }
+    
+    /**
      * Gets if this city is an airport or not.
      * @return 
      */
@@ -92,7 +103,24 @@ public class City {
         this.name = name;
         this.isAirport = isAirport;
     }
-
+    
+    public City(int flightLoc,
+            Point2D flightMapLoc,
+            Point2D coord,
+            int id,
+            String desc,
+            String name,
+            boolean isAirport,
+            Color col) {
+        this.flightLoc = flightLoc;
+        this.flightMapLoc = flightMapLoc;
+        this.coord = coord;
+        this.id = id;
+        this.desc = desc;
+        this.name = name;
+        this.isAirport = isAirport;
+        this.cardColor = col;
+    }
     @Override
     public String toString() {
         return this.id + " " + this.name;

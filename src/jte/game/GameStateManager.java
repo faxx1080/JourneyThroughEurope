@@ -7,15 +7,21 @@ package jte.game;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Observer;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.event.ActionEvent;
 import javafx.geometry.Point2D;
+import javafx.scene.paint.Color;
 import jte.file.CityLoader;
 import properties_manager.PropertiesManager;
 import static jte.JTEPropertyType.*;
+import jte.file.CityRouteLoader;
 import jte.ui.ErrorHandler;
 import jte.ui.EventHandlerMain;
 
@@ -36,18 +42,28 @@ public class GameStateManager {
     private int currentPlayer;
 
     private List<Player> players;
-    private List<Card> cardPileRed;
-    private List<Card> cardPileYellow;
-    private List<Card> cardPileGreen;
+    
+    /*
+    
+    New card structure: Cards are dealt randomly at start. On
+    
+    */
+    
+//    private List<Card> cardPileRed;
+//    private List<Card> cardPileYellow;
+//    private List<Card> cardPileGreen;
 
-    //private UnweightedGraph<City> cityGraph;
+    
+    // Store because instructions say so.
+    private City nextRedCard;
+    
+    
     private Map<Integer, City> cityToID;
+    private CityGraph cityNeigh;
     private JTELog logger;
     // private Mover mover;
     private String currentMessage;
 
-    private EventHandlerMain eventhdr;
-    private ErrorHandler errhdr;
 
     public GameStateManager(int numCards, double cityRadius, String[] playerNames, boolean[] playerIsCPU) {
 
@@ -64,6 +80,11 @@ public class GameStateManager {
             Player t = new Player(playerNames[i], playerIsCPU[i]);
             players.add(t);
         }
+        
+        loadCitiesIntoGSM();
+    }
+    
+    private void loadCitiesIntoGSM() {
         logger = new JTELog();
         String schemaPath = props.getProperty(DATA_PATH) + props.getProperty(XML_CITIESSCH);
         CityLoader cityLoader = new CityLoader(schemaPath);
@@ -73,7 +94,87 @@ public class GameStateManager {
         } catch (IOException ex) {
             Logger.getLogger(GameStateManager.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
+        schemaPath = props.getProperty(DATA_PATH) + props.getProperty(XML_RTSCH);
+        String neighPath = props.getProperty(DATA_PATH) + props.getProperty(XML_RTFILELOC);
+        
+        try {
+            cityNeigh = new CityRouteLoader(schemaPath, cityToID).readCityNeighbors(neighPath);
+        } catch (IOException ex) {
+            Logger.getLogger(GameStateManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    /**
+     * Called by UI when ready.
+     * @param t: This observer is fired when a card is dealt, so the UI can
+     * animate it.
+     */
+    public void initGameAndCards(CardDealtObservable t) {
+        cardLoading(t);
+        
+        gameStart();
+    }
+    
+    private void cardLoading(CardDealtObservable t) {
+        List<Integer> cardsDealt = new ArrayList<>(cityToID.size());
+        // build list out with 180 ints, 0-179
+        
+        for (int i = 0; i < cityToID.size(); i++) {
+            cardsDealt.set(i, i);
+        }
+        
+        Collections.shuffle(cardsDealt);
+        
+        for (Player p: players) {
+            // Give cards red, yellow, green in order, as per # of cards.
+            int cardsRemain = NUM_CARDS;
+            while (cardsRemain >= 0) {
+                
+                // These can be done as red, yellow, green
+                // Assumption: Shuffling will not put all x colored cards
+                // at end. Therefore avg case: O(n) per run.
+                
+                int iterat = 0;
+                int lastID;
+                
+                // make red
+                do {
+                    lastID = cardsDealt.get(iterat);
+                } while (!cityToID.get(lastID).getColor().equals(Color.RED));
+                p.addCard(cityToID.get(lastID));
+                t.notifyObservers(cityToID.get(lastID));
+                cardsRemain--;
+                
+                if (cardsRemain < 0) break;
+                
+                // make yellow
+                do {
+                    lastID = cardsDealt.get(iterat);
+                } while (!cityToID.get(lastID).getColor().equals(Color.YELLOW));
+                p.addCard(cityToID.get(lastID));
+                t.notifyObservers(cityToID.get(lastID));
+                cardsRemain--;
+                
+                if (cardsRemain < 0) break;
+                
+                // make green
+                do {
+                    lastID = cardsDealt.get(iterat);
+                } while (!cityToID.get(lastID).getColor().equals(Color.GREEN));
+                p.addCard(cityToID.get(lastID));
+                t.notifyObservers(cityToID.get(lastID));
+                cardsRemain--;
+                
+                if (cardsRemain < 0) break;
+            }
+            
+        }
+    }
+    
+    private void gameStart() {
+        
     }
     
     /**

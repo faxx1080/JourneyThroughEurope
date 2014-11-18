@@ -20,6 +20,9 @@
         <property name="XML_CITYFLIGHTLOC"   value="" />
         <property name="XML_CITYFLIGHTLOCX"   value="" />
         <property name="XML_CITYFLIGHTLOCY"   value="" />
+        <property name="XML_CITYRED"   value="red" />
+        <property name="XML_CITYGREEN"   value="green" />
+        <property name="XML_CITYYELLOW"   value="yellow" />
         <property name="XML_RTROOT"   value="routes" />
         <property name="XML_RTCITY"   value="city" />
         <property name="XML_RTID"   value="id" />
