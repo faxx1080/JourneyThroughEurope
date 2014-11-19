@@ -65,7 +65,7 @@ public class JourneyUI implements Initializable {
     public JourneyUI() {
         String[] d = {""};
         boolean[] x = {false};
-        gsm = new GameStateManager(0, 0, d, x);
+        gsm = new GameStateManager(0, 0, d, x, null);
         eventhdr = new EventHandlerMain(this);
         errhdr = new ErrorHandler(this);
     }

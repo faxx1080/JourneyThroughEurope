@@ -90,7 +90,7 @@ public class EventHandlerPLSetup {
         double radius = Double.parseDouble(props.getProperty(JTEPropertyType.UI_RADIUS));
         int numCards = Integer.parseInt(props.getProperty(JTEPropertyType.NUM_CARDS));
         
-        GameStateManager gsm = new GameStateManager(numCards, radius, plNames, plCPU);
+        
         
         //Boilerplate for FXML
         FXMLFiles fxmlInst = FXMLFiles.getInstance();
@@ -106,6 +106,7 @@ public class EventHandlerPLSetup {
         
         fxmlL.setResources(ResourceBundle.getBundle(resPath));
         JourneyUI e = new JourneyUI();
+        GameStateManager gsm = new GameStateManager(numCards, radius, plNames, plCPU, e);
         e.setGSM(gsm);
         fxmlL.setController(e);
         

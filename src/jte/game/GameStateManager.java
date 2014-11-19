@@ -5,6 +5,7 @@
  */
 package jte.game;
 
+import jte.game.event.ObservableAlways;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,6 +25,7 @@ import static jte.JTEPropertyType.*;
 import jte.file.CityRouteLoader;
 import jte.ui.ErrorHandler;
 import jte.ui.EventHandlerMain;
+import jte.ui.JourneyUI;
 
 /**
  *
@@ -33,30 +35,39 @@ public class GameStateManager {
 
     public int NUM_CARDS;
     public double CITY_RADIUS;
+    public int MAGIC_ROLL_AGAIN = 6;
+    
+    private GameState gameState = GameState.NOT_STARTED;
+    
     private static final PropertiesManager props = PropertiesManager.getPropertiesManager();
 
     private Dice dice;
+    
     private int movesLeft;
+    private boolean rolledSix = false;
 
     // zero based
     private int currentPlayer;
 
     private List<Player> players;
     
-    /*
+    // As per HW2 + HW3, this type of coupling would be presumed to be ok.
+    private JourneyUI ui;
     
-    New card structure: Cards are dealt randomly at start. On
+    // Player Num, and Details about move.
+    // Observables
+//    private ObservableAlways playerInitialized; //For putting player on map
+//    private ObservableAlways playerCardsDrawn;
+//    private ObservableAlways playerMoved;
+//    private ObservableAlways playerClearCard;
+//    private ObservableAlways gameOver;
+    //End obs
     
-    */
+    // on city select, run onCitySelect -> playerMove* -> playerClearCard* -> gameOver*
     
-//    private List<Card> cardPileRed;
-//    private List<Card> cardPileYellow;
-//    private List<Card> cardPileGreen;
-
     
     // Store because instructions say so.
     private City nextRedCard;
-    
     
     private Map<Integer, City> cityToID;
     private CityGraph cityNeigh;
@@ -65,11 +76,11 @@ public class GameStateManager {
     private String currentMessage;
 
 
-    public GameStateManager(int numCards, double cityRadius, String[] playerNames, boolean[] playerIsCPU) {
-
+    public GameStateManager(int numCards, double cityRadius, String[] playerNames, boolean[] playerIsCPU, JourneyUI ui) {
+        this.ui = ui;
         NUM_CARDS = numCards;
         CITY_RADIUS = cityRadius;
-
+        dice = new Dice();
         if (playerNames.length != playerIsCPU.length) {
             throw new IllegalArgumentException("# players != # of array entries in isCPU");
         }
@@ -108,16 +119,89 @@ public class GameStateManager {
     
     /**
      * Called by UI when ready.
-     * @param t: This observer is fired when a card is dealt, so the UI can
-     * animate it.
+     * Precondition: 
+     * Postcondition: Player 0 ready.
      */
-    public void initGameAndCards(CardDealtObservable t) {
-        cardLoading(t);
+    public void initGameAndCards() throws IllegalStateException {
+        cardLoading();
         
-        gameStart();
+        currentPlayer = 0;
+        // initGameplay(players.get(currentPlayer));
     }
     
-    private void cardLoading(CardDealtObservable t) {
+    /*
+    
+    flow: initGameAndCards -> cardLoad -> done.
+    startPlayer();
+    
+    */
+    
+    public void startPlayer() {
+        // uses currplayer
+        
+        initGameplay(players.get(currentPlayer));
+    }
+    
+    
+    /**
+     * Initializes and spawns player.
+     * @param pl 
+     */
+    private void initGameplay(Player pl) {
+        dice.roll();
+        movesLeft = dice.getRoll();
+        if (movesLeft == MAGIC_ROLL_AGAIN)
+            rolledSix = true;
+        uiDiceRolled(movesLeft);
+        
+    }
+    
+    private void startMove(Player pl) {
+        
+    }
+    
+    /**
+     * Called by the UI when a player moves, passing in the city moved to.
+     */
+    public void movePlayer(City moveTo) {
+        
+    }
+    
+    // UI Methods
+    // initPlayer(player)
+    //
+    
+    private void uiInitPlayer(Player pl) {
+        
+    }
+    
+    private void uiDiceRolled(int diceRoll) {
+        
+    }
+    
+    private void uiAnimateCard(City city, Player pl) {
+        
+    }
+    
+    private void uiActivatePlayer(Player pl) {
+        
+    }
+    
+    private void uiMovePlayer(City toCity, Player pl) {
+        
+    }
+    
+    private void uiWinGame(Player pl) {
+        
+    }
+     
+    // UI Methods End
+    
+    
+    /**
+     * Postcondition: All players spawned and ready to run.
+     */
+    private void cardLoading() {
         List<Integer> cardsDealt = new ArrayList<>(cityToID.size());
         // build list out with 180 ints, 0-179
         
@@ -128,6 +212,8 @@ public class GameStateManager {
         Collections.shuffle(cardsDealt);
         
         for (Player p: players) {
+            //player.notifyObservers(p);
+            
             // Give cards red, yellow, green in order, as per # of cards.
             int cardsRemain = NUM_CARDS;
             while (cardsRemain >= 0) {
@@ -141,41 +227,67 @@ public class GameStateManager {
                 
                 // make red
                 do {
+                    iterat = (iterat+1) % cityToID.size();
                     lastID = cardsDealt.get(iterat);
                 } while (!cityToID.get(lastID).getColor().equals(Color.RED));
                 p.addCard(cityToID.get(lastID));
-                t.notifyObservers(cityToID.get(lastID));
+                cardsDealt.remove(iterat);
+                
+                p.setCurrentCity(cityToID.get(lastID));
+                p.setHomeCity(cityToID.get(lastID));
+                p.setLastCity(cityToID.get(lastID));
+                
+                uiInitPlayer(p);
+                uiAnimateCard(cityToID.get(lastID), p);
+                
+                
+                //lastCityDrawn.notifyObservers(cityToID.get(lastID));
                 cardsRemain--;
                 
                 if (cardsRemain < 0) break;
                 
                 // make yellow
+                iterat = 0;
                 do {
+                    iterat = (iterat+1) % cityToID.size();
                     lastID = cardsDealt.get(iterat);
                 } while (!cityToID.get(lastID).getColor().equals(Color.YELLOW));
                 p.addCard(cityToID.get(lastID));
-                t.notifyObservers(cityToID.get(lastID));
+                cardsDealt.remove(iterat);
+                
+                uiAnimateCard(cityToID.get(lastID), p);
                 cardsRemain--;
                 
                 if (cardsRemain < 0) break;
                 
                 // make green
+                iterat = 0;
                 do {
+                    iterat = (iterat+1) % cityToID.size();
                     lastID = cardsDealt.get(iterat);
                 } while (!cityToID.get(lastID).getColor().equals(Color.GREEN));
                 p.addCard(cityToID.get(lastID));
-                t.notifyObservers(cityToID.get(lastID));
+                cardsDealt.remove(iterat);
+                
+                uiAnimateCard(cityToID.get(lastID), p);
                 cardsRemain--;
                 
                 if (cardsRemain < 0) break;
             }
             
         }
-    }
-    
-    private void gameStart() {
+        
+        //buffer next red
+        int iterat = 0; int lastID = -1;
+        do {
+            iterat = (iterat+1) % cityToID.size();
+            lastID = cardsDealt.get(iterat);
+        } while (!cityToID.get(lastID).getColor().equals(Color.RED));
+        
+        nextRedCard = cityToID.get(lastID);
         
     }
+    
     
     /**
      * Gets the one-based player.
