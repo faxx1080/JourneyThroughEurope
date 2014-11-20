@@ -17,7 +17,6 @@ public class Player {
     private boolean isCPU;
     private City homeCity;
     private City currentCity;
-    private City lastCity;
     private List<City> citiesVisited;
     private List<City> cards;
     private Restrictions cardOverries;
@@ -55,27 +54,14 @@ public class Player {
 
     public void setCurrentCity(City currentCity) {
         this.currentCity = currentCity;
-        if (cards.contains(currentCity)) {
-            //TODO: add in special inst.
-            cards.remove(currentCity);
-            //Fire event!
-        }
     }
 
-    public City getLastCity() {
-        return lastCity;
-    }
-
-    public void setLastCity(City lastCity) {
-        this.lastCity = lastCity;
+    public List<City> getCards() {
+        return cards;
     }
 
     public List<City> getCitiesVisited() {
         return citiesVisited;
-    }
-
-    public void setCitiesVisited(List<City> citiesVisited) {
-        this.citiesVisited = citiesVisited;
     }
 
     public Restrictions getCardOverries() {
