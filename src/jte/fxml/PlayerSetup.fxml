@@ -36,7 +36,7 @@
                <children>
                   <ImageView fitHeight="87.0" fitWidth="61.0" layoutX="24.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../img/flag/flag_black.png" />
+                        <Image url="@../../img/flag/h1.png" />
                      </image></ImageView>
                   <Label layoutX="101.0" layoutY="52.0" text="%playerSet.plName" />
                   <TextField fx:id="txtPL1" layoutX="101.0" layoutY="73.0" prefHeight="25.0" prefWidth="76.0" promptText="%playerSet.P1" />
@@ -47,7 +47,7 @@
                <children>
                   <ImageView fitHeight="87.0" fitWidth="61.0" layoutX="24.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../img/flag/flag_blue.png" />
+                        <Image url="@../../img/flag/h2.png" />
                      </image>
                   </ImageView>
                   <Label layoutX="101.0" layoutY="52.0" text="%playerSet.plName" />
@@ -59,7 +59,7 @@
                <children>
                   <ImageView fitHeight="87.0" fitWidth="61.0" layoutX="24.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../img/flag/flag_red.png" />
+                        <Image url="@../../img/flag/h4.png" />
                      </image>
                   </ImageView>
                   <Label layoutX="101.0" layoutY="52.0" text="%playerSet.plName" />
@@ -71,7 +71,7 @@
                <children>
                   <ImageView fitHeight="87.0" fitWidth="61.0" layoutX="24.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../img/flag/flag_green.png" />
+                        <Image url="@../../img/flag/h3.png" />
                      </image>
                   </ImageView>
                   <Label layoutX="101.0" layoutY="52.0" text="%playerSet.plName" />
@@ -83,7 +83,7 @@
                <children>
                   <ImageView fitHeight="87.0" fitWidth="61.0" layoutX="24.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../img/flag/flag_white.png" />
+                        <Image url="@../../img/flag/h5.png" />
                      </image>
                   </ImageView>
                   <Label layoutX="101.0" layoutY="52.0" text="%playerSet.plName" />
@@ -95,7 +95,7 @@
                <children>
                   <ImageView fitHeight="87.0" fitWidth="61.0" layoutX="24.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../img/flag/flag_yellow.png" />
+                        <Image url="@../../img/flag/h6.png" />
                      </image>
                   </ImageView>
                   <Label layoutX="101.0" layoutY="52.0" text="%playerSet.plName" />

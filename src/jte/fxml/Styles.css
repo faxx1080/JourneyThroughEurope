@@ -28,6 +28,6 @@ Portions Copyright Paul Fodor
    
 }
 .mouseCoords {
-    -fx-font-style: bold ;
+    //font-style: bold ;
     -fx-font-size: 20px;
 }

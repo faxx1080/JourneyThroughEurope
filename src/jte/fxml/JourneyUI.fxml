@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane stylesheets="@Styles.css" fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="573.0" prefWidth="898.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="573.0" prefWidth="898.0" stylesheets="@Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <SplitPane dividerPositions="0.2" prefHeight="160.0" prefWidth="200.0">
         <items>
@@ -57,7 +58,8 @@
                                           <Image url="@../../img/gameBoard2.jpg" />
                                        </image>
                                     </ImageView>
-                                    <AnchorPane mouseTransparent="true"  />
+                                    <AnchorPane fx:id="ancDrawStuffHere" mouseTransparent="true" />
+                                    <AnchorPane fx:id="ancDrawPlayersHere" mouseTransparent="true" prefHeight="200.0" prefWidth="200.0" />
                                  </children>
                               </StackPane>
                            </content>
