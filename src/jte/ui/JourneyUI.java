@@ -9,15 +9,22 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TitledPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import jte.JTEPropertyType;
+import jte.game.City;
 import jte.game.GameStateManager;
+import jte.game.Player;
+import properties_manager.PropertiesManager;
 
 /**
  * FXML Controller class
@@ -57,15 +64,29 @@ public class JourneyUI implements Initializable {
     private Label mouseCoords;
     @FXML
     private ImageView imgDice;
+    @FXML
+    private AnchorPane ancDrawStuffHere;
+    @FXML
+    private AnchorPane ancDrawPlayersHere;
+    
 
     private GameStateManager gsm;
-    private EventHandlerMain eventhdr;
-    private ErrorHandler errhdr;
+    private final EventHandlerMain eventhdr;
+    private final ErrorHandler errhdr;
+    private JourneyUIHelper juiHelper;
+    
+    // Player Home Spots
+    protected ImageView[] plh;
+    
+    // Player Pos Spots
+    protected ImageView[] plloc;
+    
+    
     
     public JourneyUI() {
         String[] d = {""};
         boolean[] x = {false};
-        gsm = new GameStateManager(0, 0, d, x, null);
+        //gsm = new GameStateManager(0, 0, d, x, null);
         eventhdr = new EventHandlerMain(this);
         errhdr = new ErrorHandler(this);
     }
@@ -89,6 +110,10 @@ public class JourneyUI implements Initializable {
         pl4Title.setText(gsm.getPlayerName(4));
         pl5Title.setText(gsm.getPlayerName(5));
         pl6Title.setText(gsm.getPlayerName(6));
+        juiHelper = new JourneyUIHelper(this);
+        plh = new ImageView[gsm.getNumPlayers()];
+        gsm.initGameAndCards();
+        
     }
     
     public void setTxtOutput(String text) {
@@ -135,5 +160,36 @@ public class JourneyUI implements Initializable {
         eventhdr.winClick();
         ((Stage) root.getScene().getWindow()).close();
     }
+    
+    public ErrorHandler getErrorHDR() {
+        return errhdr;
+    }
+    
+    
+    // Events from GSM
+    
+    public void uiInitPlayer(Player pl) {
+        Point2D plPos = pl.getHomeCity().getCoord();
+        // Add constant for img size.
+        Image plImgHome = juiHelper.loadPlHome(pl);
+        int num = gsm.getPlayerNum(pl);
+        ImageView plImgV = new ImageView(plImgHome);
+        plh[num] = plImgV;
+        ancDrawPlayersHere.getChildren().add(plImgV);
+        // Sets 0, 0 to x, y.
+        // We need 0, 0 -> x-43, y-88
+        PropertiesManager props = properties_manager.PropertiesManager.getPropertiesManager();
+        int xoff = Integer.parseInt(props.getProperty(JTEPropertyType.IMG_PLHOME_XOFF));
+        int yoff = Integer.parseInt(props.getProperty(JTEPropertyType.IMG_PLHOME_YOFF));
+        
+        plImgV.relocate(plPos.getX() + xoff, plPos.getY() + yoff);
+    }
+    
+    public void setDice(int diceRoll) {
+        Image dice = juiHelper.loadDice(diceRoll);
+        imgDice.setImage(dice);
+    }
+    
+    
     
 }
