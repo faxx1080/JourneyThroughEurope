@@ -239,14 +239,14 @@ public class GameStateManager {
     
     // UI Methods
     // initPlayer(player)
-    //
+    // Needs to draw player on map.
     
     private void uiInitPlayer(Player pl) {
-        
+        ui.uiInitPlayer(pl);
     }
     
     private void uiDiceRolled(int diceRoll) {
-        
+        ui.setDice(diceRoll);
     }
     
     private void uiAnimateCard(City city, Player pl) {
@@ -276,11 +276,12 @@ public class GameStateManager {
      * Postcondition: All players spawned and ready to run.
      */
     private void cardLoading() {
-        List<Integer> cardsDealt = new ArrayList<>(cityToID.size());
+        int size = cityToID.size();
+        List<Integer> cardsDealt = new ArrayList<>(size);
         // build list out with 180 ints, 0-179
         
         for (int i = 0; i < cityToID.size(); i++) {
-            cardsDealt.set(i, i);
+            cardsDealt.add(i);
         }
         
         Collections.shuffle(cardsDealt);
@@ -290,6 +291,7 @@ public class GameStateManager {
             
             // Give cards red, yellow, green in order, as per # of cards.
             int cardsRemain = NUM_CARDS;
+            boolean firstRun = true;
             while (cardsRemain >= 0) {
                 
                 // These can be done as red, yellow, green
@@ -307,11 +309,15 @@ public class GameStateManager {
                 p.addCard(cityToID.get(lastID));
                 cardsDealt.remove(iterat);
                 
-                p.setCurrentCity(cityToID.get(lastID));
-                p.setHomeCity(cityToID.get(lastID));
-                p.getCitiesVisited().add(cityToID.get(lastID));
+                if (firstRun) {
+                    p.setCurrentCity(cityToID.get(lastID));
+                    p.setHomeCity(cityToID.get(lastID));
+                    p.getCitiesVisited().add(cityToID.get(lastID));
+
+                    uiInitPlayer(p);
+                    firstRun = false;
+                }
                 
-                uiInitPlayer(p);
                 uiAnimateCard(cityToID.get(lastID), p);
                 
                 
@@ -369,8 +375,12 @@ public class GameStateManager {
      * @return 
      */
     public String getPlayerName(int playerNumber) {
-        if (playerNumber > players.size()+1 || playerNumber <= 0) {return "";}
+        if (playerNumber > players.size() || playerNumber <= 0) {return "";}
         return players.get(playerNumber-1).getName();
+    }
+    
+    public int getPlayerNum(Player pl) throws IndexOutOfBoundsException {
+        return players.indexOf(pl);
     }
     
     /**
@@ -426,5 +436,7 @@ public class GameStateManager {
     public Player getCurrentPlayer() {
         return players.get(currentPlayer);
     }
+    
+    public int getNumPlayers() {return players.size();}
     
 }
