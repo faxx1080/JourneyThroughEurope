@@ -16,4 +16,8 @@ public class ErrorHandler {
         this.ui = ui;
     }
     
+    public void imgNotFound() {
+        System.exit(1);
+    }
+    
 }
