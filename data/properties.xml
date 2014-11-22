@@ -40,6 +40,22 @@
         <property name="FXML_JUI" value="JourneyUI" />
         <property name="FXML_PLSET" value="PlayerSetup" />
         <property name="FXML_EXT" value=".fxml" />
+        <property name="IMG_PATH" value="img/" />
+        <property name="IMG_PREFIX_HOME" value="h" />
+        <property name="IMG_PREFIX_LOC" value="p" />
+        <property name="IMG_EXT" value=".png" />
+        <property name="IMG_PLHOME_XOFF"   value="-43" />
+        <property name="IMG_PLHOME_YOFF"   value="-88" />
+        <property name="IMG_PLLOC_XOFF"    value="-48" />
+        <property name="IMG_PLLOC_YOFF"    value="-84" />
+        <property name="IMG_PREFIX_DICE" value="die_" />
+        <property name="IMG_EXT_JPG" value=".jpg" />
+        <property name="IMG_CD_GR" value="cards/green/" />
+        <property name="IMG_CD_YE" value="cards/yellow/" />
+        <property name="IMG_CD_RD" value="cards/red/" />
+        <property name="IMG_CDINST_RD" value="cards/instg/" />
+        <property name="IMG_CDINST_GR" value="cards/instr/" />
+        <property name="IMG_CDINST_YE" value="cards/insty/" />
     </property_list>
     <property_options_list>
     </property_options_list>

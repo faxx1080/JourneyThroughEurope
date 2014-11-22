@@ -30,5 +30,19 @@ public enum JTEPropertyType {
     FXML_AB, FXML_EXT, FXML_SPL, FXML_PLSET, FXML_JUI, FXML_HIST,
     //End FXML
     
+    //PlayerPos Image names
+    IMG_PATH, IMG_PREFIX_HOME, IMG_PREFIX_LOC,IMG_EXT,
+    
+    //Plyaer pos offsets
+    IMG_PLHOME_XOFF, IMG_PLHOME_YOFF, IMG_PLLOC_XOFF, IMG_PLLOC_YOFF,
+    
+    // Cards
+    IMG_EXT_JPG, IMG_CD_GR,
+       IMG_CD_YE,
+       IMG_CD_RD,
+       IMG_CDINST_RD,
+       IMG_CDINST_GR,
+       IMG_CDINST_YE,IMG_PREFIX_DICE,
+    
     noothing;
 }
