@@ -16,5 +16,7 @@ public enum JTEResourceType {
     // Localized names
     STR_OK,
     DEF_YES, DEF_NO, SP_START, SP_LOAD, SP_ABOUT, SP_KILL, DEF_ENSURE_EXIT, DEF_KILL_TITLE,
-    STR_NOSWIM;
+    STR_NOSWIM,
+    
+    STR_RED, STR_GRE, STR_YEL;
 }

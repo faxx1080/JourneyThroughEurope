@@ -20,7 +20,7 @@ public class City {
     private String desc;
     private String name;
     private boolean isAirport;
-    private Color cardColor;
+    private String cardColor;
     private boolean hasInst;
     // private CardInstruction instType;
 
@@ -73,7 +73,7 @@ public class City {
     /**
      * Gets the color of this city's card.
      */
-    public Color getColor() {
+    public String getColor() {
         return cardColor;
     }
     
@@ -111,7 +111,7 @@ public class City {
             String desc,
             String name,
             boolean isAirport,
-            Color col) {
+            String col) {
         this.flightLoc = flightLoc;
         this.flightMapLoc = flightMapLoc;
         this.coord = coord;

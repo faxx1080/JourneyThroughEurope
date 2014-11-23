@@ -30,6 +30,38 @@ public class EventHandlerMain {
         this.ui = ui;
     }
     
+    public void debugGameBoardClick(MouseEvent ev) {
+        Point2D actualClick = new Point2D(ev.getX(),ev.getY());
+        City foundCity = ui.getGSM().getCityFromCoord(actualClick, null);
+        if (foundCity != null) {
+            ui.getGSM().getLog().appendText(foundCity.getName());
+            ui.setTxtOutput(foundCity.getName() + "\n" + foundCity.getDesc());
+        } else {
+            ui.setTxtOutput("No city.");
+        }
+    }
+    
+    public void debugGameBoardMMove(MouseEvent ev) {
+        Point2D actualClick = new Point2D(ev.getX(),ev.getY());
+        int mx, my, sx, sy;
+        mx = (int) ev.getX();
+        my = (int) ev.getY();
+        sx = (int) ev.getSceneX();
+        sy = (int) ev.getSceneY();
+        
+        String out = "Scene: " + mx + ", " + my + "\n Mouse: " + sx + ", " + sy;
+        
+        double[] dist = new double[1];
+        
+        City foundCity = ui.getGSM().getCityFromCoord(actualClick, dist);
+        if (foundCity != null) {
+            out += "\n" + String.format("%.2f",dist[0]) +  "\n" + foundCity.getName();
+        }
+        
+        ui.setMouseCoordsText(out);
+    }
+    
+    
     public void gameBoardClick(MouseEvent ev) {
         Point2D actualClick = new Point2D(ev.getX(),ev.getY());
         City foundCity = ui.getGSM().getCityFromCoord(actualClick, null);

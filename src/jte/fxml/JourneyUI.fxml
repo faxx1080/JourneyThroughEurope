@@ -11,36 +11,60 @@
    <children>
       <SplitPane dividerPositions="0.2" prefHeight="160.0" prefWidth="200.0">
         <items>
-            <Accordion>
+            <Accordion fx:id="plCardsAcc">
               <panes>
                 <TitledPane fx:id="pl1Title" animated="true">
                   <content>
-                  <VBox fx:id="pl1Cards" />
+                        <ScrollPane prefViewportHeight="403.0" prefViewportWidth="175.0">
+                           <content>
+                        <VBox fx:id="pl1Cards" />
+                           </content>
+                        </ScrollPane>
                   </content>
                 </TitledPane>
                 <TitledPane fx:id="pl2Title" animated="true">
                   <content>
-                  <VBox fx:id="pl2Cards" />
+                        <ScrollPane prefViewportHeight="403.0" prefViewportWidth="175.0">
+                           <content>
+                        <VBox fx:id="pl2Cards" />
+                           </content>
+                        </ScrollPane>
                   </content>
                 </TitledPane>
                 <TitledPane fx:id="pl3Title" animated="true">
                   <content>
-                  <VBox fx:id="pl3Cards" />
+                        <ScrollPane prefViewportHeight="403.0" prefViewportWidth="175.0">
+                           <content>
+                        <VBox fx:id="pl3Cards" />
+                           </content>
+                        </ScrollPane>
                   </content>
                 </TitledPane>
                 <TitledPane fx:id="pl4Title" animated="true">
                   <content>
-                  <VBox fx:id="pl4Cards" />
+                        <ScrollPane prefViewportHeight="403.0" prefViewportWidth="175.0">
+                           <content>
+                        <VBox fx:id="pl4Cards" />
+                           </content>
+                        </ScrollPane>
                   </content>
                 </TitledPane>
                 <TitledPane fx:id="pl5Title" animated="true">
                   <content>
-                  <VBox fx:id="pl5Cards" />
+                        <ScrollPane prefViewportHeight="403.0" prefViewportWidth="175.0">
+                           <content>
+                        <VBox fx:id="pl5Cards" />
+                           </content>
+                        </ScrollPane>
                   </content>
                 </TitledPane>
                 <TitledPane fx:id="pl6Title" animated="true">
                   <content>
-                  <VBox fx:id="pl6Cards" />
+                        <ScrollPane prefViewportHeight="403.0" prefViewportWidth="175.0">
+                           <content>
+                        <VBox fx:id="pl6Cards" />
+                           </content>
+                        </ScrollPane>
                   </content>
                 </TitledPane>
               </panes>
@@ -82,15 +106,13 @@
                         <Button layoutX="58.0" layoutY="465.0" mnemonicParsing="false" onMouseClicked="#flyClick" text="%jui.fly" />
                         <Button layoutX="58.0" layoutY="433.0" mnemonicParsing="false" onMouseClicked="#winClick" text="%jui.win" />
                         <TextArea fx:id="txtOutput" editable="false" layoutX="14.0" layoutY="83.0" prefHeight="344.0" prefWidth="185.0" wrapText="true" />
-                        <ImageView fx:id="imgDice" fitHeight="62.0" fitWidth="136.0" layoutX="75.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../img/dice/die_1.jpg" />
-                           </image></ImageView>
+                        <ImageView fx:id="imgDice" fitHeight="62.0" fitWidth="136.0" layoutX="75.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
                         
                      </children></AnchorPane>
               </items>
             </SplitPane>
         </items>
       </SplitPane>
+      <AnchorPane fx:id="ancDrawCardsAnim" mouseTransparent="true" prefHeight="200.0" prefWidth="200.0" />
    </children>
 </StackPane>

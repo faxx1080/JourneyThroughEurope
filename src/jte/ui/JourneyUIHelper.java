@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import jte.JTEPropertyType;
 import jte.game.Player;
 import properties_manager.PropertiesManager;
@@ -77,6 +78,43 @@ public class JourneyUIHelper {
         }
         
         return new Image(fileIn);        
+    }
+    
+    public Image loadCard(int cityID) {
+        JTEPropertyType col;
+        String cityC = ui.getGSM().getCityFromID(cityID).getColor();
+        switch (cityC) {
+            case "red":
+                col = JTEPropertyType.IMG_CD_RD;
+                break;
+            case "yellow":
+                col = JTEPropertyType.IMG_CD_YE;
+                break;
+            case "green":
+                col = JTEPropertyType.IMG_CD_GR;
+                break;
+            default:
+                throw new IllegalArgumentException("Color not expected. Die.");
+        }
+        
+        PropertiesManager props = properties_manager.PropertiesManager.getPropertiesManager();
+        String imgpath =  props.getProperty(JTEPropertyType.IMG_PATH);
+        String imgprefix = props.getProperty(col);
+        String imgpostfix = props.getProperty(JTEPropertyType.IMG_EXT_JPG);
+        
+        String imgLoc = imgpath + imgprefix + cityID + imgpostfix;
+        
+        File imgFile = new File(imgLoc);
+        InputStream fileIn;
+        try {
+            fileIn = new FileInputStream(imgFile);
+        } catch (FileNotFoundException ex) {
+            ui.getErrorHDR().imgNotFound();
+            // Kills vm
+            return null;
+        }
+        
+        return new Image(fileIn);          
     }
     
 }

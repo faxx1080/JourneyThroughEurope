@@ -250,11 +250,11 @@ public class GameStateManager {
     }
     
     private void uiAnimateCard(City city, Player pl) {
-        
+        ui.addCard(getPlayerNum(pl), city);
     }
     
     private void uiAnimateCardOut(City city, Player pl) {
-        
+        ui.removeCard(getPlayerNum(pl), city);
     }
     
     private void uiActivatePlayer(Player pl) {
@@ -286,83 +286,62 @@ public class GameStateManager {
         
         Collections.shuffle(cardsDealt);
         
-        for (Player p: players) {
-            //player.notifyObservers(p);
+        // rgy gyr yrg rgy
+        // Assumption: Shuffling will not put all x colored cards
+        // at end. Therefore avg case: O(n) per run.
+
+        int iterat = 0;
+        int lastID;
+
+        String red = RLoad.getString(JTEResourceType.STR_RED);
+        String green= RLoad.getString(JTEResourceType.STR_GRE);
+        String yellow=RLoad.getString(JTEResourceType.STR_YEL);
+
+        HashMap<Integer, String> cardColor = new HashMap<>(3);
+        cardColor.put(0, red);
+        cardColor.put(1, green);
+        cardColor.put(2, yellow);    
+        boolean firstRun = false;
+        int offset = 0;
+        
+        for (int j = NUM_CARDS; j > 0; j--) {
             
-            // Give cards red, yellow, green in order, as per # of cards.
-            int cardsRemain = NUM_CARDS;
-            boolean firstRun = true;
-            while (cardsRemain >= 0) {
+            for (int i = 0; i < players.size(); i++) {
                 
-                // These can be done as red, yellow, green
-                // Assumption: Shuffling will not put all x colored cards
-                // at end. Therefore avg case: O(n) per run.
+                iterat = 0;  lastID = -1;
                 
-                int iterat = 0;
-                int lastID;
-                
-                // make red
+                Player p = players.get(i);
+
                 do {
                     iterat = (iterat+1) % cityToID.size();
                     lastID = cardsDealt.get(iterat);
-                } while (!cityToID.get(lastID).getColor().equals(Color.RED));
-                p.addCard(cityToID.get(lastID));
+                } while (!cityToID.get(lastID).getColor().equals(cardColor.get((i+offset) % 3)));
+                players.get(i).addCard(cityToID.get(lastID));
+
                 cardsDealt.remove(iterat);
                 
-                if (firstRun) {
+                if (!firstRun) {
                     p.setCurrentCity(cityToID.get(lastID));
                     p.setHomeCity(cityToID.get(lastID));
                     p.getCitiesVisited().add(cityToID.get(lastID));
-
                     uiInitPlayer(p);
-                    firstRun = false;
                 }
                 
-                uiAnimateCard(cityToID.get(lastID), p);
-                
-                
-                //lastCityDrawn.notifyObservers(cityToID.get(lastID));
-                cardsRemain--;
-                
-                if (cardsRemain < 0) break;
-                
-                // make yellow
-                iterat = 0;
-                do {
-                    iterat = (iterat+1) % cityToID.size();
-                    lastID = cardsDealt.get(iterat);
-                } while (!cityToID.get(lastID).getColor().equals(Color.YELLOW));
-                p.addCard(cityToID.get(lastID));
-                cardsDealt.remove(iterat);
                 
                 uiAnimateCard(cityToID.get(lastID), p);
-                cardsRemain--;
-                
-                if (cardsRemain < 0) break;
-                
-                // make green
-                iterat = 0;
-                do {
-                    iterat = (iterat+1) % cityToID.size();
-                    lastID = cardsDealt.get(iterat);
-                } while (!cityToID.get(lastID).getColor().equals(Color.GREEN));
-                p.addCard(cityToID.get(lastID));
-                cardsDealt.remove(iterat);
-                
-                uiAnimateCard(cityToID.get(lastID), p);
-                cardsRemain--;
-                
-                if (cardsRemain < 0) break;
             }
             
+            firstRun = true;
+            offset++;
         }
         
+        
         //buffer next red
-        int iterat = 0; int lastID = -1;
+        iterat = 0;  lastID = -1;
         do {
             iterat = (iterat+1) % cityToID.size();
             lastID = cardsDealt.get(iterat);
-        } while (!cityToID.get(lastID).getColor().equals(Color.RED));
+        } while (!cityToID.get(lastID).getColor().equals(red));
         
         nextRedCard = cityToID.get(lastID);
         
@@ -437,6 +416,8 @@ public class GameStateManager {
         return players.get(currentPlayer);
     }
     
-    public int getNumPlayers() {return players.size();}
+    public int getNumPlayers() {
+        return players.size();
+    }
     
 }

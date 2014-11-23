@@ -6,10 +6,13 @@
 package jte.ui;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
+import javafx.scene.Scene;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TitledPane;
@@ -68,7 +71,10 @@ public class JourneyUI implements Initializable {
     private AnchorPane ancDrawStuffHere;
     @FXML
     private AnchorPane ancDrawPlayersHere;
-    
+    @FXML
+    private AnchorPane ancDrawCardsAnim;
+    @FXML
+    private Accordion plCardsAcc;
 
     private GameStateManager gsm;
     private final EventHandlerMain eventhdr;
@@ -81,12 +87,11 @@ public class JourneyUI implements Initializable {
     // Player Pos Spots
     protected ImageView[] plloc;
     
+    //Player cards
+    private List<List<ImageView>> plCardSmall;
     
     
     public JourneyUI() {
-        String[] d = {""};
-        boolean[] x = {false};
-        //gsm = new GameStateManager(0, 0, d, x, null);
         eventhdr = new EventHandlerMain(this);
         errhdr = new ErrorHandler(this);
     }
@@ -165,6 +170,60 @@ public class JourneyUI implements Initializable {
         return errhdr;
     }
     
+    /**
+     * Zero based.
+     * @param plNum
+     * @param card 
+     */
+    public void addCard(int plNum, City card) {
+        TitledPane tp; VBox vb;
+        switch (plNum) {
+            case 0:
+                tp = pl1Title;
+                vb = pl1Cards;
+                break;
+            case 1:
+                tp = pl2Title;
+                vb = pl2Cards;
+                break;
+            case 2:
+                tp = pl3Title;
+                vb = pl3Cards;
+                break;
+            case 3:
+                tp = pl4Title;
+                vb = pl4Cards;
+                break;
+            case 4:
+                tp = pl5Title;
+                vb = pl5Cards;
+                break;
+            case 5:
+                tp = pl6Title;
+                vb = pl6Cards;
+                break;
+            default:
+                return;
+        }
+        plCardsAcc.setExpandedPane(tp);
+        // Add imageview to vbox, getX, Y loc, setVisible False
+        // remove from there
+        // add to root anchorpane
+        ImageView toAdd = new ImageView(juiHelper.loadCard(card.getId()));
+        toAdd.setFitWidth(200);
+        toAdd.setPreserveRatio(true);
+        vb.getChildren().add(toAdd);
+    }
+
+    /**
+     * Zero based.
+     * @param plNum
+     * @param card 
+     */
+    public void removeCard(int plNum, City card) {
+        ImageView x;
+        
+    }
     
     // Events from GSM
     
