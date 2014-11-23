@@ -63,7 +63,7 @@ public class JourneyUIHelper {
         PropertiesManager props = properties_manager.PropertiesManager.getPropertiesManager();
         String imgpath =  props.getProperty(JTEPropertyType.IMG_PATH);
         String imgprefix = props.getProperty(JTEPropertyType.IMG_PREFIX_DICE);
-        String imgpostfix = props.getProperty(JTEPropertyType.IMG_EXT);
+        String imgpostfix = props.getProperty(JTEPropertyType.IMG_EXT_JPG);
         
         String imgLoc = imgpath + imgprefix + (num) + imgpostfix;
         

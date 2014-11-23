@@ -9,7 +9,7 @@
 
 <StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="573.0" prefWidth="898.0" stylesheets="@Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <SplitPane dividerPositions="0.2" prefHeight="160.0" prefWidth="200.0">
+      <SplitPane dividerPositions="0.23" prefHeight="160.0" prefWidth="200.0">
         <items>
             <Accordion fx:id="plCardsAcc">
               <panes>
@@ -73,17 +73,17 @@
               <items>
                   <StackPane>
                      <children>
-                        <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                        <ScrollPane fx:id="scp" prefHeight="200.0" prefWidth="200.0">
                            <content>
                               <StackPane>
                                  <children>
-                                    <ImageView onMouseClicked="#gameBoardClick" onMouseMoved="#gameBoardMMove" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="gameboardImg" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../img/gameBoard2.jpg" />
                                        </image>
                                     </ImageView>
                                     <AnchorPane fx:id="ancDrawStuffHere" mouseTransparent="true" />
-                                    <AnchorPane fx:id="ancDrawPlayersHere" mouseTransparent="true" prefHeight="200.0" prefWidth="200.0" />
+                                    <AnchorPane onScroll="#temp"   onMouseClicked="#gameBoardClick" onMouseMoved="#gameBoardMMove" fx:id="ancDrawPlayersHere" prefHeight="200.0" prefWidth="200.0" />
                                  </children>
                               </StackPane>
                            </content>

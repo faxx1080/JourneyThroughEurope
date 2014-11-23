@@ -13,6 +13,7 @@ import java.util.List;
  * @author Frank
  */
 public class Player {
+    
     private String name;
     private boolean isCPU;
     private City homeCity;
@@ -31,6 +32,7 @@ public class Player {
     public String getName() {
         return name;
     }
+    
 
     public boolean isIsCPU() {
         return isCPU;

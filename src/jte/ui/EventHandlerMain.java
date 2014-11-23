@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import jte.JTEPropertyType;
@@ -61,6 +62,25 @@ public class EventHandlerMain {
         ui.setMouseCoordsText(out);
     }
     
+    /*
+    ImgView < AnchorPane with Pl icons
+    Property: lastClick.
+    playerHome, none.
+    Flow: V1: Click once on player icon
+    set lastClick playerHome
+    
+    Click on city
+    if lastclick none, exit
+    else, movePlayer clickCity
+    
+    
+    
+    */
+    public void playerImageClick(MouseEvent ev) {
+        
+        String s = ((ImageView) ev.getSource()).getId();
+        System.out.println(s);
+    }
     
     public void gameBoardClick(MouseEvent ev) {
         Point2D actualClick = new Point2D(ev.getX(),ev.getY());

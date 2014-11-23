@@ -116,12 +116,15 @@ public class EventHandlerPLSetup {
             //DialogCreator.showFXDialogFatal(RLoad.getString(JTEPropertyType.STR_ERROR_TEXT_IO), true);
         }
         
-        
-        
         Scene scene = new Scene(fxmlL.getRoot());
         Stage stageN = new Stage();
         stageN.setTitle(RLoad.getString(JTEResourceType.STR_JTE));
         stageN.setScene(scene);
+        
+        stageN.setOnShown(ev -> {
+            e.onShown();
+        });
+        
         stageN.show();
         stage.close();
         

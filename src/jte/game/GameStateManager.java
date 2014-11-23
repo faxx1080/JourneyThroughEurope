@@ -128,9 +128,9 @@ public class GameStateManager {
         if (gameState != GameState.NOT_STARTED) throw new IllegalStateException("Game already started.");
         cardLoading();
         currentPlayer = 0;
-        uiActivatePlayer(players.get(0));
+        //uiActivatePlayer(players.get(0));
         gameState = GameState.READY_ROLL;
-        // initGameplay(players.get(currentPlayer));
+        initGameplay(players.get(currentPlayer));
     }
     
     /*
@@ -163,6 +163,7 @@ public class GameStateManager {
             rolledSix = true;
         uiDiceRolled(movesLeft);
         gameState = GameState.INPUT_MOVE;
+        uiActivatePlayer(pl);
         // In UI: Draw lines.
     }
     
@@ -187,10 +188,11 @@ public class GameStateManager {
     
     private void movePlayerInternal(City moveTo) {
         City currLoc = players.get(currentPlayer).getCurrentCity();
+        Player cp = players.get(currentPlayer);
         // TODO Check card instructions
         List<City> nearby = getCityNeigh(currLoc);
+        boolean noRemove = false;
         if (nearby.contains(moveTo)) {
-            // GOOD. Move!
             players.get(currentPlayer).setCurrentCity(moveTo);
             getCurrentPlayer().getCitiesVisited().add(moveTo);
             uiMovePlayer(moveTo, players.get(currentPlayer));
@@ -217,15 +219,20 @@ public class GameStateManager {
      * @return 
      */
     private boolean checkPlayerStats() {
+        Player cp = getCurrentPlayer();
         int index = getCurrentPlayer().getCards().indexOf(getCurrentPlayer().getCurrentCity());
         if (index > 0) {
-            //found and remove
+            // remove only if not last city
+            if (cp.getCards().size() > 1) {
+                // cannot remove first card
+                if (cp.getHomeCity().equals(cp.getCurrentCity())) {
+                    return false;
+                }
+            }
             City cardRemove = getCurrentPlayer().getCards().get(index);
             getCurrentPlayer().getCards().remove(index);
             uiAnimateCardOut(cardRemove, getCurrentPlayer());
-            index  = -1;
-            movesLeft = 0;
-            return true;
+            return false;
         }
         if (index < 0) {
             if (getCurrentPlayer().getCards().isEmpty() && getCurrentPlayer().getCurrentCity().equals(getCurrentPlayer().getHomeCity())) {
@@ -258,7 +265,7 @@ public class GameStateManager {
     }
     
     private void uiActivatePlayer(Player pl) {
-        
+        ui.activatePlayer(getPlayerNum(pl));
     }
     
     private void uiMovePlayer(City toCity, Player pl) {
