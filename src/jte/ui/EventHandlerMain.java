@@ -7,12 +7,14 @@ package jte.ui;
 
 import java.io.IOException;
 import java.util.ResourceBundle;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import jte.JTEPropertyType;
 import jte.JTEResourceType;
 import jte.fxml.FXMLFiles;
@@ -40,6 +42,7 @@ public class EventHandlerMain {
         } else {
             ui.setTxtOutput("No city.");
         }
+        
     }
     
     public void debugGameBoardMMove(MouseEvent ev) {
@@ -78,18 +81,14 @@ public class EventHandlerMain {
     */
     public void playerImageClick(MouseEvent ev) {
         
-        String s = ((ImageView) ev.getSource()).getId();
-        System.out.println(s);
     }
     
     public void gameBoardClick(MouseEvent ev) {
         Point2D actualClick = new Point2D(ev.getX(),ev.getY());
         City foundCity = ui.getGSM().getCityFromCoord(actualClick, null);
         if (foundCity != null) {
-            ui.getGSM().getLog().appendText(foundCity.getName());
-            ui.setTxtOutput(foundCity.getName() + "\n" + foundCity.getDesc());
+            ui.getGSM().movePlayer(foundCity);
         } else {
-            ui.setTxtOutput("No city.");
         }
     }
     

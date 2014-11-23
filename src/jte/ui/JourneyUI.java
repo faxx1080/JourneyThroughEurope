@@ -8,6 +8,8 @@ package jte.ui;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
@@ -25,11 +27,16 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import jte.JTEPropertyType;
+import jte.JTEResourceType;
 import jte.game.City;
 import jte.game.GameStateManager;
 import jte.game.Player;
+import jte.util.RLoad;
 import properties_manager.PropertiesManager;
 
 /**
@@ -85,11 +92,19 @@ public class JourneyUI implements Initializable {
     private Accordion plCardsAcc;
     @FXML
     private ImageView gameboardImg;
+    @FXML
+    private Label lblTopMsg;
     
     private GameStateManager gsm;
     private final EventHandlerMain eventhdr;
     private final ErrorHandler errhdr;
     private JourneyUIHelper juiHelper;
+    
+    private int plLocXOff;
+    private int plLocYOff;
+    private int durationMili;
+    
+    private Point2D plLocOff;
     
     // Player Home Spots
     protected ImageView[] plh;
@@ -99,6 +114,9 @@ public class JourneyUI implements Initializable {
     
     //Player cards
     private List<List<ImageView>> plCardSmall;
+    
+    private UIState state = UIState.NO_CLICK;
+    
     
     // </editor-fold>
     
@@ -113,6 +131,14 @@ public class JourneyUI implements Initializable {
     
     protected GameStateManager getGSM() {
         return gsm;
+    }
+    
+    protected UIState getState() {
+        return state;
+    }
+    
+    protected void setState(UIState state) {
+        this.state = state;
     }
     
     /**
@@ -138,7 +164,12 @@ public class JourneyUI implements Initializable {
         plh = new ImageView[gsm.getNumPlayers()];
         plloc = new ImageView[gsm.getNumPlayers()];
         
-        //gsm.initGameAndCards();
+        PropertiesManager props = properties_manager.PropertiesManager.getPropertiesManager();
+        plLocXOff = Integer.parseInt(props.getProperty(JTEPropertyType.IMG_PLLOC_XOFF));
+        plLocXOff = Integer.parseInt(props.getProperty(JTEPropertyType.IMG_PLLOC_YOFF));
+        durationMili = Integer.parseInt(props.getProperty(JTEPropertyType.ANIM_DURATION));
+        
+        plLocOff = new Point2D(plLocXOff, plLocYOff);
     }
     
     public void onShown() {
@@ -276,7 +307,10 @@ public class JourneyUI implements Initializable {
         xoff = Integer.parseInt(props.getProperty(JTEPropertyType.IMG_PLLOC_XOFF));
         yoff = Integer.parseInt(props.getProperty(JTEPropertyType.IMG_PLLOC_YOFF));
         
-        plImgL.relocate(plPos.getX() + xoff, plPos.getY() + yoff);
+        plImgL.setTranslateX(plPos.getX() + xoff);
+        plImgL.setTranslateY(plPos.getY() + yoff);
+        
+        //plImgL.relocate(plPos.getX() + xoff, plPos.getY() + yoff);
         plImgL.setOnMouseClicked(e -> {
             eventhdr.playerImageClick(e);
         });
@@ -323,10 +357,91 @@ public class JourneyUI implements Initializable {
         double x = gameboardImg.getImage().getWidth();
         scp.setHvalue(locPl.getX() / x);
         scp.setVvalue(locPl.getY() / y);
+        lblTopMsg.setText(getGSM().getCurrentPlayer().getName() + " "+ RLoad.getString(JTEResourceType.STR_GO) + " " + gsm.getMovesLeft()
+        + " "+ RLoad.getString(JTEResourceType.STR_MOVELEFT));
+        // Clear all lines
+        ancDrawStuffHere.getChildren().clear();
+        //Add new lines
+        Point2D home = gsm.getCurrentPlayer().getCurrentCity().getCoord();
+        Point2D next;
+        List<City> cityLand = gsm.getCityNeigh(gsm.getCurrentPlayer().getCurrentCity());
+        List<City> citySea  = gsm.getCityNeighSea(gsm.getCurrentPlayer().getCurrentCity());
+        for (City c: cityLand) {
+            next = c.getCoord();
+            Line l = new Line();
+            l.setStartX(home.getX());
+            l.setStartY(home.getY());
+            l.setEndX(next.getX());
+            l.setEndY(next.getY());
+            l.setStroke(Color.RED);
+            ancDrawStuffHere.getChildren().add(l);
+        }
+        for (City c: citySea) {
+            next = c.getCoord();
+            Line l = new Line();
+            l.setStartX(home.getX());
+            l.setStartY(home.getY());
+            l.setEndX(next.getX());
+            l.setEndY(next.getY());
+            l.setStroke(Color.BLUE);
+            ancDrawStuffHere.getChildren().add(l);
+        }
+        
     }
     
-    @FXML
-    private void temp(ScrollEvent x) {
+    /**
+     * For current player
+     * @return 
+     */
+    private Point2D getPlayerCoord() {
+        return getPlayerCoord(getGSM().getCurrentPlayer());
     }
+    
+    private Point2D getPlayerCoord(Player pl) {
+        return pl.getCurrentCity().getCoord().add(plLocOff);
+    }
+    
+    /**
+     * For current player
+     * @param pl
+     * @param cityNew
+     * @param cityOld 
+     */
+    public void movePlayerUI(City cityNew, City cityOld) {
+        Point2D cityNewC = cityNew.getCoord();
+        Point2D cityOldC = cityOld.getCoord();
+        int pl = gsm.getPlayerNum(gsm.getCurrentPlayer());
+        ImageView plImg = plloc[pl];
+        // plImgLoc: (0,0)+(xoff,yoff)
+        // 
+        
+        Point2D start = cityOldC.add(plLocOff);
+        Point2D end = cityNewC.add(plLocOff);
+        Point2D diff = end.subtract(start);
+        // Start loc: cityOld.getCoord + (xoff, yoff)
+        // End loc: cityNew.getCoord + (xoff, yoff)
+        TranslateTransition movePlTrans = new TranslateTransition(Duration.millis(durationMili), plImg);
+        movePlTrans.setByX(diff.getX());
+        movePlTrans.setByY(diff.getY());
+        
+        
+        // Timeline scrollT = ScrollTransition.getTimeline(scp, Duration.millis(durationMili), 0, 0);
+        
+        
+        movePlTrans.play();
+        
+    }
+    
+    private void scrollTo() {}
+    
+    private void endMovePlayerUI() {
+        
+    }
+
+    enum UIState {
+        NO_CLICK, CLICK_PLAYER;
+    }
+    
+    
     
 }

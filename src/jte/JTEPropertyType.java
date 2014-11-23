@@ -44,5 +44,8 @@ public enum JTEPropertyType {
        IMG_CDINST_GR,
        IMG_CDINST_YE,IMG_PREFIX_DICE,
     
+       
+    // Anim
+       ANIM_DURATION,
     noothing;
 }

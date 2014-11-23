@@ -151,6 +151,10 @@ public class GameStateManager {
         initGameplay(players.get(currentPlayer));
     }
     
+    public int getMovesLeft() {
+        return movesLeft;
+    }
+    
     
     /**
      * Rolls dice for player.
@@ -181,8 +185,9 @@ public class GameStateManager {
             gameState = GameState.READY_ROLL;
         } else if (movesLeft == 0) {
             currentPlayer = (currentPlayer + 1) % players.size();
-            uiActivatePlayer(getCurrentPlayer());
+            
         }
+        uiActivatePlayer(getCurrentPlayer());
         
     }
     
@@ -193,9 +198,10 @@ public class GameStateManager {
         List<City> nearby = getCityNeigh(currLoc);
         boolean noRemove = false;
         if (nearby.contains(moveTo)) {
+            //City moveFrom = getCurrentPlayer().getCurrentCity();
             players.get(currentPlayer).setCurrentCity(moveTo);
             getCurrentPlayer().getCitiesVisited().add(moveTo);
-            uiMovePlayer(moveTo, players.get(currentPlayer));
+            uiMovePlayer(currLoc, moveTo, players.get(currentPlayer));
             if (checkPlayerStats()) return;
             movesLeft--;
         } else if (getCityNeighSea(currLoc).contains(moveTo)) {
@@ -204,9 +210,10 @@ public class GameStateManager {
                 currentMessage = RLoad.getString(JTEResourceType.STR_NOSWIM);
                 return;
             }
+            //City moveFrom = getCurrentPlayer().getCurrentCity();
             players.get(currentPlayer).setCurrentCity(moveTo);
             getCurrentPlayer().getCitiesVisited().add(moveTo);
-            uiMovePlayer(moveTo, players.get(currentPlayer));
+            uiMovePlayer(currLoc, moveTo, players.get(currentPlayer));
             if (checkPlayerStats()) return;
             movesLeft = 0;
         }
@@ -268,8 +275,8 @@ public class GameStateManager {
         ui.activatePlayer(getPlayerNum(pl));
     }
     
-    private void uiMovePlayer(City toCity, Player pl) {
-        
+    private void uiMovePlayer(City fromCity, City toCity, Player pl) {
+        ui.movePlayerUI(toCity, fromCity);
     }
     
     private void uiWinGame(Player pl) {
@@ -365,8 +372,23 @@ public class GameStateManager {
         return players.get(playerNumber-1).getName();
     }
     
+    /**
+     * Zero based
+     * @param pl
+     * @return
+     * @throws IndexOutOfBoundsException 
+     */
     public int getPlayerNum(Player pl) throws IndexOutOfBoundsException {
         return players.indexOf(pl);
+    }
+    
+    /**
+     * Zero based.
+     * @param pl
+     * @return 
+     */
+    public Player getPlayerObject(int pl) {
+        return players.get(pl);
     }
     
     /**
