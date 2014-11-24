@@ -111,25 +111,32 @@ public class CityRouteLoader {
             
             int currentID = Integer.parseInt(cityID.getTextContent());
             
-            Node cityLandNode = xmlUtil.getChildNodeWithName(city, props.getProperty(XML_RTLAND));
-            Node citySeaNode = xmlUtil.getChildNodeWithName(city, props.getProperty(XML_RTSEA));
-            
-            ArrayList<Node> landRts = xmlUtil.getChildNodesWithName(cityLandNode, props.getProperty(XML_RTID));
-            ArrayList<Node> seaRts = xmlUtil.getChildNodesWithName(citySeaNode, props.getProperty(XML_RTID));
-            
-            ArrayList<City> landCit = new ArrayList<>();
-            ArrayList<City> seaCit = new ArrayList<>();
-            
-            for(Node l: landRts) {
-                landCit.add(lookupCity(Integer.parseInt(l.getTextContent())));
+            try {
+                Node cityLandNode = xmlUtil.getChildNodeWithName(city, props.getProperty(XML_RTLAND));
+                ArrayList<Node> landRts = xmlUtil.getChildNodesWithName(cityLandNode, props.getProperty(XML_RTID));
+                ArrayList<City> landCit = new ArrayList<>();
+                
+                for (Node l : landRts) {
+                    landCit.add(lookupCity(Integer.parseInt(l.getTextContent())));
+                }
+                neigh.put(currentID, landCit);
+            } catch (DOMException dOMException) {
+            } catch (NumberFormatException numberFormatException) {
             }
-            neigh.put(currentID, landCit);
+
             
-            
-            for(Node l: seaRts) {
-                seaCit.add(lookupCity(Integer.parseInt(l.getTextContent())));
+            try {
+                Node citySeaNode = xmlUtil.getChildNodeWithName(city, props.getProperty(XML_RTSEA));
+                ArrayList<Node> seaRts = xmlUtil.getChildNodesWithName(citySeaNode, props.getProperty(XML_RTID));
+                ArrayList<City> seaCit = new ArrayList<>();
+                
+                for (Node l : seaRts) {
+                    seaCit.add(lookupCity(Integer.parseInt(l.getTextContent())));
+                }
+                neighSea.put(currentID, seaCit);
+            } catch (DOMException dOMException) {
+            } catch (NumberFormatException numberFormatException) {
             }
-            neighSea.put(currentID, seaCit);
         }
         
     }
