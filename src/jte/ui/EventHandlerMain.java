@@ -19,6 +19,7 @@ import jte.JTEPropertyType;
 import jte.JTEResourceType;
 import jte.fxml.FXMLFiles;
 import jte.game.City;
+import jte.game.Player;
 import jte.util.RLoad;
 import properties_manager.PropertiesManager;
 
@@ -106,7 +107,7 @@ public class EventHandlerMain {
         
         City foundCity = ui.getGSM().getCityFromCoord(actualClick, dist);
         if (foundCity != null) {
-            out += "\n" + String.format("%.2f",dist[0]) +  "\n" + foundCity.getName();
+            out += "\n" + String.format("%.2f",dist[0]) +  "\n" + foundCity.getName() + "\n" + foundCity.getId();
         }
         
         ui.setMouseCoordsText(out);
@@ -157,13 +158,14 @@ public class EventHandlerMain {
         
     }
 
-    public void winClick() {
+    public void winClick(Player pl) {
         String resPath
                 = PropertiesManager.getPropertiesManager().getProperty(JTEPropertyType.RESOURCE_LOCATION);
 
         ResourceBundle rb = ResourceBundle.getBundle(resPath);
 
-        DialogCreator.showFXDialogMessage(rb.getString(JTEResourceType.STR_WIN_TITLE.toString()),rb.getString(JTEResourceType.STR_WIN.toString()));
+        DialogCreator.showFXDialogMessage(rb.getString(JTEResourceType.STR_WIN_TITLE.toString())
+                , pl.getName() + rb.getString(JTEResourceType.STR_WIN.toString()));
 
         PropertiesManager props = PropertiesManager.getPropertiesManager();
 

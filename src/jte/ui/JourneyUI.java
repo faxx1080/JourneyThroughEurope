@@ -19,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -117,7 +118,6 @@ public class JourneyUI implements Initializable {
     
     private UIState state = UIState.NO_CLICK;
     
-    
     // </editor-fold>
     
     public JourneyUI() {
@@ -214,12 +214,6 @@ public class JourneyUI implements Initializable {
     private void flyClick(MouseEvent event) {
         eventhdr.flyClick();
     }
-
-    @FXML
-    private void winClick(MouseEvent event) {
-        eventhdr.winClick();
-        ((Stage) root.getScene().getWindow()).close();
-    }
     
     public ErrorHandler getErrorHDR() {
         return errhdr;
@@ -268,6 +262,21 @@ public class JourneyUI implements Initializable {
         toAdd.setFitWidth(200);
         toAdd.setPreserveRatio(true);
         vb.getChildren().add(toAdd);
+        
+        // Animation time!
+        //toAdd.setVisible(false);
+        Point2D end = toAdd.localToScene(0, 0);
+        Point2D start = new Point2D(300, 300);
+        
+        TranslateTransition moveCd = new TranslateTransition(Duration.millis(durationMili));
+        
+        ancDrawCardsAnim.getChildren().add(toAdd);
+        moveCd.setFromX(start.getX());
+        moveCd.setFromY(start.getY());
+        moveCd.setToX(end.getX());
+        moveCd.setToY(end.getY());
+        moveCd.setOnFinished(e -> {});
+        moveCd.play();
     }
 
     /**
@@ -275,9 +284,11 @@ public class JourneyUI implements Initializable {
      * @param plNum
      * @param card 
      */
-    public void removeCard(int plNum, City card) {
-        ImageView x;
+    public void removeCard(int plNum, City card, int originalIndex) {
         
+        // Precondition: Cards added in order same as cards in player object.
+        VBox box = getVBoxPl(plNum);
+        box.getChildren().remove(originalIndex);
     }
     
     // Events from GSM
@@ -322,6 +333,33 @@ public class JourneyUI implements Initializable {
         imgDice.setImage(dice);
     }
     
+    private VBox getVBoxPl(int pl) {
+        VBox tp;
+        switch (pl) {
+            case 0:
+                tp = pl1Cards;
+                break;
+            case 1:
+                tp = pl2Cards;
+                break;
+            case 2:
+                tp = pl3Cards;
+                break;
+            case 3:
+                tp = pl4Cards;
+                break;
+            case 4:
+                tp = pl5Cards;
+                break;
+            case 5:
+                tp = pl6Cards;
+                break;
+            default:
+                return null;
+        }
+        return tp;
+    }
+    
     private TitledPane getTiledPanePl(int pl) {
         TitledPane tp;
         switch (pl) {
@@ -349,7 +387,7 @@ public class JourneyUI implements Initializable {
         return tp;
     }
     
-    public void activatePlayer(int pl) {
+    public void activatePlayer(int pl, boolean firstMove) {
         plCardsAcc.setExpandedPane(getTiledPanePl(pl));
         // Scrolling
         Point2D locPl = getGSM().getCurrentPlayer().getCurrentCity().getCoord();
@@ -374,8 +412,10 @@ public class JourneyUI implements Initializable {
             l.setEndX(next.getX());
             l.setEndY(next.getY());
             l.setStroke(Color.RED);
+            l.setStrokeWidth(2);
             ancDrawStuffHere.getChildren().add(l);
         }
+        if (!firstMove) return;
         for (City c: citySea) {
             next = c.getCoord();
             Line l = new Line();
@@ -384,9 +424,15 @@ public class JourneyUI implements Initializable {
             l.setEndX(next.getX());
             l.setEndY(next.getY());
             l.setStroke(Color.BLUE);
+            l.setStrokeWidth(2);
             ancDrawStuffHere.getChildren().add(l);
         }
         
+    }
+    
+    public void uiWinGame(Player pl) {
+        eventhdr.winClick(pl);
+        ((Stage) root.getScene().getWindow()).close();
     }
     
     /**
@@ -427,14 +473,13 @@ public class JourneyUI implements Initializable {
         
         // Timeline scrollT = ScrollTransition.getTimeline(scp, Duration.millis(durationMili), 0, 0);
         
+        movePlTrans.setOnFinished(e -> {
+            ancDrawPlayersHere.setMouseTransparent(false);        
+        });
+        
+        ancDrawPlayersHere.setMouseTransparent(true);
         
         movePlTrans.play();
-        
-    }
-    
-    private void scrollTo() {}
-    
-    private void endMovePlayerUI() {
         
     }
 

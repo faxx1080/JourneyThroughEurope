@@ -15,7 +15,6 @@ import javafx.stage.Stage;
 import jte.fxml.FXMLFiles;
 import jte.util.RLoad;
 import properties_manager.PropertiesManager;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  *
@@ -58,12 +57,12 @@ public class EventHandlerSplash {
     }
     
     public void splashGameLoad() {
-        throw new NotImplementedException();
-    }
-    
-    public void allQuit() {
         
     }
+    
+//    public void allQuit() {
+//        
+//    }
     
     public void allQuit(Stage stage) {
 //        ResourceBundle rb = ResourceBundle.getBundle("stringsLocalized");
