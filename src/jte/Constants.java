@@ -14,5 +14,6 @@ public class Constants {
     public static final String UI_PROPERTIES_FILE_NAME = "properties.xml";
 	public static final String PROPERTIES_SCHEMA_FILE_NAME = "properties_schema.xsd";
 	public static final String DATA_PATH = "./data/";
+    public static boolean DEBUG;
 
 }
