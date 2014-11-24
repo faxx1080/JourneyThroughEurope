@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
+import jte.Constants;
 import jte.file.CityLoader;
 import properties_manager.PropertiesManager;
 import static jte.JTEPropertyType.*;
@@ -38,7 +39,7 @@ public class GameStateManager {
     public int NUM_CARDS;
     public double CITY_RADIUS;
     public int MAGIC_ROLL_AGAIN = 6;
-    
+        
     private GameState gameState = GameState.NOT_STARTED;
     
     private static final PropertiesManager props = PropertiesManager.getPropertiesManager();
@@ -70,7 +71,7 @@ public class GameStateManager {
     
     // Store because instructions say so.
     private City nextRedCard;
-    
+        
     private Map<Integer, City> cityToID;
     private CityGraph cityNeigh;
     private JTELog logger;
@@ -167,8 +168,7 @@ public class GameStateManager {
             rolledSix = true;
         uiDiceRolled(movesLeft);
         gameState = GameState.INPUT_MOVE;
-        uiActivatePlayer(pl);
-        // In UI: Draw lines.
+        uiActivatePlayer(pl, true);
     }
     
     
@@ -176,19 +176,27 @@ public class GameStateManager {
      * Called by the UI when a player moves, passing in the city moved to.
      */
     public void movePlayer(City moveTo) {
+        //movesLeft = 2;
         if (!(gameState == GameState.INPUT_MOVE)) {
             // Fail.
             return;
         }
         movePlayerInternal(moveTo);
+        if (gameState == GameState.GAME_OVER) {return;}
         if ((movesLeft == 0) && (rolledSix)) {
+            rolledSix = false;
             gameState = GameState.READY_ROLL;
+            initGameplay(getCurrentPlayer());
         } else if (movesLeft == 0) {
             currentPlayer = (currentPlayer + 1) % players.size();
-            
-        }
-        uiActivatePlayer(getCurrentPlayer());
-        
+            initGameplay(getCurrentPlayer());
+        } else {
+        uiActivatePlayer(getCurrentPlayer(), false); }
+    }
+    
+    public boolean isFirstMove(){
+        //return true;
+        return dice.getRoll()==getMovesLeft();
     }
     
     private void movePlayerInternal(City moveTo) {
@@ -196,7 +204,6 @@ public class GameStateManager {
         Player cp = players.get(currentPlayer);
         // TODO Check card instructions
         List<City> nearby = getCityNeigh(currLoc);
-        boolean noRemove = false;
         if (nearby.contains(moveTo)) {
             //City moveFrom = getCurrentPlayer().getCurrentCity();
             players.get(currentPlayer).setCurrentCity(moveTo);
@@ -205,7 +212,7 @@ public class GameStateManager {
             if (checkPlayerStats()) return;
             movesLeft--;
         } else if (getCityNeighSea(currLoc).contains(moveTo)) {
-            if (!(movesLeft == dice.getRoll())) {
+            if (!isFirstMove()) {
                 // Fail.
                 currentMessage = RLoad.getString(JTEResourceType.STR_NOSWIM);
                 return;
@@ -238,11 +245,11 @@ public class GameStateManager {
             }
             City cardRemove = getCurrentPlayer().getCards().get(index);
             getCurrentPlayer().getCards().remove(index);
-            uiAnimateCardOut(cardRemove, getCurrentPlayer());
+            uiAnimateCardOut(cardRemove, getCurrentPlayer(), index);
             return false;
         }
-        if (index < 0) {
-            if (getCurrentPlayer().getCards().isEmpty() && getCurrentPlayer().getCurrentCity().equals(getCurrentPlayer().getHomeCity())) {
+        if (index == 0) { // Last card!
+            if ( getCurrentPlayer().getCurrentCity().equals(getCurrentPlayer().getHomeCity())) {
                 gameState = GameState.GAME_OVER;
                 uiWinGame(getCurrentPlayer());
                 return true;
@@ -267,12 +274,12 @@ public class GameStateManager {
         ui.addCard(getPlayerNum(pl), city);
     }
     
-    private void uiAnimateCardOut(City city, Player pl) {
-        ui.removeCard(getPlayerNum(pl), city);
+    private void uiAnimateCardOut(City city, Player pl, int originalInd) {
+        ui.removeCard(getPlayerNum(pl), city, originalInd);
     }
     
-    private void uiActivatePlayer(Player pl) {
-        ui.activatePlayer(getPlayerNum(pl));
+    private void uiActivatePlayer(Player pl, boolean firstMove) {
+        ui.activatePlayer(getPlayerNum(pl), firstMove);
     }
     
     private void uiMovePlayer(City fromCity, City toCity, Player pl) {
@@ -280,10 +287,11 @@ public class GameStateManager {
     }
     
     private void uiWinGame(Player pl) {
-        
+        ui.uiWinGame(pl);
     }
      
     // UI Methods End
+    
     
     
     /**
@@ -295,6 +303,7 @@ public class GameStateManager {
         // build list out with 180 ints, 0-179
         
         for (int i = 0; i < cityToID.size(); i++) {
+            if (i == 161) continue; //TODO Tirane has no exits!
             cardsDealt.add(i);
         }
         
@@ -321,7 +330,7 @@ public class GameStateManager {
         for (int j = NUM_CARDS; j > 0; j--) {
             
             for (int i = 0; i < players.size(); i++) {
-                
+                if (Constants.DEBUG && (i == 0)) {continue;} // Ignore pl 1 if testing,
                 iterat = 0;  lastID = -1;
                 
                 Player p = players.get(i);
@@ -349,6 +358,18 @@ public class GameStateManager {
             offset++;
         }
         
+        if (Constants.DEBUG) {
+            Player p = new Player("P1Cheat", false);
+            players.set(0, p);
+            p.addCard(cityToID.get(0));
+            p.setCurrentCity(cityToID.get(0));
+            p.setHomeCity(cityToID.get(0));
+            p.getCitiesVisited().add(cityToID.get(0));
+            uiInitPlayer(p);
+            uiAnimateCard(cityToID.get(0), p);
+            p.addCard(cityToID.get(80));
+            uiAnimateCard(cityToID.get(80), p);
+        }
         
         //buffer next red
         iterat = 0;  lastID = -1;
