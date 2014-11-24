@@ -55,7 +55,6 @@
 		<land>
 			<id>167</id>
 			<id>158</id>
-			<id>139</id>
 		</land>
 		<sea/>
 	</city>
@@ -70,6 +69,7 @@
 	<city>
 		<id>60</id>
 		<land>
+			<id>61</id>
 			<id>3</id>
             <id>23</id>
 		</land>
@@ -121,7 +121,7 @@
 		<id>90</id>
 		<land>
 			<id>74</id>
-			<id>61</id>
+			<id>23</id>
 		</land>
 		<sea>
 			<id>152</id>
@@ -192,7 +192,7 @@
 		</land>
 		<sea>
 			<id>14</id>
-			<id>61</id>
+			<id>23</id>
 		</sea>
 	</city>
 	<city>
@@ -248,7 +248,6 @@
 	<city>
 		<id>155</id>
 		<land>
-			<id>163</id>
 			<id>91</id>
 			<id>52</id>
 		</land>
@@ -463,7 +462,7 @@
 			<id>114</id>
 		</land>
 		<sea>
-			<id>90</id>
+			<id>71</id>
 			<id>64</id>
 		</sea>
 	</city>
@@ -476,9 +475,7 @@
 			<id>90</id>
             <id>71</id>
 		</land>
-		<sea>
-			<id>111</id>
-		</sea>
+		<sea/>
 	</city>
 	<city>
 		<id>118</id>
@@ -1053,14 +1050,12 @@
 	<city>
 		<id>31</id>
 		<land>
-			<id>29</id>
-			<id>177</id>
-			<id>143</id>
-			<id>113</id>
+			<id>144</id>
 		</land>
 		<sea>
-			<id>120</id>
-		</sea>
+            <id>108</id>
+            <id>120</id>
+        </sea>
 	</city>
 	<city>
 		<id>49</id>
@@ -1247,7 +1242,6 @@
 		<land>
 			<id>172</id>
 			<id>51</id>
-			<id>35</id>
 		</land>
 		<sea>
 			<id>39</id>
@@ -1552,7 +1546,7 @@
 		<id>20</id>
 		<land>
 			<id>65</id>
-			<id>19</id>
+			<id>20</id>
 		</land>
 		<sea/>
 	</city>

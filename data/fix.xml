@@ -1,0 +1,196 @@
+<routes>
+	<city>
+		<name>61</name>
+		<land>
+			<city>23</city>
+			<city>63</city>
+			<city>71</city>
+			<city>90</city>
+			<city>15</city>
+		</land>
+		<sea>
+			<city>111</city>
+		</sea>
+	</city>
+
+	<city>
+		<name>23</name>
+		<land>
+			<city>75</city>
+			<city>63</city>
+			<city>61</city>
+			<city>60</city>
+		</land>
+		<sea>
+		</sea>
+	</city>
+
+
+	<city>
+		<name>152</name>
+		<land>
+			<city>52</city>
+			<city>69</city>
+			<city>114</city>
+		</land>
+		<sea>
+			<city>90</city>
+			<city>64</city>
+		</sea>
+	</city>
+
+
+	<city>
+		<name>48</name>
+		<land>
+		</land>
+		<sea>
+			<city>134</city>
+			<city>146</city>
+			<city>74</city>
+		</sea>
+	</city>
+
+
+	<city>
+		<name>119</name>
+		<land>
+			<city>167</city>
+			<city>139</city>
+			<city>158</city>
+		</land>
+		<sea>
+		</sea>
+	</city>
+
+
+	<city>
+		<name>75</name>
+		<land>
+			<city>23</city>
+			<city>3</city>
+			<city>27</city>
+			<city>92</city>
+			<city>50</city>
+			<city>70</city>
+		</land>
+		<sea>
+		</sea>
+	</city>
+
+
+	<city>
+		<name>154</name>
+		<land>
+			<city>50</city>
+			<city>153</city>
+			<city>105</city>
+		</land>
+		<sea>
+		</sea>
+	</city>
+
+	<city>
+		<name>155</name>
+		<land>
+			<city>163</city>
+			<city>91</city>
+			<city>52</city>
+		</land>
+		<sea>
+		</sea>
+	</city>
+
+	<city>
+		<name>111</name>
+		<land>
+			<city>56</city>
+			<city>80</city>
+		</land>
+		<sea>
+			<city>14</city>
+			<city>61</city>
+		</sea>
+	</city>
+
+
+	<city>
+		<name>36</name>
+		<land>
+			<city>84</city>
+			<city>94</city>
+			<city>109</city>
+			<city>122</city>
+		</land>
+		<sea>
+		</sea>
+	</city>
+
+	<city>
+		<name>20</name>
+		<land>
+			<city>65</city>
+			<city>19</city>
+		</land>
+		<sea>
+		</sea>
+	</city>
+
+	<city>
+		<name>116</name>
+		<land>
+			<city>35</city>
+			<city>172</city>
+			<city>51</city>
+		</land>
+		<sea>
+			<city>39</city>
+		</sea>
+	</city>
+
+	<city>
+		<name>31</name>
+		<land>
+			<city>29</city>
+			<city>177</city>
+			<city>143</city>
+			<city>113</city>
+		</land>
+		<sea>
+			<city>120</city>
+		</sea>
+	</city>
+	
+	<city>
+		<name>90</name>
+		<land>
+			<city>74</city>
+			<city>61</city>
+		</land>
+		<sea>
+			<city>152</city>
+		</sea>
+	</city>
+
+	<city>
+		<name>71</name>
+		<land>
+			<city>5</city>
+			<city>61</city>
+		</land>
+		<sea>
+		</sea>
+	</city>
+
+	<city>
+		<name>60</name>
+		<land>
+			<city>23</city>
+			<city>3</city>
+		</land>
+		<sea>
+		</sea>
+	</city>
+
+
+</routes>
