@@ -167,7 +167,7 @@ public class EventHandlerMain {
         ResourceBundle rb = ResourceBundle.getBundle(resPath);
 
         DialogCreator.showFXDialogMessage(rb.getString(JTEResourceType.STR_WIN_TITLE.toString())
-                , pl.getName() + rb.getString(JTEResourceType.STR_WIN.toString()));
+                , pl.getName() + " " + rb.getString(JTEResourceType.STR_WIN.toString()));
 
         PropertiesManager props = PropertiesManager.getPropertiesManager();
 
