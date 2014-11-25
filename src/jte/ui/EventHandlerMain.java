@@ -84,12 +84,14 @@ public class EventHandlerMain {
         
     }
     
-    public void gameBoardClick(MouseEvent ev) {
+    public boolean gameBoardClick(MouseEvent ev) {
         Point2D actualClick = new Point2D(ev.getX(),ev.getY());
         City foundCity = ui.getGSM().getCityFromCoord(actualClick, null);
         if (foundCity != null) {
             ui.getGSM().movePlayer(foundCity);
+            return true;
         } else {
+            return false;
         }
     }
     

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
@@ -22,6 +23,7 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
@@ -265,18 +267,18 @@ public class JourneyUI implements Initializable {
         
         // Animation time!
         //toAdd.setVisible(false);
-        Point2D end = toAdd.localToScene(0, 0);
-        Point2D start = new Point2D(300, 300);
-        
-        TranslateTransition moveCd = new TranslateTransition(Duration.millis(durationMili));
-        
-        ancDrawCardsAnim.getChildren().add(toAdd);
-        moveCd.setFromX(start.getX());
-        moveCd.setFromY(start.getY());
-        moveCd.setToX(end.getX());
-        moveCd.setToY(end.getY());
-        moveCd.setOnFinished(e -> {});
-        moveCd.play();
+//        Point2D end = toAdd.localToScene(0, 0);
+//        Point2D start = new Point2D(300, 300);
+//        
+//        TranslateTransition moveCd = new TranslateTransition(Duration.millis(durationMili));
+//        
+//        ancDrawCardsAnim.getChildren().add(toAdd);
+//        moveCd.setFromX(start.getX());
+//        moveCd.setFromY(start.getY());
+//        moveCd.setToX(end.getX());
+//        moveCd.setToY(end.getY());
+//        moveCd.setOnFinished(e -> {});
+//        moveCd.play();
     }
 
     /**
@@ -315,18 +317,53 @@ public class JourneyUI implements Initializable {
                 
         plImgV.relocate(plPos.getX() + xoff, plPos.getY() + yoff);
         
-        xoff = Integer.parseInt(props.getProperty(JTEPropertyType.IMG_PLLOC_XOFF));
-        yoff = Integer.parseInt(props.getProperty(JTEPropertyType.IMG_PLLOC_YOFF));
+        xoffLoc = Integer.parseInt(props.getProperty(JTEPropertyType.IMG_PLLOC_XOFF));
+        yoffLoc = Integer.parseInt(props.getProperty(JTEPropertyType.IMG_PLLOC_YOFF));
         
-        plImgL.setTranslateX(plPos.getX() + xoff);
-        plImgL.setTranslateY(plPos.getY() + yoff);
+        plImgL.setTranslateX(plPos.getX() + xoffLoc);
+        plImgL.setTranslateY(plPos.getY() + yoffLoc);
         
         //plImgL.relocate(plPos.getX() + xoff, plPos.getY() + yoff);
-        plImgL.setOnMouseClicked(e -> {
-            eventhdr.playerImageClick(e);
+        
+        // Make plImgL draggable.
+        
+        plImgL.setOnMouseDragged(ev -> {
+            if (!(gsm.getPlayerNum(gsm.getCurrentPlayer()) == num)) {return;}
+            Point2D pt = plImgL.localToParent(ev.getX() + xoffLoc, ev.getY() + yoffLoc);
+            
+            plImgL.setTranslateX(pt.getX());
+            plImgL.setTranslateY(pt.getY());
         });
 
+        plImgL.setOnMouseReleased(ev -> {
+            if (!(gsm.getPlayerNum(gsm.getCurrentPlayer()) == num)) {return;}
+            
+            Point2D pt = plImgL.localToParent(ev.getX() + xoffLoc, ev.getY() + yoffLoc);
+            Point2D pt2 = pt.subtract(xoffLoc, yoffLoc);
+            City foundCity = getGSM().getCityFromCoord(pt2, null);
+
+            if (foundCity == null) {
+                plImgL.setTranslateX(getGSM().getCurrentPlayer().getCurrentCity().getCoord().getX() + xoffLoc);
+                plImgL.setTranslateY(getGSM().getCurrentPlayer().getCurrentCity().getCoord().getY() + yoffLoc);
+                return;
+            }
+
+            noAnimatePlayer = true;
+            ev = new MouseEvent(null, pt2.getX(), pt2.getY(), 0, 0, null, 0,
+                    noAnimatePlayer, noAnimatePlayer, noAnimatePlayer, noAnimatePlayer,
+                    noAnimatePlayer, noAnimatePlayer, noAnimatePlayer, noAnimatePlayer, noAnimatePlayer, noAnimatePlayer, null);
+            // We only care about x and y.
+            eventhdr.gameBoardClick(ev);
+            plImgL.setTranslateX(getGSM().getCurrentPlayer().getCurrentCity().getCoord().getX() + xoffLoc);
+            plImgL.setTranslateY(getGSM().getCurrentPlayer().getCurrentCity().getCoord().getY() + yoffLoc);
+        });
+        
     }
+    
+    private boolean noAnimatePlayer;
+    private int xoffLoc;
+    private int yoffLoc;
+    
     
     public void setDice(int diceRoll) {
         Image dice = juiHelper.loadDice(diceRoll);
@@ -454,32 +491,35 @@ public class JourneyUI implements Initializable {
      * @param cityOld 
      */
     public void movePlayerUI(City cityNew, City cityOld) {
-        Point2D cityNewC = cityNew.getCoord();
-        Point2D cityOldC = cityOld.getCoord();
-        int pl = gsm.getPlayerNum(gsm.getCurrentPlayer());
-        ImageView plImg = plloc[pl];
-        // plImgLoc: (0,0)+(xoff,yoff)
-        // 
-        
-        Point2D start = cityOldC.add(plLocOff);
-        Point2D end = cityNewC.add(plLocOff);
-        Point2D diff = end.subtract(start);
-        // Start loc: cityOld.getCoord + (xoff, yoff)
-        // End loc: cityNew.getCoord + (xoff, yoff)
-        TranslateTransition movePlTrans = new TranslateTransition(Duration.millis(durationMili), plImg);
-        movePlTrans.setByX(diff.getX());
-        movePlTrans.setByY(diff.getY());
-        
-        
-        // Timeline scrollT = ScrollTransition.getTimeline(scp, Duration.millis(durationMili), 0, 0);
-        
-        movePlTrans.setOnFinished(e -> {
-            ancDrawPlayersHere.setMouseTransparent(false);        
-        });
-        
-        ancDrawPlayersHere.setMouseTransparent(true);
-        
-        movePlTrans.play();
+        if (!noAnimatePlayer) {
+            Point2D cityNewC = cityNew.getCoord();
+            Point2D cityOldC = cityOld.getCoord();
+            int pl = gsm.getPlayerNum(gsm.getCurrentPlayer());
+            ImageView plImg = plloc[pl];
+            // plImgLoc: (0,0)+(xoff,yoff)
+            // 
+
+            Point2D start = cityOldC.add(plLocOff);
+            Point2D end = cityNewC.add(plLocOff);
+            Point2D diff = end.subtract(start);
+            // Start loc: cityOld.getCoord + (xoff, yoff)
+            // End loc: cityNew.getCoord + (xoff, yoff)
+            TranslateTransition movePlTrans = new TranslateTransition(Duration.millis(durationMili), plImg);
+            movePlTrans.setByX(diff.getX());
+            movePlTrans.setByY(diff.getY());
+
+
+            // Timeline scrollT = ScrollTransition.getTimeline(scp, Duration.millis(durationMili), 0, 0);
+
+            movePlTrans.setOnFinished(e -> {
+                ancDrawPlayersHere.setMouseTransparent(false);        
+            });
+
+            ancDrawPlayersHere.setMouseTransparent(true);
+
+            movePlTrans.play();
+        }
+        noAnimatePlayer = false;
         
     }
 
