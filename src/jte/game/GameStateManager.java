@@ -182,6 +182,27 @@ public class GameStateManager {
             return;
         }
         movePlayerInternal(moveTo);
+        
+        logger.clear();
+        StringBuilder log = new StringBuilder();
+        
+        
+        // Netbeans said so!
+        players.stream().map((p) -> {
+            log.append(p.getName());
+            log.append('\n');
+            return p;
+        }).forEach((p) -> {
+            for (int i = 0; i < p.getCitiesVisited().size(); i++) {
+                log.append((i+1));
+                log.append(" ");
+                log.append(p.getCitiesVisited().get(i));
+                log.append('\n');
+            }
+        });
+        
+        logger.appendText(log.toString());
+        
         if (gameState == GameState.GAME_OVER) {return;}
         if ((movesLeft == 0) && (rolledSix)) {
             rolledSix = false;
@@ -191,7 +212,7 @@ public class GameStateManager {
             currentPlayer = (currentPlayer + 1) % players.size();
             initGameplay(getCurrentPlayer());
         } else {
-        uiActivatePlayer(getCurrentPlayer(), false); }
+        uiActivatePlayer(getCurrentPlayer(), isFirstMove()); }
     }
     
     public boolean isFirstMove(){
@@ -249,7 +270,7 @@ public class GameStateManager {
             return false;
         }
         if (index == 0) { // Last card!
-            if ( getCurrentPlayer().getCurrentCity().equals(getCurrentPlayer().getHomeCity())) {
+            if (getCurrentPlayer().getCurrentCity().equals(getCurrentPlayer().getHomeCity()) && getCurrentPlayer().getCards().size() == 1) {
                 gameState = GameState.GAME_OVER;
                 uiWinGame(getCurrentPlayer());
                 return true;

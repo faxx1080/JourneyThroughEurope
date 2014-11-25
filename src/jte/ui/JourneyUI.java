@@ -228,30 +228,37 @@ public class JourneyUI implements Initializable {
      */
     public void addCard(int plNum, City card) {
         TitledPane tp; VBox vb;
+        Color col;
         switch (plNum) {
             case 0:
                 tp = pl1Title;
                 vb = pl1Cards;
+                col = Color.BLACK;
                 break;
             case 1:
                 tp = pl2Title;
                 vb = pl2Cards;
+                col = Color.BLUE;
                 break;
             case 2:
                 tp = pl3Title;
                 vb = pl3Cards;
+                col = Color.GREEN;
                 break;
             case 3:
                 tp = pl4Title;
                 vb = pl4Cards;
+                col = Color.RED;
                 break;
             case 4:
                 tp = pl5Title;
                 vb = pl5Cards;
+                col = Color.WHITE;
                 break;
             case 5:
                 tp = pl6Title;
                 vb = pl6Cards;
+                col = Color.YELLOW;
                 break;
             default:
                 return;
@@ -264,6 +271,44 @@ public class JourneyUI implements Initializable {
         toAdd.setFitWidth(200);
         toAdd.setPreserveRatio(true);
         vb.getChildren().add(toAdd);
+        toAdd.setOnMouseClicked(ev -> {
+            Point2D locPl = card.getCoord();
+            double y = gameboardImg.getImage().getHeight();
+            double x = gameboardImg.getImage().getWidth();
+            scp.setHvalue(locPl.getX() / x);
+            scp.setVvalue(locPl.getY() / y);
+        });
+        //Add x marks spot
+        Point2D cpt = card.getCoord();
+        
+        final double len = 10;
+        
+        
+        
+        Point2D cptMajT = cpt.add(-len,len);
+        Point2D cptMajB = cpt.add(len,-len);
+        Point2D cptMinT = cpt.add(len,len);
+        Point2D cptMinB = cpt.add(-len,-len);
+        
+        Line l = new Line();
+        l.setStartX(cptMajT.getX());
+        l.setStartY(cptMajT.getY());
+        l.setEndX(cptMajB.getX());
+        l.setEndY(cptMajB.getY());
+        l.setStroke(col);
+        l.setStrokeWidth(2);
+        
+        ancDrawPlayersHere.getChildren().add(l);
+        
+        l = new Line();
+        l.setStartX(cptMinT.getX());
+        l.setStartY(cptMinT.getY());
+        l.setEndX(cptMinB.getX());
+        l.setEndY(cptMinB.getY());
+        l.setStroke(col);
+        l.setStrokeWidth(2);
+        
+        ancDrawPlayersHere.getChildren().add(l);
         
         // Animation time!
         //toAdd.setVisible(false);
@@ -353,9 +398,13 @@ public class JourneyUI implements Initializable {
                     noAnimatePlayer, noAnimatePlayer, noAnimatePlayer, noAnimatePlayer,
                     noAnimatePlayer, noAnimatePlayer, noAnimatePlayer, noAnimatePlayer, noAnimatePlayer, noAnimatePlayer, null);
             // We only care about x and y.
-            eventhdr.gameBoardClick(ev);
-            plImgL.setTranslateX(getGSM().getCurrentPlayer().getCurrentCity().getCoord().getX() + xoffLoc);
-            plImgL.setTranslateY(getGSM().getCurrentPlayer().getCurrentCity().getCoord().getY() + yoffLoc);
+            if (eventhdr.gameBoardClick(ev)) {
+                plImgL.setTranslateX(pt.getX());
+                plImgL.setTranslateY(pt.getY());
+            } else {
+                plImgL.setTranslateX(getGSM().getCurrentPlayer().getCurrentCity().getCoord().getX() + xoffLoc);
+                plImgL.setTranslateY(getGSM().getCurrentPlayer().getCurrentCity().getCoord().getY() + yoffLoc);
+            }
         });
         
     }
@@ -426,6 +475,12 @@ public class JourneyUI implements Initializable {
     
     public void activatePlayer(int pl, boolean firstMove) {
         plCardsAcc.setExpandedPane(getTiledPanePl(pl));
+        //int pl = gsm.getPlayerNum(gsm.getCurrentPlayer());    
+        ImageView plImg = plloc[pl];
+        
+        ancDrawPlayersHere.getChildren().remove(plImg);
+        ancDrawPlayersHere.getChildren().add(plImg);
+        
         // Scrolling
         Point2D locPl = getGSM().getCurrentPlayer().getCurrentCity().getCoord();
         double y = gameboardImg.getImage().getHeight();
@@ -492,13 +547,21 @@ public class JourneyUI implements Initializable {
      */
     public void movePlayerUI(City cityNew, City cityOld) {
         if (!noAnimatePlayer) {
+            
+            int pl = gsm.getPlayerNum(gsm.getCurrentPlayer());
+            
+            ImageView plImg = plloc[pl];
+            
             Point2D cityNewC = cityNew.getCoord();
             Point2D cityOldC = cityOld.getCoord();
-            int pl = gsm.getPlayerNum(gsm.getCurrentPlayer());
-            ImageView plImg = plloc[pl];
+            
+            plImg.setTranslateX(cityOldC.getX() + xoffLoc);
+            plImg.setTranslateY(cityOldC.getY() + yoffLoc);
+            
+            
             // plImgLoc: (0,0)+(xoff,yoff)
             // 
-
+            
             Point2D start = cityOldC.add(plLocOff);
             Point2D end = cityNewC.add(plLocOff);
             Point2D diff = end.subtract(start);
