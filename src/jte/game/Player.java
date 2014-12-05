@@ -27,6 +27,7 @@ public class Player {
         this.isCPU = isCPU;
         citiesVisited = new ArrayList<>();
         cards = new ArrayList<>();
+        this.activeRestriction = new Restriction(InstructionTypes.NOTHING, 0, 0, 0, 0);
     }
 
     public String getName() {

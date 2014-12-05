@@ -11,21 +11,15 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Observer;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.event.ActionEvent;
 import javafx.geometry.Point2D;
-import javafx.scene.paint.Color;
 import jte.Constants;
 import jte.file.CityLoader;
 import properties_manager.PropertiesManager;
 import static jte.JTEPropertyType.*;
 import jte.JTEResourceType;
 import jte.file.CityRouteLoader;
-import jte.ui.ErrorHandler;
-import jte.ui.EventHandlerMain;
 import jte.ui.JourneyUI;
 import jte.util.RLoad;
 
@@ -53,22 +47,8 @@ public class GameStateManager {
 
     private List<Player> players;
     
-    // As per HW2 + HW3, this type of coupling would be presumed to be ok.
     private JourneyUI ui;
     
-    // Player Num, and Details about move.
-    // Observables
-//    private ObservableAlways playerInitialized; //For putting player on map
-//    private ObservableAlways playerCardsDrawn;
-//    private ObservableAlways playerMoved;
-//    private ObservableAlways playerClearCard;
-//    private ObservableAlways gameOver;
-    //End obs
-    
-    // on city select, run onCitySelect -> playerMove* -> playerClearCard* -> gameOver*
-    
-    
-    // Store because instructions say so.
     private City nextRedCard;
         
     private Map<Integer, City> cityToID;
@@ -76,8 +56,7 @@ public class GameStateManager {
     private JTELog logger;
     // private Mover mover;
     private String currentMessage;
-
-
+    
     public GameStateManager(int numCards, double cityRadius, String[] playerNames, boolean[] playerIsCPU, JourneyUI ui) {
         this.ui = ui;
         NUM_CARDS = numCards;
@@ -117,6 +96,18 @@ public class GameStateManager {
             Logger.getLogger(GameStateManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+    }
+    
+    protected boolean getSixFlag() {
+        return rolledSix;
+    }
+    
+    protected void setSixFlag(boolean b) {
+        rolledSix = b;
+    }
+    
+    public City getRedCard() {
+        return nextRedCard;
     }
     
     /**
@@ -161,12 +152,19 @@ public class GameStateManager {
         return movesLeft;
     }
     
+    protected void setMovesLeft(int m) {
+        movesLeft = m;
+        uiMoveLeftUpdate(m);
+    }
     
     /**
      * Rolls dice for player.
      * @param pl 
      */
     private void initGameplay(Player pl) {
+        
+        // Run some instructions here
+        
         dice.roll();
         movesLeft = dice.getRoll();
         if (movesLeft == MAGIC_ROLL_AGAIN)
@@ -190,7 +188,6 @@ public class GameStateManager {
         
         logger.clear();
         StringBuilder log = new StringBuilder();
-        
         
         // Netbeans said so!
         players.stream().map((p) -> {
@@ -228,8 +225,16 @@ public class GameStateManager {
     private void movePlayerInternal(City moveTo) {
         City currLoc = players.get(currentPlayer).getCurrentCity();
         Player cp = players.get(currentPlayer);
-        // TODO Check card instructions
         List<City> nearby = getCityNeigh(currLoc);
+        
+        for (Player p: players) {
+            if (p.equals(getCurrentPlayer())) continue;
+            if (p.getCurrentCity().equals(moveTo)) {
+                currentMessage = RLoad.getString(JTEResourceType.STR_NOSQUISHING);
+                return;
+            }
+        }
+        
         if (nearby.contains(moveTo)) {
             //City moveFrom = getCurrentPlayer().getCurrentCity();
             players.get(currentPlayer).setCurrentCity(moveTo);
@@ -259,7 +264,7 @@ public class GameStateManager {
      * @return 
      */
     private boolean checkPlayerStats() {
-        Player cp = getCurrentPlayer();
+        Player cp = getCurrentPlayer();        
         int index = getCurrentPlayer().getCards().indexOf(getCurrentPlayer().getCurrentCity());
         if (index > 0) {
             // remove only if not last city
@@ -270,6 +275,14 @@ public class GameStateManager {
                 }
             }
             City cardRemove = getCurrentPlayer().getCards().get(index);
+            movesLeft = 0;
+            getCurrentPlayer().setActiveRestriction(getCurrentPlayer().getCards().get(index).getRestriction());
+            // Funky
+            boolean result = getCurrentPlayer().getActiveRestriction().execute(this);
+            if (result)
+                getCurrentPlayer().setActiveRestriction(new Restriction(InstructionTypes.NOTHING, 0, 0, 0, 0));
+            
+            // End funky
             getCurrentPlayer().getCards().remove(index);
             uiAnimateCardOut(cardRemove, getCurrentPlayer(), index);
             return false;
@@ -315,7 +328,11 @@ public class GameStateManager {
     private void uiWinGame(Player pl) {
         ui.uiWinGame(pl);
     }
-     
+    
+    private void uiMoveLeftUpdate(int m) {
+        ui.setMovesLeft(m);
+    }
+    
     // UI Methods End
     
     
