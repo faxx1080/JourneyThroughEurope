@@ -81,17 +81,26 @@ public class JourneyUIHelper {
     }
     
     public Image loadCard(int cityID) {
+        return loadCard(cityID, false);
+    }
+    
+    public Image loadCard(int cityID, boolean showBack) {
         JTEPropertyType col;
         String cityC = ui.getGSM().getCityFromID(cityID).getColor();
+        // If no special instructions, show front.
+        if (!ui.getGSM().getCityFromID(cityID).hasInst()) {showBack = false;}
         switch (cityC) {
             case "red":
                 col = JTEPropertyType.IMG_CD_RD;
+                if (showBack) col = JTEPropertyType.IMG_CDINST_RD;
                 break;
             case "yellow":
                 col = JTEPropertyType.IMG_CD_YE;
+                if (showBack) col = JTEPropertyType.IMG_CDINST_YE;
                 break;
             case "green":
                 col = JTEPropertyType.IMG_CD_GR;
+                if (showBack) col = JTEPropertyType.IMG_CDINST_GR;
                 break;
             default:
                 throw new IllegalArgumentException("Color not expected. Die.");
@@ -103,6 +112,7 @@ public class JourneyUIHelper {
         String imgpostfix = props.getProperty(JTEPropertyType.IMG_EXT_JPG);
         
         String imgLoc = imgpath + imgprefix + cityID + imgpostfix;
+        
         
         File imgFile = new File(imgLoc);
         InputStream fileIn;

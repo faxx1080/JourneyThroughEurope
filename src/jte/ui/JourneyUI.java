@@ -235,7 +235,7 @@ public class JourneyUI implements Initializable {
         return errhdr;
     }
     
-    public void addCard(int plNum, City card) {
+    public void addCard2(int plNum, City card) {
         TitledPane tp; final VBox vb;
         Color col;
         switch (plNum) {
@@ -348,7 +348,7 @@ public class JourneyUI implements Initializable {
      * @param plNum
      * @param card 
      */
-    public void addCard2(int plNum, City card) {
+    public void addCard(int plNum, City card) {
         TitledPane tp; VBox vb;
         Color col;
         switch (plNum) {
@@ -390,6 +390,7 @@ public class JourneyUI implements Initializable {
         // remove from there
         // add to root anchorpane
         ImageView toAdd = new ImageView(juiHelper.loadCard(card.getId()));
+        toAdd.setId("-1");
         toAdd.setFitWidth(200);
         toAdd.setPreserveRatio(true);
         vb.getChildren().add(toAdd);
@@ -399,6 +400,15 @@ public class JourneyUI implements Initializable {
             double x = gameboardImg.getImage().getWidth();
             scp.setHvalue(locPl.getX() / x);
             scp.setVvalue(locPl.getY() / y);
+            if (toAdd.getId().equals("1")) {
+                toAdd.setId("0");
+                toAdd.setImage(juiHelper.loadCard(card.getId(), false));
+            } else {
+                toAdd.setId("1");
+                // show back
+                toAdd.setImage(juiHelper.loadCard(card.getId(), true));
+            }
+            
         });
         //Add x marks spot
         Point2D cpt = card.getCoord();
