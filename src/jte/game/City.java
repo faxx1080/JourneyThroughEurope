@@ -6,7 +6,6 @@
 package jte.game;
 
 import javafx.geometry.Point2D;
-import javafx.scene.paint.Color;
 
 /**
  * This represents the data for a city.

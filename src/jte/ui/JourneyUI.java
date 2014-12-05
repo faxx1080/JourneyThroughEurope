@@ -196,6 +196,12 @@ public class JourneyUI implements Initializable {
         txtOutput.setText(text);
     }
     
+    public void setMovesLeft(int m) {
+        lblTopMsg.setText(getGSM().getCurrentPlayer().getName() + " "+ RLoad.getString(JTEResourceType.STR_GO) + " " + gsm.getMovesLeft()
+        + " "+ RLoad.getString(JTEResourceType.STR_MOVELEFT));
+        
+    }
+    
     public String getTxtOutput() {
         return txtOutput.getText();
     }
