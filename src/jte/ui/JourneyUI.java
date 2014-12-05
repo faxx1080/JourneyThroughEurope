@@ -6,8 +6,10 @@
 package jte.ui;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
@@ -98,6 +100,10 @@ public class JourneyUI implements Initializable {
     @FXML
     private Label lblTopMsg;
     
+    // Buffer a list of translate transitions.
+    
+    private List<TranslateTransition> transitionCards;
+    
     private GameStateManager gsm;
     private final EventHandlerMain eventhdr;
     private final ErrorHandler errhdr;
@@ -172,10 +178,18 @@ public class JourneyUI implements Initializable {
         durationMili = Integer.parseInt(props.getProperty(JTEPropertyType.ANIM_DURATION));
         
         plLocOff = new Point2D(plLocXOff, plLocYOff);
+        transitionCards = new ArrayList<>();
     }
     
     public void onShown() {
         gsm.initGameAndCards();
+    }
+    
+    public void animateCards() {
+        SequentialTransition seq = new SequentialTransition();
+        seq.getChildren().addAll(transitionCards);
+        seq.setOnFinished(e -> {gsm.continueInit();});
+        seq.play();
     }
     
     public void setTxtOutput(String text) {
@@ -221,12 +235,120 @@ public class JourneyUI implements Initializable {
         return errhdr;
     }
     
+    public void addCard(int plNum, City card) {
+        TitledPane tp; final VBox vb;
+        Color col;
+        switch (plNum) {
+            case 0:
+                tp = pl1Title;
+                vb = pl1Cards;
+                col = Color.BLACK;
+                break;
+            case 1:
+                tp = pl2Title;
+                vb = pl2Cards;
+                col = Color.BLUE;
+                break;
+            case 2:
+                tp = pl3Title;
+                vb = pl3Cards;
+                col = Color.GREEN;
+                break;
+            case 3:
+                tp = pl4Title;
+                vb = pl4Cards;
+                col = Color.RED;
+                break;
+            case 4:
+                tp = pl5Title;
+                vb = pl5Cards;
+                col = Color.WHITE;
+                break;
+            case 5:
+                tp = pl6Title;
+                vb = pl6Cards;
+                col = Color.YELLOW;
+                break;
+            default:
+                return;
+        }
+        
+        plCardsAcc.setExpandedPane(tp);
+        // Add imageview to vbox, getX, Y loc, setVisible False
+        // remove from there
+        // add to root anchorpane
+        ImageView toAdd = new ImageView(juiHelper.loadCard(card.getId()));
+        toAdd.setFitWidth(200);
+        toAdd.setPreserveRatio(true);
+        vb.getChildren().add(toAdd);
+        
+        Point2D pointTo = toAdd.localToScene(Point2D.ZERO);
+        
+        vb.getChildren().remove(toAdd);
+        
+        toAdd.setOnMouseClicked(ev -> {
+            Point2D locPl = card.getCoord();
+            double y = gameboardImg.getImage().getHeight();
+            double x = gameboardImg.getImage().getWidth();
+            scp.setHvalue(locPl.getX() / x);
+            scp.setVvalue(locPl.getY() / y);
+        });
+        
+        //Add x marks spot
+        Point2D cpt = card.getCoord();
+        
+        final double len = 10;
+        
+        Point2D cptMajT = cpt.add(-len,len);
+        Point2D cptMajB = cpt.add(len,-len);
+        Point2D cptMinT = cpt.add(len,len);
+        Point2D cptMinB = cpt.add(-len,-len);
+        
+        Line l = new Line();
+        l.setStartX(cptMajT.getX());
+        l.setStartY(cptMajT.getY());
+        l.setEndX(cptMajB.getX());
+        l.setEndY(cptMajB.getY());
+        l.setStroke(col);
+        l.setStrokeWidth(2);
+        
+        ancDrawPlayersHere.getChildren().add(l);
+        
+        l = new Line();
+        l.setStartX(cptMinT.getX());
+        l.setStartY(cptMinT.getY());
+        l.setEndX(cptMinB.getX());
+        l.setEndY(cptMinB.getY());
+        l.setStroke(col);
+        l.setStrokeWidth(2);
+        
+        ancDrawPlayersHere.getChildren().add(l);
+        
+        TranslateTransition x = new TranslateTransition(Duration.millis(durationMili/10));
+        x.setFromX(787);
+        x.setFromX(264);
+        
+        x.setToX(pointTo.getX());
+        x.setToY(pointTo.getY());
+        
+        ancDrawCardsAnim.getChildren().add(toAdd);
+        toAdd.setTranslateX(787);
+        toAdd.setTranslateX(264);
+        
+        x.setOnFinished(e -> {
+            vb.getChildren().add(toAdd);
+        });
+        
+        transitionCards.add(x);
+        
+    }
+    
     /**
      * Zero based.
      * @param plNum
      * @param card 
      */
-    public void addCard(int plNum, City card) {
+    public void addCard2(int plNum, City card) {
         TitledPane tp; VBox vb;
         Color col;
         switch (plNum) {
