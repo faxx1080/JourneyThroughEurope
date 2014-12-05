@@ -20,7 +20,7 @@ public class Player {
     private City currentCity;
     private List<City> citiesVisited;
     private List<City> cards;
-    private Restrictions cardOverries;
+    private Restriction activeRestriction;
 
     public Player(String name, boolean isCPU) {
         this.name = name;
@@ -66,12 +66,12 @@ public class Player {
         return citiesVisited;
     }
 
-    public Restrictions getCardOverries() {
-        return cardOverries;
+    public Restriction getActiveRestriction() {
+        return activeRestriction;
     }
 
-    public void setCardOverries(Restrictions cardOverries) {
-        this.cardOverries = cardOverries;
+    public void setActiveRestriction(Restriction cardOverries) {
+        this.activeRestriction = cardOverries;
     }
     
     
