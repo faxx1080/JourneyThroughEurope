@@ -41,7 +41,7 @@ public class Dijkstra {
         Collections.reverse(path);
         return path;
     }
-
+/*
     public static void main(String[] args) {
         Vertex v0 = new Vertex("London");
         Vertex v1 = new Vertex("Dover");
@@ -66,8 +66,10 @@ public class Dijkstra {
             List<Vertex> path = getShortestPathTo(v);
             System.out.println("Path: " + path);
         }
-    }
-}/*
+    }*/
+}
+
+/*
 Output:
 Distance from London to London: 0.0
 Path: [London]
