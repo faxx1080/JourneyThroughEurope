@@ -5,7 +5,6 @@
  */
 package jte.game;
 
-import jte.game.event.ObservableAlways;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -128,6 +127,12 @@ public class GameStateManager {
     public void initGameAndCards() throws IllegalStateException {
         if (gameState != GameState.NOT_STARTED) throw new IllegalStateException("Game already started.");
         cardLoading();
+        
+        // Animate!
+        ui.animateCards();
+    }
+    
+    public void continueInit() {
         currentPlayer = 0;
         //uiActivatePlayer(players.get(0));
         gameState = GameState.READY_ROLL;
