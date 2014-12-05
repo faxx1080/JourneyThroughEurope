@@ -23,7 +23,12 @@ public class Dice {
         roll = rnd.nextInt(6) + 1;
     }
     
+    public void roll(boolean noOne) {
+        roll = rnd.nextInt(5) + 2;
+    }
+    
     public int getRoll() {
         return roll;
     }
+    
 }
