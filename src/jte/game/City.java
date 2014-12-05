@@ -22,6 +22,7 @@ public class City {
     private boolean isAirport;
     private String cardColor;
     private boolean hasInst;
+    private Restriction restr;
     // private CardInstruction instType;
 
     /**
@@ -31,6 +32,14 @@ public class City {
         return flightLoc;
     }
 
+    public Restriction getRestriction() {
+        return restr;
+    }
+    
+    public boolean hasInst() {
+        return (restr.getType() != InstructionTypes.NOTHING);
+    }
+    
     /**
      * Returns the coordinate in the flight map this city is at.
      * @return 
@@ -84,25 +93,6 @@ public class City {
     public boolean isAirport() {
         return isAirport;
     }
-
-    /**
-     * Creates a city with the specified info.
-     */
-    public City(int flightLoc,
-            Point2D flightMapLoc,
-            Point2D coord,
-            int id,
-            String desc,
-            String name,
-            boolean isAirport) {
-        this.flightLoc = flightLoc;
-        this.flightMapLoc = flightMapLoc;
-        this.coord = coord;
-        this.id = id;
-        this.desc = desc;
-        this.name = name;
-        this.isAirport = isAirport;
-    }
     
     public City(int flightLoc,
             Point2D flightMapLoc,
@@ -111,7 +101,11 @@ public class City {
             String desc,
             String name,
             boolean isAirport,
-            String col) {
+            String col,
+            int flightQ,
+            Point2D flCoord,
+            int itype,
+            int iv1, int iv2, int ic1, int ic2) {
         this.flightLoc = flightLoc;
         this.flightMapLoc = flightMapLoc;
         this.coord = coord;
@@ -120,7 +114,17 @@ public class City {
         this.name = name;
         this.isAirport = isAirport;
         this.cardColor = col;
+        this.flightLoc = flightQ;
+        this.flightMapLoc = flCoord;
+        this.hasInst = false;
+        Restriction t = new Restriction(InstructionTypes.NOTHING, 0,0,0,0);
+        if (itype > 0) {
+            this.hasInst = true;
+            t = new Restriction(InstructionTypes.intToType(itype), iv1, iv2, ic1, ic2);
+        }
+        restr = t;
     }
+    
     @Override
     public String toString() {
         return this.id + " " + this.name;
