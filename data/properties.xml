@@ -23,6 +23,14 @@
         <property name="XML_CITYRED"   value="red" />
         <property name="XML_CITYGREEN"   value="green" />
         <property name="XML_CITYYELLOW"   value="yellow" />
+        <property name="XML_CITYFX"   value="flightCoordX" />
+        <property name="XML_CITYFY"   value="flightCoordY" />
+        <property name="XML_CITYTYPE"   value="Type" />
+        <property name="XML_CITYTV1"   value="Value1" />
+        <property name="XML_CITYTV2"   value="Value2" />
+        <property name="XML_CITYTC1"   value="City1" />
+        <property name="XML_CITYTC2"   value="City2" />
+        <property name="XML_CITYFLQUAD"   value="flightQuad" />
         <property name="XML_RTROOT"   value="routes" />
         <property name="XML_RTCITY"   value="city" />
         <property name="XML_RTID"   value="id" />
@@ -53,9 +61,9 @@
         <property name="IMG_CD_GR" value="cards/green/" />
         <property name="IMG_CD_YE" value="cards/yellow/" />
         <property name="IMG_CD_RD" value="cards/red/" />
-        <property name="IMG_CDINST_RD" value="cards/instg/" />
-        <property name="IMG_CDINST_GR" value="cards/instr/" />
-        <property name="IMG_CDINST_YE" value="cards/insty/" />
+        <property name="IMG_CDINST_RD" value="cards/instgreen/" />
+        <property name="IMG_CDINST_GR" value="cards/instred/" />
+        <property name="IMG_CDINST_YE" value="cards/instyellow/" />
         <property name="ANIM_DURATION" value="1000" />
     </property_list>
     <property_options_list>

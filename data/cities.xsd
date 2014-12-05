@@ -1,17 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:element name="Cities">
     <xs:complexType>
       <xs:sequence>
         <xs:element maxOccurs="unbounded" name="City">
           <xs:complexType>
+            <xs:attribute name="id" type="xs:unsignedByte" use="required" />
             <xs:attribute name="cityName" type="xs:string" use="required" />
+            <xs:attribute name="flightQuad" type="xs:unsignedByte" use="required" />
             <xs:attribute name="color" type="xs:string" use="required" />
-            <xs:attribute name="quarter" type="xs:unsignedByte" use="required" />
+            <xs:attribute name="Quarter" type="xs:unsignedByte" use="required" />
             <xs:attribute name="coordX" type="xs:unsignedShort" use="required" />
             <xs:attribute name="coordY" type="xs:unsignedShort" use="required" />
-            <xs:attribute name="id" type="xs:unsignedByte" use="required" />
             <xs:attribute name="desc" type="xs:string" use="optional" />
+            <xs:attribute name="Type" type="xs:unsignedByte" use="optional" />
+            <xs:attribute name="City1" type="xs:unsignedByte" use="optional" />
+            <xs:attribute name="flightCoordX" type="xs:unsignedShort" use="optional" />
+            <xs:attribute name="flightCoordY" type="xs:unsignedShort" use="optional" />
+            <xs:attribute name="Value1" type="xs:byte" use="optional" />
+            <xs:attribute name="Value2" type="xs:unsignedByte" use="optional" />
+            <xs:attribute name="City2" type="xs:unsignedByte" use="optional" />
           </xs:complexType>
         </xs:element>
       </xs:sequence>
