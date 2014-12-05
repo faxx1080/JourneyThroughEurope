@@ -1,0 +1,74 @@
+Game plan:
+Restrictions, 
+Flight Plan,
+Collision detect
+Save,
+Load.
+--
+CPU.
+
+Flight plan:
+    May only fly once.
+
+TODO:
+    Make dijkstra usable. DONE
+Restrictions
+    1) City created with Restriction template.
+        Contains: InstType, and params.
+    + Time
+    2) Player removes card. movesLeft=0.
+    3) call restriction.execute(gsm). Returns boolean - if restriction should be deleted.
+    3) That sets properties on the GSM, or performs actions.
+    4) Play continues normally.
+    5) 
+
+    
+
+Restriction from card loaded.
+Has: Type, params.
+params: val1, val2, city1, city2
+
+Stored in player as hashmap<City, Restriction>.
+
+On each player init, check existance of Restrictions per player.
+If yes, execute them.
+type 2
+    add value to roll, decrement numTurns. If numTurns <= 0, delete restriction.
+type 3
+    multiply roll by value, decrement numTurns, delete if <= 0.
+type 4
+    set score to value, decrement numTurns and delete if needed.
+    re-run player check -- if movesLeft = 0. Update UI.
+type 6
+    Do before rolling: set property flyonly to true. UI will not draw lines.
+    Roll using roll(true). Forces flight to be possible. Delete on move.
+type 7
+    set score to 0, decrement numTurns and delete if needed.
+    re-run player check -- if movesLeft = 0. Update UI.
+    if movesLeft = 0 && numTurns == 0, then set movesLeft to value, delete.
+type 9
+    This restriction is held until c1 = playerLoc or c2 = playerloc.
+    On true, set movesLeft == 0. Delete.
+type 10
+    On player start: roll normally. If != 6, set the rolledSix flag, delete.
+    If = 6, do not delete.
+
+We need an execute method, that has access to the gsm.
+    player.getRrestriction().execute(gsm);
+
+note that if a restriction isn't gone, and another one comes, then that
+first one is replaced.
+
+upon clearing card, activate instruction. Set score to 0 before that.
+0 moveon: set score to v1
+1 goto: set location to City, updateUI
+2 scoreadd: create new restriction object. InstType=2
+    vl=modifier,v2=numTurns.
+3 scoremult: create new restr obj instType=3, v1=mod, v2=numturns.
+4 scoreset: create new restr obj, instType=4, v1=value, v2=numturn
+5 goagain: set the 'six' flag to true, so that player goes again.
+6 forcefly: restr Obj, type=6
+7 missturn-moveon: restr obj, type 7, v1=missdturns, v2=moveonamt
+8 addcard: Add the buffered red card, update UI.
+9 movelimiter: restr obj, type 9, 
+10 throwtwice: create restr obj, instType 10.
