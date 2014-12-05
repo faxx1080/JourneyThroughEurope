@@ -33,7 +33,7 @@ public class CityLoaderTest {
     @Test
     public void testReadCities() throws Exception {
         
-                PropertiesManager props = PropertiesManager.getPropertiesManager();
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
         props.addProperty(JTEPropertyType.UI_PROPERTIES_FILE_NAME,
                 UI_PROPERTIES_FILE_NAME);
         props.addProperty(JTEPropertyType.PROPERTIES_SCHEMA_FILE_NAME,
@@ -50,6 +50,8 @@ public class CityLoaderTest {
         CityLoader instance = new CityLoader("data/cities.xsd");
         Map<Integer, City> out = instance.readCities(filePath);
         System.out.println("done");
+        
+        
         
         // assertEquals(expResult, result);
     }
