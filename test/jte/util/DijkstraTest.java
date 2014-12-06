@@ -80,6 +80,9 @@ public class DijkstraTest {
         
         
         Dijkstra.computePaths(cities.get(5));
+        
+        
+        
         for (Vertex v : cities) {
             System.out.println("Distance from #5 to " + v + ": "
                     + v.minDistance);
