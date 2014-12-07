@@ -113,8 +113,6 @@ public class GameStateManager {
         this.nextRedCard = cityToID.get(gsmb.nextRedCard);
         this.movesLeft = gsmb.movesLeft;
         
-        
-        
         this.ui = ui;
         
         NUM_FLIGHT_ZONES = Integer.parseInt(props.getProperty(JTEPropertyType.NUM_FLIGHT_ZONES));
@@ -271,7 +269,7 @@ public class GameStateManager {
         if (!c.isAirport()) return null;
         List<City> out = new ArrayList<>();
         List<Integer> quads = flQuadToQuads.get(c.getFlightLoc());
-        quads.stream().forEach((q) -> {
+        quads.stream().forEach((q) -> { // adds all 3 neighbors
             out.addAll(flQuadToCities.get(q));
         });
         return out;
@@ -285,7 +283,7 @@ public class GameStateManager {
     public List<City> get2FlyCities(City c) {
         if (!c.isAirport()) return null;
         List<City> out = new ArrayList<>();
-        out.add(c);
+        // adds current quad
         out.addAll( flQuadToCities.get(c.getFlightLoc()) );
         return out;
     }
