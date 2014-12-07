@@ -90,6 +90,7 @@ public class EventHandlerMain {
         Point2D actualClick = new Point2D(ev.getX(),ev.getY());
         City foundCity = ui.getGSM().getCityFromCoord(actualClick, null);
         if (foundCity != null) {
+            ui.setTxtOutput(foundCity.getName() + "\n" + foundCity.getDesc());
             ui.getGSM().movePlayer(foundCity);
             ui.getGSM().nextIteration();
             return true;
