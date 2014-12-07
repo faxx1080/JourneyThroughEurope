@@ -19,6 +19,11 @@ public class Dice {
         rnd = new Random();
     } 
     
+    public Dice(int lastRoll) {
+        rnd = new Random();
+        roll = lastRoll;
+    }
+    
     public void roll(){
         roll = rnd.nextInt(6) + 1;
     }

@@ -232,6 +232,11 @@ public class JourneyUI implements Initializable {
     }
 
     @FXML
+    private void uiSave() {
+        gsm.save();
+    }
+    
+    @FXML
     private void historyClick(MouseEvent event) {
         eventhdr.historyClick();
     }

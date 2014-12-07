@@ -53,37 +53,43 @@ public class FlyDialog implements Initializable {
         fly2 = ui.getGSM().get2FlyCities(home);
         fly4 = ui.getGSM().get4FlyCities(home);
         
-        fly2.stream().map((c) -> {
-            Circle ci = new Circle(5);
-            ci.setCenterX(c.getFlightMapLoc().getX());
-            ci.setCenterY(c.getFlightMapLoc().getY());
-            return ci;
-        }).map((ci) -> {
-            ci.setStroke( javafx.scene.paint.Color.GREEN );
-            return ci;
-        }).map((ci) -> {
-            ci.setStrokeWidth(3);
-            return ci;
-        }).forEach((ci) -> {
-            ancDrawHere.getChildren().add(ci);
-        });
+        try {
+            fly2.stream().map((c) -> {
+                Circle ci = new Circle(5);
+                ci.setCenterX(c.getFlightMapLoc().getX());
+                ci.setCenterY(c.getFlightMapLoc().getY());
+                return ci;
+            }).map((ci) -> {
+                ci.setStroke( javafx.scene.paint.Color.GREEN );
+                return ci;
+            }).map((ci) -> {
+                ci.setStrokeWidth(3);
+                return ci;
+            }).forEach((ci) -> {
+                ancDrawHere.getChildren().add(ci);
+            });
         
-        if (ui.getGSM().getMovesLeft() <= 3 ) return;
+            if (ui.getGSM().getMovesLeft() <= 3 ) return;
+
+            fly4.stream().map((c) -> {
+                Circle ci = new Circle(5);
+                ci.setCenterX(c.getFlightMapLoc().getX());
+                ci.setCenterY(c.getFlightMapLoc().getY());
+                return ci;
+            }).map((ci) -> {
+                ci.setStroke( javafx.scene.paint.Color.YELLOW );
+                return ci;
+            }).map((ci) -> {
+                ci.setStrokeWidth(3);
+                return ci;
+            }).forEach((ci) -> {
+                ancDrawHere.getChildren().add(ci);
+            });
+        } catch (Exception e) {
+            
+        }
         
-        fly4.stream().map((c) -> {
-            Circle ci = new Circle(5);
-            ci.setCenterX(c.getFlightMapLoc().getX());
-            ci.setCenterY(c.getFlightMapLoc().getY());
-            return ci;
-        }).map((ci) -> {
-            ci.setStroke( javafx.scene.paint.Color.YELLOW );
-            return ci;
-        }).map((ci) -> {
-            ci.setStrokeWidth(3);
-            return ci;
-        }).forEach((ci) -> {
-            ancDrawHere.getChildren().add(ci);
-        });
+        
         
     }
 
@@ -100,7 +106,7 @@ public class FlyDialog implements Initializable {
     private void imgMouseClick(MouseEvent ev) {
         Point2D actualClick = new Point2D(ev.getX(),ev.getY());
         clickedCity = ui.getGSM().getCityFromCoord(actualClick, null, true);
-        if (fly2.contains(clickedCity) || fly4.contains(clickedCity)) {
+        if (fly2.contains(clickedCity) || (ui.getGSM().getMovesLeft()>=4  && fly4.contains(clickedCity))) {
         ((Stage) root.getScene().getWindow()).close();}
     }
     

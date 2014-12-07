@@ -39,7 +39,7 @@ public class SplashDialog implements Initializable {
     @FXML
     private void onActionLoad(ActionEvent event) {
         // System.out.println("Load");
-        eventHdrSplash.splashGameLoad();
+        eventHdrSplash.splashGameLoad((Stage) root.getScene().getWindow());
     }
 
     @FXML
@@ -58,7 +58,7 @@ public class SplashDialog implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        btnLoad.setDisable(true);
+        btnLoad.setDisable(false);
     }
     
 }

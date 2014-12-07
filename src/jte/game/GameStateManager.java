@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.geometry.Point2D;
+import javafx.stage.Stage;
 import jte.Constants;
 import jte.JTEPropertyType;
 import jte.file.CityLoader;
@@ -39,7 +40,7 @@ public class GameStateManager {
     
     private static final PropertiesManager props = PropertiesManager.getPropertiesManager();
 
-    private Dice dice;
+    private final Dice dice;
     
     private int movesLeft;
     private boolean rolledSix = false;
@@ -66,7 +67,14 @@ public class GameStateManager {
     // private Mover mover;
     private String currentMessage;
     
+    private String[] plNames;
+    private boolean[] cpuPlayers;
+    
+    private boolean wasLoaded;
+    
     public GameStateManager(int numCards, double cityRadius, String[] playerNames, boolean[] playerIsCPU, JourneyUI ui) {
+        plNames = playerNames;
+        cpuPlayers = playerIsCPU;
         this.ui = ui;
         NUM_CARDS = numCards;
         CITY_RADIUS = cityRadius;
@@ -84,18 +92,49 @@ public class GameStateManager {
         }
         flQuadToCities = new HashMap<>();
         
-        loadCitiesIntoGSM();
+        loadCitiesIntoGSM(false);
     }
     
-    private void loadCitiesIntoGSM() {
+    public int getRoll() {
+        return dice.getRoll();
+    }
+    
+    // For loaded versions
+    public GameStateManager(GSMBuilder gsmb, JourneyUI ui) {
+        CITY_RADIUS = Double.parseDouble(props.getProperty(JTEPropertyType.UI_RADIUS));
+        
+        this.wasLoaded = true;
+        this.players = gsmb.player;
+        this.cityToID = gsmb.cityToID;
+        this.currentMessage = gsmb.currMessage;
+        this.NUM_CARDS = 0;
+        this.currentPlayer = gsmb.currPl;
+        this.nextRedCard = cityToID.get(gsmb.nextRedCard);
+        this.movesLeft = gsmb.movesLeft;
+        
+        this.ui = ui;
+        
+        NUM_FLIGHT_ZONES = Integer.parseInt(props.getProperty(JTEPropertyType.NUM_FLIGHT_ZONES));
+        dice = new Dice(gsmb.lastRoll);
+        
+        flQuadToCities = new HashMap<>();
+        
+        loadCitiesIntoGSM(true);
+    }
+    
+    private void loadCitiesIntoGSM(boolean wasLoaded) {
         logger = new JTELog();
         String schemaPath = props.getProperty(DATA_PATH) + props.getProperty(XML_CITIESSCH);
-        CityLoader cityLoader = new CityLoader(schemaPath);
+        
+        if (!wasLoaded) {
 
-        try {
-            cityToID = cityLoader.readCities(props.getProperty(DATA_PATH) + props.getProperty(XML_CITIESFILELOC));
-        } catch (IOException ex) {
-            Logger.getLogger(GameStateManager.class.getName()).log(Level.SEVERE, null, ex);
+            CityLoader cityLoader = new CityLoader(schemaPath);
+
+            try {
+                cityToID = cityLoader.readCities(props.getProperty(DATA_PATH) + props.getProperty(XML_CITIESFILELOC));
+            } catch (IOException ex) {
+                Logger.getLogger(GameStateManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
         for(int i = 0; i<=NUM_FLIGHT_ZONES; i++) {
@@ -159,12 +198,13 @@ public class GameStateManager {
      * Postcondition: Player 0 ready.
      */
     public void initGameAndCards() throws IllegalStateException {
-        if (gameState != GameState.NOT_STARTED) throw new IllegalStateException("Game already started.");
+        if (gameState != GameState.NOT_STARTED && !wasLoaded) throw new IllegalStateException("Game already started.");
         cardLoading();
         
         // Animate!
         ui.animateCards();
     }
+    
     
     public void continueInit() {
         currentPlayer = 0;
@@ -465,87 +505,99 @@ public class GameStateManager {
      */
     private void cardLoading() {
         int size = cityToID.size();
+        
         List<Integer> cardsDealt = new ArrayList<>(size);
-        // build list out with 180 ints, 0-179
-        
-        for (int i = 0; i < cityToID.size(); i++) {
-            if (i == 161) continue; //TODO Tirane has no exits!
-            cardsDealt.add(i);
-        }
-        
-        Collections.shuffle(cardsDealt);
         
         // rgy gyr yrg rgy
         // Assumption: Shuffling will not put all x colored cards
         // at end. Therefore avg case: O(n) per run.
-
-        int iterat = 0;
-        int lastID;
-
-        String red = RLoad.getString(JTEResourceType.STR_RED);
-        String green= RLoad.getString(JTEResourceType.STR_GRE);
-        String yellow=RLoad.getString(JTEResourceType.STR_YEL);
-
-        HashMap<Integer, String> cardColor = new HashMap<>(3);
-        cardColor.put(0, red);
-        cardColor.put(1, green);
-        cardColor.put(2, yellow);    
+        
         boolean firstRun = false;
         int offset = 0;
         
-        for (int j = NUM_CARDS; j > 0; j--) {
-            
+        if (wasLoaded) {
             for (int i = 0; i < players.size(); i++) {
-                if (Constants.DEBUG && (i == 0)) {continue;} // Ignore pl 1 if testing,
-                iterat = 0;  lastID = -1;
-                
                 Player p = players.get(i);
-
-                do {
-                    iterat = (iterat+1) % cityToID.size();
-                    lastID = cardsDealt.get(iterat);
-                } while (!cityToID.get(lastID).getColor().equals(cardColor.get((i+offset) % 3)));
-                players.get(i).addCard(cityToID.get(lastID));
-
-                cardsDealt.remove(iterat);
-                
-                if (!firstRun) {
-                    p.setCurrentCity(cityToID.get(lastID));
-                    p.setHomeCity(cityToID.get(lastID));
-                    p.getCitiesVisited().add(cityToID.get(lastID));
-                    uiInitPlayer(p);
+                uiInitPlayer(p);
+                for (City c : p.getCards()) {
+                    uiAnimateCard(c, p);
                 }
-                
-                
-                uiAnimateCard(cityToID.get(lastID), p);
+            }
+        } else {
+            
+            for (int i = 0; i < cityToID.size(); i++) {
+                if (i == 161) continue; //TODO Tirane has no exits!
+                cardsDealt.add(i);
             }
             
-            firstRun = true;
-            offset++;
+            int iterat = 0;
+            int lastID;
+
+            String red = RLoad.getString(JTEResourceType.STR_RED);
+            String green= RLoad.getString(JTEResourceType.STR_GRE);
+            String yellow=RLoad.getString(JTEResourceType.STR_YEL);
+
+            HashMap<Integer, String> cardColor = new HashMap<>(3);
+            cardColor.put(0, red);
+            cardColor.put(1, green);
+            cardColor.put(2, yellow);    
+
+            Collections.shuffle(cardsDealt);
+        
+            for (int j = NUM_CARDS; j > 0; j--) {
+
+                for (int i = 0; i < players.size(); i++) {
+                    if (Constants.DEBUG && (i == 0)) {continue;} // Ignore pl 1 if testing,
+                    iterat = 0;  lastID = -1;
+
+                    Player p = players.get(i);
+
+                    do {
+                        iterat = (iterat+1) % cityToID.size();
+                        lastID = cardsDealt.get(iterat);
+                    } while (!cityToID.get(lastID).getColor().equals(cardColor.get((i+offset) % 3)));
+                    players.get(i).addCard(cityToID.get(lastID));
+
+                    cardsDealt.remove(iterat);
+
+                    if (!firstRun) {
+                        p.setCurrentCity(cityToID.get(lastID));
+                        p.setHomeCity(cityToID.get(lastID));
+                        p.getCitiesVisited().add(cityToID.get(lastID));
+                        uiInitPlayer(p);
+                    }
+
+
+                    uiAnimateCard(cityToID.get(lastID), p);
+                }
+
+                firstRun = true;
+                offset++;
+            }
+
+            if (Constants.DEBUG) {
+                Player p = new Player("P1Cheat", false);
+                players.set(0, p);
+                p.addCard(cityToID.get(0));
+                p.setCurrentCity(cityToID.get(0));
+                p.setHomeCity(cityToID.get(0));
+                p.getCitiesVisited().add(cityToID.get(0));
+                uiInitPlayer(p);
+                uiAnimateCard(cityToID.get(0), p);
+                p.addCard(cityToID.get(80));
+                uiAnimateCard(cityToID.get(80), p);
+            }
+
+            //buffer next red
+            iterat = 0;  lastID = -1;
+            do {
+                iterat = (iterat+1) % cityToID.size();
+                lastID = cardsDealt.get(iterat);
+            } while (!cityToID.get(lastID).getColor().equals(red));
+
+            nextRedCard = cityToID.get(lastID);
+            
         }
-        
-        if (Constants.DEBUG) {
-            Player p = new Player("P1Cheat", false);
-            players.set(0, p);
-            p.addCard(cityToID.get(0));
-            p.setCurrentCity(cityToID.get(0));
-            p.setHomeCity(cityToID.get(0));
-            p.getCitiesVisited().add(cityToID.get(0));
-            uiInitPlayer(p);
-            uiAnimateCard(cityToID.get(0), p);
-            p.addCard(cityToID.get(80));
-            uiAnimateCard(cityToID.get(80), p);
-        }
-        
-        //buffer next red
-        iterat = 0;  lastID = -1;
-        do {
-            iterat = (iterat+1) % cityToID.size();
-            lastID = cardsDealt.get(iterat);
-        } while (!cityToID.get(lastID).getColor().equals(red));
-        
-        nextRedCard = cityToID.get(lastID);
-        
     }
     
     
@@ -640,6 +692,18 @@ public class GameStateManager {
     
     public int getNumPlayers() {
         return players.size();
+    }
+    
+    public String getCurrentMessage() {
+        return currentMessage;
+    }
+    
+    // Saving
+    
+    public void save() {
+        // pass in numcards, diceroll, fliedAlready, gameState, plNames, cpuPlayers
+        String out = props.getProperty(JTEPropertyType.DATA_PATH) +  props.getProperty(JTEPropertyType.FILES_SNAME);
+        jte.file.GSMFile.saveFile(out, this, NUM_CARDS, dice.getRoll(), fliedAlready, gameState, plNames, cpuPlayers);
     }
     
 }

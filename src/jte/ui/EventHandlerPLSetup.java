@@ -90,8 +90,6 @@ public class EventHandlerPLSetup {
         double radius = Double.parseDouble(props.getProperty(JTEPropertyType.UI_RADIUS));
         int numCards = Integer.parseInt(props.getProperty(JTEPropertyType.NUM_CARDS));
         
-        
-        
         //Boilerplate for FXML
         FXMLFiles fxmlInst = FXMLFiles.getInstance();
         

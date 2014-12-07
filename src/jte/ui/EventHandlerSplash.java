@@ -9,10 +9,14 @@ import jte.JTEPropertyType;
 import jte.JTEResourceType;
 import java.io.IOException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import jte.fxml.FXMLFiles;
+import jte.game.GSMBuilder;
+import jte.game.GameStateManager;
 import jte.util.RLoad;
 import properties_manager.PropertiesManager;
 
@@ -56,7 +60,55 @@ public class EventHandlerSplash {
         stage.close();
     }
     
-    public void splashGameLoad() {
+    public void splashGameLoad(Stage stage) {
+        // Generating GSM.
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        String filep = props.getProperty(JTEPropertyType.DATA_PATH) + 
+                props.getProperty(JTEPropertyType.FILES_SNAME);
+        GSMBuilder gsmb;
+        try {
+            gsmb = jte.file.GSMFile.loadFile(filep);
+            if (gsmb == null) throw new Exception();
+        } catch (Exception ex) {
+            DialogCreator.showFXDialogMessage(RLoad.getString(JTEResourceType.STR_ERROR), RLoad.getString(JTEResourceType.STR_NOFILE));
+            return;
+        }
+        
+         //Boilerplate for FXML
+        FXMLFiles fxmlInst = FXMLFiles.getInstance();
+        
+        String toLoad = 
+                props.getProperty(JTEPropertyType.FXML_JUI) + 
+                props.getProperty(JTEPropertyType.FXML_EXT);        
+        
+        FXMLLoader fxmlL = new FXMLLoader(fxmlInst.getClass().getResource(toLoad));
+        
+        String resPath = 
+                PropertiesManager.getPropertiesManager().getProperty(JTEPropertyType.RESOURCE_LOCATION);
+        
+        fxmlL.setResources(ResourceBundle.getBundle(resPath));
+        JourneyUI e = new JourneyUI();
+        GameStateManager gsm = new GameStateManager(gsmb, e);
+        e.setGSM(gsm);
+        fxmlL.setController(e);
+        
+        try {
+           fxmlL.load(); 
+        } catch (IOException ex) {
+            //DialogCreator.showFXDialogFatal(RLoad.getString(JTEPropertyType.STR_ERROR_TEXT_IO), true);
+        }
+        
+        Scene scene = new Scene(fxmlL.getRoot());
+        Stage stageN = new Stage();
+        stageN.setTitle(RLoad.getString(JTEResourceType.STR_JTE));
+        stageN.setScene(scene);
+        
+        stageN.setOnShown(ev -> {
+            e.onShown();
+        });
+        
+        stageN.show();
+        stage.close();
         
     }
     

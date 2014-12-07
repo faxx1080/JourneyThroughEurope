@@ -108,7 +108,7 @@ public class JourneyUIHelper {
         String imgprefix = props.getProperty(col);
         String imgpostfix = props.getProperty(JTEPropertyType.IMG_EXT_JPG);
         
-        String imgLoc = imgpath + imgprefix + cityID + imgpostfix;
+        String imgLoc = imgpath + imgprefix + cityID + imgpostfix.toUpperCase();
         
         
         File imgFile = new File(imgLoc);
@@ -116,8 +116,6 @@ public class JourneyUIHelper {
         try {
             fileIn = new FileInputStream(imgFile);
         } catch (FileNotFoundException ex) {
-            ui.getErrorHDR().imgNotFound();
-            // Kills vm
             return null;
         }
         

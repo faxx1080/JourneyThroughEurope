@@ -104,7 +104,8 @@
                         <Button layoutX="58.0" layoutY="532.0" mnemonicParsing="false" onMouseClicked="#aboutClick" text="%jui.about" />
                         <Button layoutX="58.0" layoutY="499.0" mnemonicParsing="false" onMouseClicked="#historyClick" text="%jui.history" />
                         <Button fx:id="flyButton" layoutX="58.0" layoutY="465.0" mnemonicParsing="false" onMouseClicked="#flyClick" text="%jui.fly" />
-                        <TextArea fx:id="txtOutput" editable="false" layoutX="14.0" layoutY="139.0" prefHeight="288.0" prefWidth="185.0" wrapText="true" />
+                        <Button layoutX="57.0" layoutY="429.0" mnemonicParsing="false" onAction="#uiSave" text="%jui.save" />
+                        <TextArea fx:id="txtOutput" editable="false" layoutX="14.0" layoutY="139.0" prefHeight="261.0" prefWidth="185.0" wrapText="true" />
                         <ImageView fx:id="imgDice" fitHeight="75.0" fitWidth="136.0" layoutX="75.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true" />
                         <Label fx:id="lblTopMsg" layoutX="24.0" prefHeight="36.0" prefWidth="161.0" />
                         
