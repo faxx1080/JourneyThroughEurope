@@ -85,7 +85,11 @@ public class JourneyUIHelper {
         JTEPropertyType col;
         String cityC = ui.getGSM().getCityFromID(cityID).getColor();
         // If no special instructions, show front.
-        if (!ui.getGSM().getCityFromID(cityID).hasInst()) {showBack = false;}
+        if (!ui.getGSM().getCityFromID(cityID).hasInst() && showBack) {showBack = false;
+            ui.setTxtOutput("No back for this card.");
+        } else {
+            ui.setTxtOutput("");
+        }
         switch (cityC) {
             case "red":
                 col = JTEPropertyType.IMG_CD_RD;

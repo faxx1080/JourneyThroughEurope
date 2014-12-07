@@ -52,7 +52,7 @@
         <property name="FXML_SPL" value="SplashDialog" />
         <property name="FXML_HIST" value="HistoryDialog" />
         <property name="FXML_FLYDG" value="FlyDialog" />
-
+        <property name="FILES_SNAME" value="jte.sav" />
         <property name="FXML_JUI" value="JourneyUI" />
         <property name="FXML_PLSET" value="PlayerSetup" />
         <property name="FXML_EXT" value=".fxml" />
@@ -69,8 +69,8 @@
         <property name="IMG_CD_GR" value="cards/green/" />
         <property name="IMG_CD_YE" value="cards/yellow/" />
         <property name="IMG_CD_RD" value="cards/red/" />
-        <property name="IMG_CDINST_RD" value="cards/instgreen/" />
-        <property name="IMG_CDINST_GR" value="cards/instred/" />
+        <property name="IMG_CDINST_GR" value="cards/instgreen/" />
+        <property name="IMG_CDINST_RD" value="cards/instred/" />
         <property name="IMG_CDINST_YE" value="cards/instyellow/" />
         <property name="ANIM_DURATION" value="1000" />
     </property_list>

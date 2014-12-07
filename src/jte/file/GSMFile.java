@@ -110,6 +110,11 @@ public class GSMFile {
                     p.getCitiesVisited().add(cityToID.get(dis.readInt()));
                 }
                 
+                ncards = dis.readInt();
+                for (int j = 0; j < ncards; j++) {
+                    p.getRollHistory().add(dis.readInt());
+                }
+                
                 players.add(p);
                 
             }
@@ -127,8 +132,7 @@ public class GSMFile {
     
     public static void saveFile(String filePath, GameStateManager gsm,
             int numcards, int diceroll, boolean fliedAlready,
-            GameState gs, String[] plNames,
-            boolean[] cpuPlayers) {
+            GameState gs, int numPlayers) {
         // buffer what we need from gsm
         String currMessage = gsm.getCurrentMessage();
         if (currMessage == null) currMessage = "";
@@ -138,8 +142,6 @@ public class GSMFile {
         if (log == null) log = "";
         int nextRedCard = gsm.getRedCard().getId();
         int lastRoll = gsm.getRoll();
-        
-        int numPlayers = plNames.length;
         
         // Writing
         
@@ -186,6 +188,11 @@ public class GSMFile {
                 for (int j = 0; j < nCvisit; j++) {
                     int cid = p.getCitiesVisited().get(j).getId();
                     dos.writeInt(cid);
+                }
+                
+                dos.writeInt(p.getRollHistory().size());
+                for (int j = 0; j < p.getRollHistory().size(); j++) {
+                    dos.writeInt(p.getRollHistory().get(j));
                 }
             
             }

@@ -303,26 +303,38 @@ public class GameStateManager {
             return false;
         }
         
+        getCurrentPlayer().getRollHistory().add(dice.getRoll());
         
         logger.clear();
         StringBuilder log = new StringBuilder();
         
         // Netbeans said so!
-        players.stream().map((p) -> {
+        
+        for( Player p: players) {
             log.append(p.getName());
             log.append('\n');
-            return p;
-        }).forEach((p) -> {
             for (int i = 0; i < p.getCitiesVisited().size(); i++) {
-                log.append((i+1));
+                log.append("Move ");
+                log.append(i);
+                
+                if (i > 0 && (i-1) < p.getRollHistory().size()) {
+                    log.append(" ");
+                    log.append("Rolled ");
+                    log.append(p.getRollHistory().get(i-1));
+                } else if ((i > 0) && p == getCurrentPlayer()) { //safe
+                    log.append(" ");
+                    log.append("Rolled ");
+                    log.append(dice.getRoll());
+                }
+                
                 log.append(" ");
                 log.append(p.getCitiesVisited().get(i));
                 log.append('\n');
             }
-        });
+        }
         
         logger.appendText(log.toString());
-        uiActivatePlayer(getCurrentPlayer(), isFirstMove());
+        // uiActivatePlayer(getCurrentPlayer(), isFirstMove());
         return true;
     }
     
@@ -354,7 +366,7 @@ public class GameStateManager {
             }
         }
         
-        if (getCurrentPlayer().getLastCity().equals(moveTo) && getCurrentPlayer().getCurrentCity().equals(moveTo)) {
+        if (getCurrentPlayer().getLastCity() == (moveTo) && movesLeft != dice.getRoll()) {
             currentMessage = RLoad.getString(JTEResourceType.STR_NOBACKSIES);
             return true;
         }
@@ -437,7 +449,7 @@ public class GameStateManager {
             }
             City cardRemove = getCurrentPlayer().getCards().get(index);
             if (getCurrentPlayer().getCards().get(index).getRestriction().getType() != InstructionTypes.NOTHING) {
-                movesLeft = 0;
+                movesLeft = 1;
             }
             // getCurrentPlayer().setActiveRestriction(getCurrentPlayer().getCards().get(index).getRestriction());
             /*// Funky
@@ -703,7 +715,7 @@ public class GameStateManager {
     public void save() {
         // pass in numcards, diceroll, fliedAlready, gameState, plNames, cpuPlayers
         String out = props.getProperty(JTEPropertyType.DATA_PATH) +  props.getProperty(JTEPropertyType.FILES_SNAME);
-        jte.file.GSMFile.saveFile(out, this, NUM_CARDS, dice.getRoll(), fliedAlready, gameState, plNames, cpuPlayers);
+        jte.file.GSMFile.saveFile(out, this, NUM_CARDS, dice.getRoll(), fliedAlready, gameState, players.size());
     }
     
 }

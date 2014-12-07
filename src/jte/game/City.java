@@ -36,7 +36,7 @@ public class City {
     }
     
     public boolean hasInst() {
-        return (restr.getType() != InstructionTypes.NOTHING);
+        return hasInst;
     }
     
     /**
@@ -92,6 +92,7 @@ public class City {
     public boolean isAirport() {
         return isAirport;
     }
+    
     
     public City(int flightLoc,
             Point2D flightMapLoc,

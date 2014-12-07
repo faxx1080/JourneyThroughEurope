@@ -19,7 +19,6 @@ nextRedCard.getId() **lookup later
 
 int: numPl
 Player info:
-	number
 	name
 	isCPU
 	homeCity
