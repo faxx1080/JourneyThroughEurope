@@ -5,6 +5,7 @@
  */
 package jte.ui;
 
+import com.sun.javafx.tk.Toolkit;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -731,12 +732,14 @@ public class JourneyUI implements Initializable {
             // Timeline scrollT = ScrollTransition.getTimeline(scp, Duration.millis(durationMili), 0, 0);
 
             movePlTrans.setOnFinished(e -> {
-                ancDrawPlayersHere.setMouseTransparent(false);        
+                ancDrawPlayersHere.setMouseTransparent(false);
+                Toolkit.getToolkit().exitNestedEventLoop(0, null);
             });
 
             ancDrawPlayersHere.setMouseTransparent(true);
 
             movePlTrans.play();
+            Toolkit.getToolkit().enterNestedEventLoop(0);
         }
         noAnimatePlayer = false;
         

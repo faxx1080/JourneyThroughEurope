@@ -91,8 +91,10 @@ public class EventHandlerMain {
         City foundCity = ui.getGSM().getCityFromCoord(actualClick, null);
         if (foundCity != null) {
             ui.getGSM().movePlayer(foundCity);
+            ui.getGSM().nextIteration();
             return true;
         } else {
+            ui.getGSM().nextIteration();
             return false;
         }
     }
@@ -200,8 +202,8 @@ public class EventHandlerMain {
         if (moveTo != null) {
             // actually move!
             ui.getGSM().movePlayer(moveTo, true);
-            
         }
+        ui.getGSM().nextIteration();
         
     }
 

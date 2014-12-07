@@ -282,8 +282,12 @@ public class GameStateManager {
         });
         
         logger.appendText(log.toString());
-        
-        if (gameState == GameState.GAME_OVER) {return true;}
+        uiActivatePlayer(getCurrentPlayer(), isFirstMove());
+        return true;
+    }
+    
+    public void nextIteration() {
+        if (gameState == GameState.GAME_OVER) {return;}
         if ((movesLeft == 0) && (rolledSix)) {
             rolledSix = false;
             gameState = GameState.READY_ROLL;
@@ -293,7 +297,7 @@ public class GameStateManager {
             initGameplay(getCurrentPlayer());
         } else {
         uiActivatePlayer(getCurrentPlayer(), isFirstMove()); }
-        return true;
+        return;
     }
     
     public boolean isFirstMove(){
