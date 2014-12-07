@@ -1,24 +1,33 @@
 Game plan:
-Flight Plan,
 Save, load
 CPU.
 
-Flight plan:
-    May only fly once.
+Save on Button press.
 
-Steps:
-1) From GSM: If user stopped at airport:
-    Preconditions: movesLeft > 1; fliedAlready == false
-    If fail - option disabled.
-    
-Then from UI:
-    Enable fly button.
-    Show flight map.
-    Method to open cities: for each acceptable city, draw circle around it.
-    Key: Green = 2
-    Yellow = 4
-    Uncircled: BAD.
-    On click city, send to GSM REgardless.
+On call, need to save:
 
-GSM: gets sent to moveInternal -- checks those conditions. If pass, warp player
-(fly him over!)
+numcards
+currentMessage
+currentPlayer int
+dice (Object)
+	rolledSix
+fliedAlready
+gameState
+logger.getText()
+movesLeft
+nextRedCard.getId() **lookup later
+
+int: numPl
+Player info:
+	number
+	name
+	isCPU
+	homeCity
+	currentCity
+	//restriction = new nothing.
+	int nCards
+	cards(id)
+	int prevCities
+	prevCities(id)
+	
+pass in numcards, diceroll, fliedAlready, gameState, plNames, cpuPlayers
