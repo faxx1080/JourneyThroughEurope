@@ -644,6 +644,10 @@ public class JourneyUI implements Initializable {
         ancDrawStuffHere.getChildren().clear();
         //Add new lines
         Point2D home = gsm.getCurrentPlayer().getCurrentCity().getCoord();
+
+        plImg.setTranslateX(getGSM().getCurrentPlayer().getCurrentCity().getCoord().getX() + xoffLoc);
+        plImg.setTranslateY(getGSM().getCurrentPlayer().getCurrentCity().getCoord().getY() + yoffLoc);
+        
         Point2D next;
         List<City> cityLand = gsm.getCityNeigh(gsm.getCurrentPlayer().getCurrentCity());
         List<City> citySea  = gsm.getCityNeighSea(gsm.getCurrentPlayer().getCurrentCity());

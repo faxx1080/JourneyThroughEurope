@@ -103,6 +103,7 @@ public class GameStateManager {
     public GameStateManager(GSMBuilder gsmb, JourneyUI ui) {
         CITY_RADIUS = Double.parseDouble(props.getProperty(JTEPropertyType.UI_RADIUS));
         
+        this.gameState = gsmb.st;
         this.wasLoaded = true;
         this.players = gsmb.player;
         this.cityToID = gsmb.cityToID;
@@ -112,10 +113,14 @@ public class GameStateManager {
         this.nextRedCard = cityToID.get(gsmb.nextRedCard);
         this.movesLeft = gsmb.movesLeft;
         
+        
+        
         this.ui = ui;
         
         NUM_FLIGHT_ZONES = Integer.parseInt(props.getProperty(JTEPropertyType.NUM_FLIGHT_ZONES));
         dice = new Dice(gsmb.lastRoll);
+        
+        if (dice.getRoll() == MAGIC_ROLL_AGAIN) rolledSix = true;
         
         flQuadToCities = new HashMap<>();
         
@@ -202,7 +207,8 @@ public class GameStateManager {
         cardLoading();
         
         // Animate!
-        ui.animateCards();
+        if (!wasLoaded) {
+        ui.animateCards();}
     }
     
     
@@ -358,6 +364,9 @@ public class GameStateManager {
     }
     
     public boolean isCityNoGood(City moveTo) {
+        int neigh = getCityNeigh(getCurrentPlayer().getCurrentCity()).size();
+        if (neigh <= 1) return false;
+        
         for (Player p: players) {
             if (p.equals(getCurrentPlayer())) continue;
             if (p.getCurrentCity().equals(moveTo) && movesLeft == 1) {
@@ -535,6 +544,8 @@ public class GameStateManager {
                     uiAnimateCard(c, p);
                 }
             }
+            uiDiceRolled(dice.getRoll());
+            uiActivatePlayer(getCurrentPlayer(), (dice.getRoll() == movesLeft));
         } else {
             
             for (int i = 0; i < cityToID.size(); i++) {

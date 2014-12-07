@@ -71,7 +71,7 @@ public class GSMFile {
             int movesLeft = dis.readInt();
             String log = dis.readUTF();
             int nextRedCard = dis.readInt();
-
+            GameState st = GameState.fromInt(dis.readInt());
             int numPlayers = dis.readInt();
             
             // Generate players.
@@ -120,7 +120,7 @@ public class GSMFile {
             }
             
             // Done. insert into GSM.
-            gsm = new GSMBuilder(lastRoll, players, currMessage, currPl, movesLeft, log, nextRedCard, cityToID);
+            gsm = new GSMBuilder(st, lastRoll, players, currMessage, currPl, movesLeft, log, nextRedCard, cityToID);
             return gsm;
             
         } catch (Exception ex) {
@@ -142,7 +142,7 @@ public class GSMFile {
         if (log == null) log = "";
         int nextRedCard = gsm.getRedCard().getId();
         int lastRoll = gsm.getRoll();
-        
+         
         // Writing
         
         File selectedFile = new File(filePath);
@@ -164,6 +164,7 @@ public class GSMFile {
             dos.writeInt(movesLeft);
             dos.writeUTF(log);
             dos.writeInt(nextRedCard);
+            dos.writeInt(GameState.toInt(gs));
             dos.writeInt(numPlayers);
             
             for(int i = 0; i < numPlayers; i++) {

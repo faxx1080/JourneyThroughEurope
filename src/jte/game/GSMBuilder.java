@@ -13,6 +13,7 @@ import java.util.Map;
  * @author Frank
  */
 public class GSMBuilder {
+    GameState st;
     int lastRoll;
     List<Player> player;
     String currMessage;
@@ -22,8 +23,9 @@ public class GSMBuilder {
     int nextRedCard;
     Map<Integer, City> cityToID;
 
-    public GSMBuilder(int lastRoll, List<Player> player, String currMessage, int currPl,
+    public GSMBuilder(GameState st, int lastRoll, List<Player> player, String currMessage, int currPl,
             int movesLeft, String log, int nextRedCard, Map<Integer, City> cityToID) {
+        this.st = st;
         this.lastRoll = lastRoll;
         this.player = player;
         this.currMessage = currMessage;
