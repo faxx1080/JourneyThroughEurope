@@ -18,6 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
@@ -99,6 +100,8 @@ public class JourneyUI implements Initializable {
     private ImageView gameboardImg;
     @FXML
     private Label lblTopMsg;
+    @FXML
+    private Button flyButton; 
     
     // Buffer a list of translate transitions.
     
@@ -235,6 +238,10 @@ public class JourneyUI implements Initializable {
     @FXML
     private void flyClick(MouseEvent event) {
         eventhdr.flyClick();
+    }
+    
+    public Stage getStage() {
+        return ((Stage) root.getScene().getWindow());
     }
     
     public ErrorHandler getErrorHDR() {
@@ -536,13 +543,13 @@ public class JourneyUI implements Initializable {
                     noAnimatePlayer, noAnimatePlayer, noAnimatePlayer, noAnimatePlayer,
                     noAnimatePlayer, noAnimatePlayer, noAnimatePlayer, noAnimatePlayer, noAnimatePlayer, noAnimatePlayer, null);
             // We only care about x and y.
-            if (eventhdr.gameBoardClick(ev)) {
-                plImgL.setTranslateX(pt.getX());
-                plImgL.setTranslateY(pt.getY());
-            } else {
-                plImgL.setTranslateX(getGSM().getCurrentPlayer().getCurrentCity().getCoord().getX() + xoffLoc);
-                plImgL.setTranslateY(getGSM().getCurrentPlayer().getCurrentCity().getCoord().getY() + yoffLoc);
-            }
+//            if (eventhdr.gameBoardClick(ev)) {
+//                plImgL.setTranslateX(pt.getX());
+//                plImgL.setTranslateY(pt.getY());
+//            } else {
+//                plImgL.setTranslateX(getGSM().getCurrentPlayer().getCurrentCity().getCoord().getX() + xoffLoc);
+//                plImgL.setTranslateY(getGSM().getCurrentPlayer().getCurrentCity().getCoord().getY() + yoffLoc);
+//            }
         });
         
     }
@@ -635,6 +642,9 @@ public class JourneyUI implements Initializable {
         List<City> cityLand = gsm.getCityNeigh(gsm.getCurrentPlayer().getCurrentCity());
         List<City> citySea  = gsm.getCityNeighSea(gsm.getCurrentPlayer().getCurrentCity());
         for (City c: cityLand) {
+            if (getGSM().isCityNoGood(c)) {
+                continue;
+            }
             next = c.getCoord();
             Line l = new Line();
             l.setStartX(home.getX());
@@ -645,18 +655,26 @@ public class JourneyUI implements Initializable {
             l.setStrokeWidth(2);
             ancDrawStuffHere.getChildren().add(l);
         }
-        if (!firstMove) return;
-        for (City c: citySea) {
-            next = c.getCoord();
-            Line l = new Line();
-            l.setStartX(home.getX());
-            l.setStartY(home.getY());
-            l.setEndX(next.getX());
-            l.setEndY(next.getY());
-            l.setStroke(Color.BLUE);
-            l.setStrokeWidth(2);
-            ancDrawStuffHere.getChildren().add(l);
+        if (firstMove) {
+            for (City c: citySea) {
+                if (getGSM().isCityNoGood(c)) {
+                    continue;
+                }
+                next = c.getCoord();
+                Line l = new Line();
+                l.setStartX(home.getX());
+                l.setStartY(home.getY());
+                l.setEndX(next.getX());
+                l.setEndY(next.getY());
+                l.setStroke(Color.BLUE);
+                l.setStrokeWidth(2);
+                ancDrawStuffHere.getChildren().add(l);
+            }
         }
+        // Flying
+        
+        boolean res = !gsm.canFly();
+        flyButton.setDisable(res);
         
     }
     

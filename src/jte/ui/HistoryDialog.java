@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 public class HistoryDialog implements Initializable {
 
     @FXML
-    private Parent  root;
+    private Parent root;
     @FXML
     private TextArea txtHistory;
     @FXML

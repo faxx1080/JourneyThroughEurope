@@ -39,6 +39,10 @@ public class Player {
         return isCPU;
     }
     
+    public City getLastCity() {
+        return citiesVisited.get( citiesVisited.size() - 1);
+    }
+    
     public void addCard(City cd) {
         cards.add(cd);
     }

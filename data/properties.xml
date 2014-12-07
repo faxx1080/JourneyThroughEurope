@@ -9,6 +9,7 @@
         <property name="IMG_PATH" value="img/"></property>
         <property name="RESOURCE_LOCATION" value="stringsLocalized"></property>
 		<property name="HELP_FILE" value="OfficialInstructions.htm" />
+        <property name="NUM_FLIGHT_ZONES" value="6" />
         <property name="XML_CITIESROOT"   value="Cities" />
         <property name="XML_CITYNODE"   value="City" />
         <property name="XML_CITYNAME"   value="cityName" />
@@ -40,11 +41,18 @@
         <property name="XML_CITIESFILELOC" value="cities.xml"/>
         <property name="XML_RTSCH" value="graphID.xsd" />
         <property name="XML_RTFILELOC" value="graphID.xml"/>
+        <property name="XML_FLROOT"   value="flights" />
+        <property name="XML_FLMAPPING"   value="mapping" />
+        <property name="XML_FPC4"   value="c4" />
+        <property name="XML_FLSCH"   value="flights.xsd" />
+        <property name="XML_FLFILELOC"   value="flights.xml" />
         <property name="UI_RADIUS" value="10" />
         <property name="NUM_CARDS" value="3" />
         <property name="FXML_AB" value="AboutDialog" />
         <property name="FXML_SPL" value="SplashDialog" />
         <property name="FXML_HIST" value="HistoryDialog" />
+        <property name="FXML_FLYDG" value="FlyDialog" />
+
         <property name="FXML_JUI" value="JourneyUI" />
         <property name="FXML_PLSET" value="PlayerSetup" />
         <property name="FXML_EXT" value=".fxml" />

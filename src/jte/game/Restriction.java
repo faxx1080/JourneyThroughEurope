@@ -141,6 +141,10 @@ public class Restriction {
             return true;
         }
     }
+    /*
+    public boolean execute(GameStateManager gsm) {return false;};
+    
+    public boolean executeNextRound() {return false;}; 
     
     public boolean executeNextRound() {
         switch (type) {
@@ -199,7 +203,7 @@ public class Restriction {
             default:
                 return false;
         }
-    }
+    } */
 
     
     

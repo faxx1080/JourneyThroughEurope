@@ -15,11 +15,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.geometry.Point2D;
 import jte.Constants;
+import jte.JTEPropertyType;
 import jte.file.CityLoader;
 import properties_manager.PropertiesManager;
 import static jte.JTEPropertyType.*;
 import jte.JTEResourceType;
 import jte.file.CityRouteLoader;
+import jte.file.FlightLoader;
 import jte.ui.JourneyUI;
 import jte.util.RLoad;
 
@@ -49,9 +51,16 @@ public class GameStateManager {
     
     private JourneyUI ui;
     
+    private boolean fliedAlready;
+    
     private City nextRedCard;
+    
+    private final int NUM_FLIGHT_ZONES;
         
     private Map<Integer, City> cityToID;
+    private Map<Integer, List<Integer>> flQuadToQuads;
+    private Map<Integer, List<City>> flQuadToCities;
+    
     private CityGraph cityNeigh;
     private JTELog logger;
     // private Mover mover;
@@ -61,6 +70,7 @@ public class GameStateManager {
         this.ui = ui;
         NUM_CARDS = numCards;
         CITY_RADIUS = cityRadius;
+        NUM_FLIGHT_ZONES = Integer.parseInt(props.getProperty(JTEPropertyType.NUM_FLIGHT_ZONES));
         dice = new Dice();
         if (playerNames.length != playerIsCPU.length) {
             throw new IllegalArgumentException("# players != # of array entries in isCPU");
@@ -72,6 +82,7 @@ public class GameStateManager {
             Player t = new Player(playerNames[i], playerIsCPU[i]);
             players.add(t);
         }
+        flQuadToCities = new HashMap<>();
         
         loadCitiesIntoGSM();
     }
@@ -87,6 +98,14 @@ public class GameStateManager {
             Logger.getLogger(GameStateManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        for(int i = 0; i<=NUM_FLIGHT_ZONES; i++) {
+            flQuadToCities.put( i , new ArrayList<>(180));
+        }
+        
+        cityToID.values().stream().forEach((c) -> {
+            flQuadToCities.get(c.getFlightLoc()).add(c);
+        });
+        
         schemaPath = props.getProperty(DATA_PATH) + props.getProperty(XML_RTSCH);
         String neighPath = props.getProperty(DATA_PATH) + props.getProperty(XML_RTFILELOC);
         
@@ -96,7 +115,31 @@ public class GameStateManager {
             Logger.getLogger(GameStateManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        schemaPath = props.getProperty(DATA_PATH) + props.getProperty(XML_FLSCH);
+        neighPath = props.getProperty(DATA_PATH) + props.getProperty(XML_FLFILELOC);
+        
+        try {
+            flQuadToQuads = new FlightLoader(schemaPath).readAirportNeighbors(neighPath);
+        } catch (IOException ex) {
+            Logger.getLogger(GameStateManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
+    
+//    public boolean isCityOccupied(City city) {
+//        return (checkIfOccupiedP(city) != null);
+//    }
+//    
+//    public Player checkIfOccupiedP(City city) {
+//        Player out = null;
+//        for (Player p: players) {
+//            if (p.getCurrentCity().equals(city))
+//                out = p;
+//        }
+//        return out;
+//    }
+    
+    // End flight
     
     protected boolean getSixFlag() {
         return rolledSix;
@@ -164,8 +207,11 @@ public class GameStateManager {
     private void initGameplay(Player pl) {
         
         // Run some instructions here
-        
+        fliedAlready = false;
         dice.roll();
+        if (pl.getCurrentCity().getId() == 161) {
+            dice.roll(true); //Tirane forces fly-out.
+        }
         movesLeft = dice.getRoll();
         if (movesLeft == MAGIC_ROLL_AGAIN)
             rolledSix = true;
@@ -174,17 +220,49 @@ public class GameStateManager {
         uiActivatePlayer(pl, true);
     }
     
+    // Null if none
+    public List<City> get4FlyCities(City c) {
+        if (!c.isAirport()) return null;
+        List<City> out = new ArrayList<>();
+        List<Integer> quads = flQuadToQuads.get(c.getFlightLoc());
+        quads.stream().forEach((q) -> {
+            out.addAll(flQuadToCities.get(q));
+        });
+        return out;
+    }
+    
+    public boolean canFly() {
+        return getCurrentPlayer().getCurrentCity().isAirport() && movesLeft > 1 && !fliedAlready;
+    }
+    
+    // Null if none.
+    public List<City> get2FlyCities(City c) {
+        if (!c.isAirport()) return null;
+        List<City> out = new ArrayList<>();
+        out.add(c);
+        out.addAll( flQuadToCities.get(c.getFlightLoc()) );
+        return out;
+    }
+    
+    public boolean movePlayer(City moveTo) {
+        return movePlayer(moveTo, false);
+    }
     
     /**
      * Called by the UI when a player moves, passing in the city moved to.
      */
-    public void movePlayer(City moveTo) {
+    public boolean movePlayer(City moveTo, boolean fly) {
         //movesLeft = 2;
         if (!(gameState == GameState.INPUT_MOVE)) {
             // Fail.
-            return;
+            return false;
         }
-        movePlayerInternal(moveTo);
+        boolean res = movePlayerInternal(moveTo, fly);
+        if (!res) {
+            uiActivatePlayer(getCurrentPlayer(), isFirstMove());
+            return false;
+        }
+        
         
         logger.clear();
         StringBuilder log = new StringBuilder();
@@ -205,7 +283,7 @@ public class GameStateManager {
         
         logger.appendText(log.toString());
         
-        if (gameState == GameState.GAME_OVER) {return;}
+        if (gameState == GameState.GAME_OVER) {return true;}
         if ((movesLeft == 0) && (rolledSix)) {
             rolledSix = false;
             gameState = GameState.READY_ROLL;
@@ -215,6 +293,7 @@ public class GameStateManager {
             initGameplay(getCurrentPlayer());
         } else {
         uiActivatePlayer(getCurrentPlayer(), isFirstMove()); }
+        return true;
     }
     
     public boolean isFirstMove(){
@@ -222,40 +301,78 @@ public class GameStateManager {
         return dice.getRoll()==getMovesLeft();
     }
     
-    private void movePlayerInternal(City moveTo) {
+    public boolean isCityNoGood(City moveTo) {
+        for (Player p: players) {
+            if (p.equals(getCurrentPlayer())) continue;
+            if (p.getCurrentCity().equals(moveTo) && movesLeft == 1) {
+                currentMessage = RLoad.getString(JTEResourceType.STR_NOSQUISHING);
+                return true;
+            }
+        }
+        
+        if (getCurrentPlayer().getLastCity().equals(moveTo) && getCurrentPlayer().getCurrentCity().equals(moveTo)) {
+            currentMessage = RLoad.getString(JTEResourceType.STR_NOBACKSIES);
+            return true;
+        }
+        return false;
+    }
+    
+    private boolean movePlayerInternal(City moveTo, boolean fly) {
         City currLoc = players.get(currentPlayer).getCurrentCity();
         Player cp = players.get(currentPlayer);
         List<City> nearby = getCityNeigh(currLoc);
+        if (isCityNoGood(moveTo)) return false;
         
-        for (Player p: players) {
-            if (p.equals(getCurrentPlayer())) continue;
-            if (p.getCurrentCity().equals(moveTo)) {
-                currentMessage = RLoad.getString(JTEResourceType.STR_NOSQUISHING);
-                return;
+        // Try to fly.
+        if (fly) {
+            // case 1: in same spot
+            if (get2FlyCities(currLoc).contains(moveTo) && movesLeft >= 2) {
+                fliedAlready = true;
+                players.get(currentPlayer).setCurrentCity(moveTo);
+                getCurrentPlayer().getCitiesVisited().add(moveTo);
+                uiMovePlayer(currLoc, moveTo, players.get(currentPlayer));
+                if (checkPlayerStats()) return true;
+                movesLeft-= 2;
             }
+            
+            else if(get4FlyCities(currLoc).contains(moveTo) && movesLeft >= 4) {
+                fliedAlready = true;
+                players.get(currentPlayer).setCurrentCity(moveTo);
+                getCurrentPlayer().getCitiesVisited().add(moveTo);
+                uiMovePlayer(currLoc, moveTo, players.get(currentPlayer));
+                if (checkPlayerStats()) return true;
+                movesLeft-= 4;
+            } else {return false;}
+            
+            if (moveTo.getId() == 161) {
+                movesLeft = 0; // Forced move-over.
+            }
+            return true;
         }
+        
         
         if (nearby.contains(moveTo)) {
             //City moveFrom = getCurrentPlayer().getCurrentCity();
             players.get(currentPlayer).setCurrentCity(moveTo);
             getCurrentPlayer().getCitiesVisited().add(moveTo);
             uiMovePlayer(currLoc, moveTo, players.get(currentPlayer));
-            if (checkPlayerStats()) return;
-            movesLeft--;
+            if (checkPlayerStats()) return true;
+            movesLeft--; return true;
         } else if (getCityNeighSea(currLoc).contains(moveTo)) {
             if (!isFirstMove()) {
                 // Fail.
                 currentMessage = RLoad.getString(JTEResourceType.STR_NOSWIM);
-                return;
+                return false;
             }
             //City moveFrom = getCurrentPlayer().getCurrentCity();
             players.get(currentPlayer).setCurrentCity(moveTo);
             getCurrentPlayer().getCitiesVisited().add(moveTo);
             uiMovePlayer(currLoc, moveTo, players.get(currentPlayer));
-            if (checkPlayerStats()) return;
-            movesLeft = 0;
+            if (checkPlayerStats()) return true;
+            movesLeft = 0; return true;
         }
         
+        return false;
     }    
     
     /**
@@ -275,14 +392,16 @@ public class GameStateManager {
                 }
             }
             City cardRemove = getCurrentPlayer().getCards().get(index);
-            movesLeft = 0;
-            getCurrentPlayer().setActiveRestriction(getCurrentPlayer().getCards().get(index).getRestriction());
-            // Funky
+            if (getCurrentPlayer().getCards().get(index).getRestriction().getType() != InstructionTypes.NOTHING) {
+                movesLeft = 0;
+            }
+            // getCurrentPlayer().setActiveRestriction(getCurrentPlayer().getCards().get(index).getRestriction());
+            /*// Funky
             boolean result = getCurrentPlayer().getActiveRestriction().execute(this);
             if (result)
                 getCurrentPlayer().setActiveRestriction(new Restriction(InstructionTypes.NOTHING, 0, 0, 0, 0));
             
-            // End funky
+            // End funky*/
             getCurrentPlayer().getCards().remove(index);
             uiAnimateCardOut(cardRemove, getCurrentPlayer(), index);
             return false;
@@ -482,7 +601,7 @@ public class GameStateManager {
      * the zeroth position for output.
      * @return The city if found, or null.
      */
-    public City getCityFromCoord(Point2D coord, double[] dist) {
+    public City getCityFromCoord(Point2D coord, double[] dist, boolean flightPl) {
         
         City closestCity;
         double shortestDist = Double.MAX_VALUE;
@@ -491,6 +610,8 @@ public class GameStateManager {
         
         for (int id = 0; id < cityToID.size(); id++) {
             currentDist = coord.distance(cityToID.get(id).getCoord());
+            if (flightPl)
+                currentDist = coord.distance(cityToID.get(id).getFlightMapLoc());
             if ((currentDist < shortestDist) && (currentDist < CITY_RADIUS)) {
                 shortestDist = currentDist;
                 lastGoodID = id;
@@ -499,6 +620,10 @@ public class GameStateManager {
         if (dist != null && dist.length >= 1) {dist[0] = shortestDist;}
         return cityToID.get(lastGoodID);
         
+    }
+    
+    public City getCityFromCoord(Point2D coord, double[] dist) {
+        return getCityFromCoord(coord, dist, false);
     }
     
     public JTELog getLog() {

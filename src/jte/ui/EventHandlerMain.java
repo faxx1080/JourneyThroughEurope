@@ -10,9 +10,11 @@ import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import jte.JTEPropertyType;
@@ -157,6 +159,49 @@ public class EventHandlerMain {
     }
 
     public void flyClick() {
+        FXMLFiles fxmlInst = FXMLFiles.getInstance();
+        
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        
+        String toLoad = 
+                props.getProperty(JTEPropertyType.FXML_FLYDG) + 
+                props.getProperty(JTEPropertyType.FXML_EXT);        
+        
+        FXMLLoader fxmlL = new FXMLLoader(fxmlInst.getClass().getResource(toLoad));
+        
+        String resPath = 
+                PropertiesManager.getPropertiesManager().getProperty(JTEPropertyType.RESOURCE_LOCATION);
+        
+        fxmlL.setResources(ResourceBundle.getBundle(resPath));
+        //HistoryDialog d = new HistoryDialog();
+        //fxmlL.setController(d);
+        
+        try {
+           fxmlL.load(); 
+        } catch (IOException e) {
+            //e.printStackTrace();
+        }
+       
+        FlyDialog d = fxmlL.getController();
+        d.init(ui);
+        
+        Scene scene = new Scene(fxmlL.getRoot());
+        Stage stageN = new Stage();
+        stageN.setScene(scene);
+        
+        stageN.initModality(Modality.WINDOW_MODAL);
+        
+        stageN.initOwner(ui.getStage());
+        
+        stageN.showAndWait();
+        
+        City moveTo = d.getCity();
+        
+        if (moveTo != null) {
+            // actually move!
+            ui.getGSM().movePlayer(moveTo, true);
+            
+        }
         
     }
 

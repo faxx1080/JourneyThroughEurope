@@ -11,7 +11,7 @@ package jte;
  */
 public enum JTEPropertyType {
     UI_PROPERTIES_FILE_NAME, PROPERTIES_SCHEMA_FILE_NAME,DATA_PATH,
-    RESOURCE_LOCATION, 
+    RESOURCE_LOCATION, NUM_FLIGHT_ZONES,
     
     HELP_FILE,
     
@@ -39,7 +39,7 @@ public enum JTEPropertyType {
     UI_RADIUS, NUM_CARDS,
     
     //FXML
-    FXML_AB, FXML_EXT, FXML_SPL, FXML_PLSET, FXML_JUI, FXML_HIST,
+    FXML_AB, FXML_EXT, FXML_SPL, FXML_PLSET, FXML_JUI, FXML_HIST,FXML_FLYDG,
     //End FXML
     
     //PlayerPos Image names

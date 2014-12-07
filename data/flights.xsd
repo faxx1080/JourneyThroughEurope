@@ -6,7 +6,7 @@
         <xs:element name="mapping" maxOccurs="unbounded" minOccurs="0">
           <xs:complexType>
             <xs:sequence>
-              <xs:element type="xs:byte" name="st"/>
+              <xs:element type="xs:byte" name="id"/>
               <xs:element name="c4">
                 <xs:complexType>
                   <xs:sequence>

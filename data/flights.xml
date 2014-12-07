@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <flights>
 	<mapping>
-		<st>1</st>
+		<id>1</id>
 		<c4>
 			<id>2</id>
 			<id>4</id>
@@ -9,7 +9,7 @@
 		</c4>
 	</mapping>
 	<mapping>
-		<st>2</st>
+		<id>2</id>
 		<c4>
 			<id>1</id>
 			<id>3</id>
@@ -17,7 +17,7 @@
 		</c4>
 	</mapping>
 	<mapping>
-		<st>3</st>
+		<id>3</id>
 		<c4>
 			<id>2</id>
 			<id>4</id>
@@ -25,7 +25,7 @@
 		</c4>
 	</mapping>
 	<mapping>
-		<st>4</st>
+		<id>4</id>
 		<c4>
 			<id>1</id>
 			<id>3</id>
@@ -33,7 +33,7 @@
 		</c4>
 	</mapping>
 	<mapping>
-		<st>5</st>
+		<id>5</id>
 		<c4>
 			<id>1</id>
 			<id>4</id>
@@ -41,7 +41,7 @@
 		</c4>
 	</mapping>
 	<mapping>
-		<st>6</st>
+		<id>6</id>
 		<c4>
 			<id>3</id>
 			<id>2</id>
