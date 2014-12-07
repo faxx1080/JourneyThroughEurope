@@ -6,25 +6,21 @@
 package jte.util;
 
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import static jte.Constants.DATA_PATH;
-import static jte.Constants.PROPERTIES_SCHEMA_FILE_NAME;
-import static jte.Constants.UI_PROPERTIES_FILE_NAME;
+import jte.Constants;
 import jte.JTEPropertyType;
+import static jte.JTEPropertyType.DATA_PATH;
+import static jte.JTEPropertyType.XML_FLFILELOC;
+import static jte.JTEPropertyType.XML_FLSCH;
 import jte.file.CityLoader;
 import jte.file.CityRouteLoader;
+import jte.file.FlightLoader;
+import jte.game.CPUData;
 import jte.game.City;
 import jte.game.CityGraph;
-import static jte.util.Dijkstra.getShortestPathTo;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import properties_manager.PropertiesManager;
 
 /**
@@ -38,57 +34,49 @@ public class DijkstraTest {
         
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         props.addProperty(JTEPropertyType.UI_PROPERTIES_FILE_NAME,
-                UI_PROPERTIES_FILE_NAME);
+                Constants.UI_PROPERTIES_FILE_NAME);
         props.addProperty(JTEPropertyType.PROPERTIES_SCHEMA_FILE_NAME,
-                PROPERTIES_SCHEMA_FILE_NAME);
+                Constants.PROPERTIES_SCHEMA_FILE_NAME);
         props.addProperty(JTEPropertyType.DATA_PATH,
-                DATA_PATH);
-        props.loadProperties(UI_PROPERTIES_FILE_NAME,
-                PROPERTIES_SCHEMA_FILE_NAME);
+                Constants.DATA_PATH);
+        props.loadProperties(Constants.UI_PROPERTIES_FILE_NAME,
+                Constants.PROPERTIES_SCHEMA_FILE_NAME);
         
         System.out.println(props.getProperty(JTEPropertyType.DATA_PATH));
         
         System.out.println("readCities get data");
         String filePath = "data/cities.xml";
+        
         CityLoader instance = new CityLoader("data/cities.xsd");
-        Map<Integer, City> out = instance.readCities(filePath);
+        
+        Map<Integer, City> cityToID = instance.readCities(filePath);
+        
         filePath = "data/graphID.xml";
         
-        CityRouteLoader inst2 = new CityRouteLoader("data/graphID.xsd", out);
-        CityGraph expResult = null;
-        CityGraph result = inst2.readCityNeighbors(filePath);
+        CityRouteLoader inst = new CityRouteLoader("data/graphID.xsd", cityToID);
         
+        CityGraph cityNeigh = inst.readCityNeighbors(filePath);
         
-        List<Vertex<City>> cities = new ArrayList<>(180);
+        String schemaPath = props.getProperty(DATA_PATH) + props.getProperty(XML_FLSCH);
+        String neighPath = props.getProperty(DATA_PATH) + props.getProperty(XML_FLFILELOC);
         
-        for (int i = 0; i < 180; i++) {
-            City x = out.get(i);
-            cities.add(new Vertex(x));
+        Map<Integer, List<Integer>> flQuadToQuads = new FlightLoader(schemaPath).readAirportNeighbors(neighPath);
+        Map<Integer, List<City>> flQuadToCities = new HashMap<>();
+        
+        for(int i = 0; i<=6; i++) {
+            flQuadToCities.put( i , new ArrayList<>(180));
         }
         
-        for (int i = 0; i < 180; i++) {
-            ArrayList<Edge> ed = new ArrayList<>();
-            for (City k : result.neighbors.get(i)) {
-                ed.add(new Edge(cities.get(k.getId()), 1));
-            }
-            for (City k : result.neighborsSea.get(i)) {
-                ed.add(new Edge(cities.get(k.getId()), 6));
-            }
-            Edge[] x = new Edge[0];
-            cities.get(i).adjacencies = ed.toArray(x);
-        }
+        cityToID.values().stream().forEach((c) -> {
+            flQuadToCities.get(c.getFlightLoc()).add(c);
+        });
+
+        CPUData cp = new CPUData(cityToID, cityNeigh, flQuadToQuads, flQuadToCities);
+        ArrayList<City> c = new ArrayList<>();
+        c.add(cityToID.get(168));
         
+        System.out.println(cp.getShortestPathTo(cityToID.get(5), cityToID.get(2), 1, c));
         
-        Dijkstra.computePaths(cities.get(5));
-        
-        
-        
-        for (Vertex v : cities) {
-            System.out.println("Distance from #5 to " + v + ": "
-                    + v.minDistance);
-            List<Vertex> path = getShortestPathTo(v);
-            System.out.println("Path: " + path);
-        }
         
     }
     
