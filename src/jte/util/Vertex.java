@@ -5,21 +5,23 @@
  */
 package jte.util;
 
+import jte.game.City;
+
 /**
  * @author Paul Fodor
  */
-public class Vertex<T> implements Comparable<Vertex<T>> {
+public class Vertex implements Comparable<Vertex> {
 
-    public final T name;
+    public final City name;
     public Edge[] adjacencies;
     public double minDistance = Double.POSITIVE_INFINITY;
     public Vertex previous;
 
-    public Vertex(T argName) {
+    public Vertex(City argName) {
         name = argName;
     }
     
-    public T getValue() {
+    public City getValue() {
         return name;
     }
 

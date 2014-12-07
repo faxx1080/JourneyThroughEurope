@@ -12,7 +12,13 @@ import java.util.Collections;
 
 public class Dijkstra {
 
-    public static void computePaths(Vertex source) {
+    /**
+     * Inits shortest path.
+     * @param source Start point.
+     * @param maxWeight Do not evaluate paths greater than maxWeight
+     */
+    public static void computePaths(Vertex source, int maxWeight, List<Vertex> remove) {
+        System.out.println("");
         source.minDistance = 0.;
         PriorityQueue<Vertex> vertexQueue = new PriorityQueue<>();
         vertexQueue.add(source);
@@ -24,6 +30,8 @@ public class Dijkstra {
                 double weight = e.weight;
                 double distanceThroughU = u.minDistance + weight;
                 if (distanceThroughU < v.minDistance) {
+                    if (remove.contains(e.target)) {continue;}
+                    if ((e.weight != 6) && (e.weight > maxWeight)) continue; // chopping block
                     vertexQueue.remove(v);
                     v.minDistance = distanceThroughU;
                     v.previous = u;
@@ -31,6 +39,15 @@ public class Dijkstra {
                 }
             }
         }
+    }
+    
+    /**
+     * Inits shortest path.
+     * @param source Start point.
+     * @param maxWeight Do not evaluate paths greater than maxWeight
+     */
+    public static void computePaths(Vertex source, int maxWeight) {
+        computePaths(source, maxWeight, new ArrayList<>());
     }
 
     public static List<Vertex> getShortestPathTo(Vertex target) {
