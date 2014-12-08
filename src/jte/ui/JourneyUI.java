@@ -10,8 +10,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.animation.Animation;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
+import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -191,7 +195,7 @@ public class JourneyUI implements Initializable {
     private boolean stopAll;
     
     public void onClose(WindowEvent ev) {
-        if (!stopAll) {ev.consume();}
+        if (!stopAll && inCpuLoop) {ev.consume();}
         stopAll = true;
         gsm.setCPUStop();
         
@@ -205,9 +209,28 @@ public class JourneyUI implements Initializable {
         cpuloop();
     }
     
+    private boolean inCpuLoop = false;
+    
+    public void uiWait() {
+        TranslateTransition anim = new TranslateTransition(Duration.millis(durationMili), new Button());
+        anim.setOnFinished(e -> {
+            Toolkit.getToolkit().exitNestedEventLoop(0, null);
+        });
+        anim.setByX(5);
+        anim.play();
+        Toolkit.getToolkit().enterNestedEventLoop(0); 
+    }
+    
     private void cpuloop() {
+        //System.out.println(Toolkit.getToolkit().isNestedLoopRunning());
+        inCpuLoop = true;
         while (gsm.getCurrentPlayer().isIsCPU() && gsm.getState() != GameState.GAME_OVER && !stopAll) {
+            //System.out.println(Toolkit.getToolkit().isNestedLoopRunning());    
+            
+            uiWait();
+            
             gsm.cpuMove();
+            setTxtOutput(getGSM().getCurrentMessage());
             if (stopAll) {
                 //getStage().hide();
                 Platform.runLater(getStage()::close);
@@ -228,6 +251,7 @@ public class JourneyUI implements Initializable {
                 //});
             }
         }
+        inCpuLoop = false;
     }
     
     public void animateCards() {
@@ -279,15 +303,24 @@ public class JourneyUI implements Initializable {
     }
     
     @FXML
+    private void uiEndMove() {
+        gsm.endTurn();
+        cpuloop();
+    }
+    
+    @FXML
     private void historyClick(MouseEvent event) {
         paused = true;
+        ancDrawPlayersHere.setMouseTransparent(true);
         eventhdr.historyClick();
+        ancDrawPlayersHere.setMouseTransparent(false);
         paused = false;
     }
 
     @FXML
     private void flyClick(MouseEvent event) {
         eventhdr.flyClick();
+        cpuloop();
     }
     
     public Stage getStage() {
@@ -749,15 +782,7 @@ public class JourneyUI implements Initializable {
         return pl.getCurrentCity().getCoord().add(plLocOff);
     }
     
-    public void uiWait() {
-        TranslateTransition anim = new TranslateTransition(Duration.millis(durationMili), null);
-        anim.setOnFinished(e -> {
-            try {Toolkit.getToolkit().exitNestedEventLoop(1, null);}
-            catch (Exception ex) {}
-        });
-        anim.play();
-        Toolkit.getToolkit().enterNestedEventLoop(1);
-    }
+    
     
     /**
      * For current player

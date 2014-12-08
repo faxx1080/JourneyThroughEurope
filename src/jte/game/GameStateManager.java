@@ -279,6 +279,13 @@ public class GameStateManager {
         return gameState;
     }
     
+    public void endTurn() {
+        movesLeft = 0;
+        if (cpuFullStop) {
+            return;}
+        nextIteration();
+    }
+    
     public void cpuMove() {
         // Step one: find the places to go.
         if (cpuFullStop) {return;}
@@ -302,6 +309,10 @@ public class GameStateManager {
         // res is false: move failed.
         currentMessage = "";
         if (!res) {
+            if (cpuFullStop) {return;}
+            if (cityNeigh.getNeighborsSea(getCurrentPlayer().getCurrentCity().getId()).contains(path.get(1))) {
+                endTurn();
+            }
             // go anywhere
             currentMessage = "Random move";
             double i = 0;

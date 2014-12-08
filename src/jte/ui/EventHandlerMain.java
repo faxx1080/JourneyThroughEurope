@@ -92,6 +92,7 @@ public class EventHandlerMain {
         if (foundCity != null) {
             ui.setTxtOutput(foundCity.getName() + "\n" + foundCity.getDesc());
             ui.getGSM().movePlayer(foundCity, false);
+            ui.setTxtOutput(ui.getGSM().getCurrentMessage());
             ui.getGSM().nextIteration();
             return true;
         } else {
@@ -156,6 +157,11 @@ public class EventHandlerMain {
         
         Scene scene = new Scene(fxmlL.getRoot());
         Stage stageN = new Stage();
+        stageN.initModality(Modality.WINDOW_MODAL);
+        
+        stageN.initOwner(ui.getStage());
+        
+        
         stageN.setTitle(RLoad.getString(JTEResourceType.STR_HIST));
         stageN.setScene(scene);
         stageN.showAndWait();
