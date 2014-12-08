@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.animation.Transition;
@@ -501,7 +502,23 @@ public class JourneyUI implements Initializable {
         toAdd.setId("-1");
         toAdd.setFitWidth(200);
         toAdd.setPreserveRatio(true);
+        // Stupid time: We fade the cards.
+        toAdd.setOpacity(0);
+        
+        FadeTransition temp = new FadeTransition(Duration.millis(durationMili), toAdd);
+        
+        temp.setByValue(1);
+        
         vb.getChildren().add(toAdd);
+        
+        temp.setOnFinished(e -> {
+            Toolkit.getToolkit().exitNestedEventLoop(2, null);
+        });
+        temp.play();
+        Toolkit.getToolkit().enterNestedEventLoop(2);
+        
+        
+        
         toAdd.setOnMouseClicked(ev -> {
             Point2D locPl = card.getCoord();
             double y = gameboardImg.getImage().getHeight();
