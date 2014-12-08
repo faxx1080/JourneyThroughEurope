@@ -72,7 +72,7 @@
         <property name="IMG_CDINST_GR" value="cards/instgreen/" />
         <property name="IMG_CDINST_RD" value="cards/instred/" />
         <property name="IMG_CDINST_YE" value="cards/instyellow/" />
-        <property name="ANIM_DURATION" value="1000" />
+        <property name="ANIM_DURATION" value="500" />
     </property_list>
     <property_options_list>
     </property_options_list>

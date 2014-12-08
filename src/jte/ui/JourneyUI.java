@@ -110,6 +110,8 @@ public class JourneyUI implements Initializable {
     private Label lblTopMsg;
     @FXML
     private Button flyButton; 
+    @FXML
+    private Button endTurnButton;
     
     // Buffer a list of translate transitions.
     
@@ -214,22 +216,25 @@ public class JourneyUI implements Initializable {
     public void uiWait() {
         TranslateTransition anim = new TranslateTransition(Duration.millis(durationMili), new Button());
         anim.setOnFinished(e -> {
-            Toolkit.getToolkit().exitNestedEventLoop(0, null);
+            Toolkit.getToolkit().exitNestedEventLoop(1, null);
         });
         anim.setByX(5);
         anim.play();
-        Toolkit.getToolkit().enterNestedEventLoop(0); 
+        Toolkit.getToolkit().enterNestedEventLoop(1); 
     }
     
     private void cpuloop() {
         //System.out.println(Toolkit.getToolkit().isNestedLoopRunning());
         inCpuLoop = true;
+        ancDrawPlayersHere.setMouseTransparent(true);
+        flyButton.setDisable(true);
+        endTurnButton.setDisable(true);
         while (gsm.getCurrentPlayer().isIsCPU() && gsm.getState() != GameState.GAME_OVER && !stopAll) {
             //System.out.println(Toolkit.getToolkit().isNestedLoopRunning());    
             
-            uiWait();
             
             gsm.cpuMove();
+            if (gsm.getState() == GameState.GAME_OVER) {stopAll = true;}
             setTxtOutput(getGSM().getCurrentMessage());
             if (stopAll) {
                 //getStage().hide();
@@ -241,7 +246,10 @@ public class JourneyUI implements Initializable {
                     Toolkit.getToolkit().enterNestedEventLoop(1);
               //  });
             }
+            
+            uiWait();
             gsm.nextIteration();
+            if (gsm.getState() == GameState.GAME_OVER) {stopAll = true;}
             if (stopAll) {
                 Platform.runLater(getStage()::close);
             }
@@ -252,6 +260,9 @@ public class JourneyUI implements Initializable {
             }
         }
         inCpuLoop = false;
+        flyButton.setDisable(false);
+        endTurnButton.setDisable(false);
+        ancDrawPlayersHere.setMouseTransparent(false);
     }
     
     public void animateCards() {
@@ -283,6 +294,7 @@ public class JourneyUI implements Initializable {
     
     @FXML
     private void gameBoardClick(MouseEvent event) {
+        if (inCpuLoop) {return;}
         eventhdr.gameBoardClick(event);
         cpuloop();
     }
@@ -601,7 +613,7 @@ public class JourneyUI implements Initializable {
         // Make plImgL draggable.
         
         plImgL.setOnMouseDragged(ev -> {
-            if (!(gsm.getPlayerNum(gsm.getCurrentPlayer()) == num)) {return;}
+            if (!(gsm.getPlayerNum(gsm.getCurrentPlayer()) == num) || inCpuLoop) {return;}
             Point2D pt = plImgL.localToParent(ev.getX() + xoffLoc, ev.getY() + yoffLoc);
             
             plImgL.setTranslateX(pt.getX());
@@ -609,7 +621,7 @@ public class JourneyUI implements Initializable {
         });
 
         plImgL.setOnMouseReleased(ev -> {
-            if (!(gsm.getPlayerNum(gsm.getCurrentPlayer()) == num)) {return;}
+            if (!(gsm.getPlayerNum(gsm.getCurrentPlayer()) == num) || inCpuLoop) {return;}
             
             Point2D pt = plImgL.localToParent(ev.getX() + xoffLoc, ev.getY() + yoffLoc);
             Point2D pt2 = pt.subtract(xoffLoc, yoffLoc);

@@ -280,6 +280,7 @@ public class GameStateManager {
     }
     
     public void endTurn() {
+        currentMessage = "End Turn";
         movesLeft = 0;
         if (cpuFullStop) {
             return;}
@@ -307,8 +308,9 @@ public class GameStateManager {
         }
         boolean res = movePlayer(path.get(1), true);
         // res is false: move failed.
-        currentMessage = "";
+        
         if (!res) {
+            currentMessage = "";
             if (cpuFullStop) {return;}
             if (cityNeigh.getNeighborsSea(getCurrentPlayer().getCurrentCity().getId()).contains(path.get(1))) {
                 endTurn();
@@ -388,7 +390,7 @@ public class GameStateManager {
         if (movesLeft < 0)
             movesLeft = 0;
         if (cpuFullStop) {
-            return false;}
+            return true;}
         if (!res) {
             uiActivatePlayer(getCurrentPlayer(), isFirstMove());
             return false;
@@ -434,12 +436,16 @@ public class GameStateManager {
     
     
     public void nextIteration() {
+        currentMessage = "";
         if (gameState == GameState.GAME_OVER) {return;}
         if ((movesLeft == 0) && (rolledSix)) {
             rolledSix = false;
+            fliedAlready = false;
             gameState = GameState.READY_ROLL;
             initGameplay(getCurrentPlayer());
         } else if (movesLeft == 0) {
+            fliedAlready = false;
+            rolledSix = false;
             currentPlayer = (currentPlayer + 1) % players.size();
             initGameplay(getCurrentPlayer());
         } else {
@@ -490,6 +496,7 @@ public class GameStateManager {
                 if (moveTo.getId() == 161) {
                 movesLeft = 0; // Forced move-over.
                 }
+                currentMessage = "Filed";
                 return true;
             } else if(get4FlyCities(currLoc).contains(moveTo) && movesLeft >= 4) {
                 fliedAlready = true;
@@ -501,6 +508,7 @@ public class GameStateManager {
                 if (moveTo.getId() == 161) {
                 movesLeft = 0; // Forced move-over.
                 }
+                currentMessage = "Filed";
                 return true;
             }
             

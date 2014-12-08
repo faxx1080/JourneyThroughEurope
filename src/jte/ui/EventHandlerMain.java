@@ -93,9 +93,13 @@ public class EventHandlerMain {
             ui.setTxtOutput(foundCity.getName() + "\n" + foundCity.getDesc());
             ui.getGSM().movePlayer(foundCity, false);
             ui.setTxtOutput(ui.getGSM().getCurrentMessage());
+            //ui.uiWait();
+            
             ui.getGSM().nextIteration();
             return true;
         } else {
+            ui.setTxtOutput(ui.getGSM().getCurrentMessage());
+            //ui.uiWait();
             ui.getGSM().nextIteration();
             return false;
         }
