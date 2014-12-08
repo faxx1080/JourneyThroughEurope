@@ -208,6 +208,7 @@ public class JourneyUI implements Initializable {
     public boolean paused;
     
     public void onShown() {
+        ancDrawPlayersHere.setMouseTransparent(true);
         gsm.initGameAndCards();
         cpuloop();
     }
@@ -343,7 +344,7 @@ public class JourneyUI implements Initializable {
     public ErrorHandler getErrorHDR() {
         return errhdr;
     }
-    
+    /*
     public void addCard2(int plNum, City card) {
         TitledPane tp; final VBox vb;
         Color col;
@@ -451,7 +452,7 @@ public class JourneyUI implements Initializable {
         transitionCards.add(x);
         
     }
-    
+    */
     /**
      * Zero based.
      * @param plNum
@@ -459,6 +460,8 @@ public class JourneyUI implements Initializable {
      */
     public void addCard(int plNum, City card) {
         TitledPane tp; VBox vb;
+        
+        ancDrawPlayersHere.setMouseTransparent(true);
         Color col;
         switch (plNum) {
             case 0:
@@ -566,21 +569,7 @@ public class JourneyUI implements Initializable {
         l.setStrokeWidth(2);
         
         ancDrawPlayersHere.getChildren().add(l);
-        
-        // Animation time!
-        //toAdd.setVisible(false);
-//        Point2D end = toAdd.localToScene(0, 0);
-//        Point2D start = new Point2D(300, 300);
-//        
-//        TranslateTransition moveCd = new TranslateTransition(Duration.millis(durationMili));
-//        
-//        ancDrawCardsAnim.getChildren().add(toAdd);
-//        moveCd.setFromX(start.getX());
-//        moveCd.setFromY(start.getY());
-//        moveCd.setToX(end.getX());
-//        moveCd.setToY(end.getY());
-//        moveCd.setOnFinished(e -> {});
-//        moveCd.play();
+        ancDrawPlayersHere.setMouseTransparent(false);
     }
 
     /**
