@@ -67,6 +67,7 @@ public class CPUData {
         
     }
     
+    
     /**
      * If flight options: [1,2) use only land and sea.
      * If flight options: [2,4) use 2 flight + previous.
@@ -79,17 +80,32 @@ public class CPUData {
      */
     public List<City> getShortestPathTo(City fromCity, City toCity, int flightOptions, List<City> removeCity) {
         int from, to;
+        
         from = fromCity.getId();
         to = toCity.getId();
+        if (from == to) {return new ArrayList<>();}
+        if (flightOptions < 2) {flightOptions = 1;}
+        if (flightOptions >= 2) {flightOptions = 2;}
+        if (flightOptions >= 4) {flightOptions = 4;}
         
         List<Vertex> removee = new ArrayList<>();
-        removeCity.stream().forEach((c) -> {
-            removee.add(cities.get(c.getId()));
-        });
+        if (removeCity != null) {
+            removeCity.stream().forEach((c) -> {
+                removee.add(cities.get(c.getId()));
+            });
+        }
         
         Dijkstra.computePaths(cities.get(from), flightOptions, removee);
         
         List<Vertex> outv = Dijkstra.getShortestPathTo(cities.get(to));
+        
+        cities.stream().map((v) -> {
+            v.previous = null;
+            return v;
+        }).forEach((v) -> {
+            v.minDistance = Double.POSITIVE_INFINITY;
+        });
+        
         List<City> out = new ArrayList<>(outv.size());
         outv.stream().forEach((v) -> {
             out.add(v.getValue());

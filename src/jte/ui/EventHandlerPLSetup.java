@@ -123,8 +123,12 @@ public class EventHandlerPLSetup {
             e.onShown();
         });
         
-        stageN.show();
+        stageN.setOnCloseRequest(ev -> {
+            e.onClose(ev);
+        });
+        
         stage.close();
+        stageN.show();
         
     }
     

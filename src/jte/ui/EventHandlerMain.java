@@ -91,7 +91,7 @@ public class EventHandlerMain {
         City foundCity = ui.getGSM().getCityFromCoord(actualClick, null);
         if (foundCity != null) {
             ui.setTxtOutput(foundCity.getName() + "\n" + foundCity.getDesc());
-            ui.getGSM().movePlayer(foundCity);
+            ui.getGSM().movePlayer(foundCity, false);
             ui.getGSM().nextIteration();
             return true;
         } else {
@@ -158,7 +158,7 @@ public class EventHandlerMain {
         Stage stageN = new Stage();
         stageN.setTitle(RLoad.getString(JTEResourceType.STR_HIST));
         stageN.setScene(scene);
-        stageN.show();
+        stageN.showAndWait();
     }
 
     public void flyClick() {

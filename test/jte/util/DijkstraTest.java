@@ -72,11 +72,16 @@ public class DijkstraTest {
         });
 
         CPUData cp = new CPUData(cityToID, cityNeigh, flQuadToQuads, flQuadToCities);
-        ArrayList<City> c = new ArrayList<>();
-        c.add(cityToID.get(168));
-        
-        System.out.println(cp.getShortestPathTo(cityToID.get(5), cityToID.get(2), 1, c));
-        
+        ArrayList<City> c = null;
+        //c.add(cityToID.get(168));
+        int z = 0;
+        for (int i = 0; i < 180; i++) {
+            for (int j = 0; j < 180; j++) {
+                List<City> temp = cp.getShortestPathTo(cityToID.get(i), cityToID.get(j), 1, c);
+                //System.out.println(temp);
+                z++;
+            }
+        }
         
     }
     

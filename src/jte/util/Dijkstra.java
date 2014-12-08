@@ -18,7 +18,7 @@ public class Dijkstra {
      * @param maxWeight Do not evaluate paths greater than maxWeight
      */
     public static void computePaths(Vertex source, int maxWeight, List<Vertex> remove) {
-        System.out.println("");
+        //System.out.println("");
         source.minDistance = 0.;
         PriorityQueue<Vertex> vertexQueue = new PriorityQueue<>();
         vertexQueue.add(source);

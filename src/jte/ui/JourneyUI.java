@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -37,10 +38,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import jte.JTEPropertyType;
 import jte.JTEResourceType;
 import jte.game.City;
+import jte.game.GameState;
 import jte.game.GameStateManager;
 import jte.game.Player;
 import jte.util.RLoad;
@@ -185,8 +188,46 @@ public class JourneyUI implements Initializable {
         transitionCards = new ArrayList<>();
     }
     
+    private boolean stopAll;
+    
+    public void onClose(WindowEvent ev) {
+        if (!stopAll) {ev.consume();}
+        stopAll = true;
+        gsm.setCPUStop();
+        
+        //System.exit(0);
+    }
+    
+    public boolean paused;
+    
     public void onShown() {
         gsm.initGameAndCards();
+        cpuloop();
+    }
+    
+    private void cpuloop() {
+        while (gsm.getCurrentPlayer().isIsCPU() && gsm.getState() != GameState.GAME_OVER && !stopAll) {
+            gsm.cpuMove();
+            if (stopAll) {
+                //getStage().hide();
+                Platform.runLater(getStage()::close);
+                return;
+            }
+            if (paused) {
+               // Platform.runLater(() -> {
+                    Toolkit.getToolkit().enterNestedEventLoop(1);
+              //  });
+            }
+            gsm.nextIteration();
+            if (stopAll) {
+                Platform.runLater(getStage()::close);
+            }
+            if (paused) {
+               // Platform.runLater(() -> {
+                    Toolkit.getToolkit().enterNestedEventLoop(1);
+                //});
+            }
+        }
     }
     
     public void animateCards() {
@@ -219,6 +260,7 @@ public class JourneyUI implements Initializable {
     @FXML
     private void gameBoardClick(MouseEvent event) {
         eventhdr.gameBoardClick(event);
+        cpuloop();
     }
     
     @FXML
@@ -238,7 +280,9 @@ public class JourneyUI implements Initializable {
     
     @FXML
     private void historyClick(MouseEvent event) {
+        paused = true;
         eventhdr.historyClick();
+        paused = false;
     }
 
     @FXML
@@ -690,7 +734,7 @@ public class JourneyUI implements Initializable {
     
     public void uiWinGame(Player pl) {
         eventhdr.winClick(pl);
-        ((Stage) root.getScene().getWindow()).close();
+        Platform.runLater(getStage()::close);
     }
     
     /**
@@ -703,6 +747,16 @@ public class JourneyUI implements Initializable {
     
     private Point2D getPlayerCoord(Player pl) {
         return pl.getCurrentCity().getCoord().add(plLocOff);
+    }
+    
+    public void uiWait() {
+        TranslateTransition anim = new TranslateTransition(Duration.millis(durationMili), null);
+        anim.setOnFinished(e -> {
+            try {Toolkit.getToolkit().exitNestedEventLoop(1, null);}
+            catch (Exception ex) {}
+        });
+        anim.play();
+        Toolkit.getToolkit().enterNestedEventLoop(1);
     }
     
     /**
